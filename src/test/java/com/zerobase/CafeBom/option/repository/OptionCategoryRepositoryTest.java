@@ -53,7 +53,7 @@ class OptionCategoryRepositoryTest {
 
         // when
         OptionCategory found = optionCategoryRepository.findById(saved.getId())
-            .orElseThrow(() -> new RuntimeException("USER_NOT_FOUND"));
+            .orElseThrow(() -> new RuntimeException("OPTIONCATEGORY_NOT_FOUND"));
 
         // then
         assertThat(found.getId()).isEqualTo(saved.getId());
@@ -71,7 +71,7 @@ class OptionCategoryRepositoryTest {
 
         // when
         OptionCategory found = optionCategoryRepository.findById(saved.getId())
-            .orElseThrow(() -> new RuntimeException("USER_NOT_FOUND"));
+            .orElseThrow(() -> new RuntimeException("OPTIONCATEGORY_NOT_FOUND"));
         found.setDetailOption("testDescription");
 
         // then
