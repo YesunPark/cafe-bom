@@ -33,7 +33,7 @@ class MenuRepositoryTest {
             .menuName("아메리카노")
             .description("아메리카노")
             .price(2800)
-            .menuImg(sampleImageData)
+            .menuPicture(sampleImageData)
             .createdDate(LocalDateTime.now())
             .build();
 
@@ -50,7 +50,7 @@ class MenuRepositoryTest {
         assertThat(save.getMenuName()).isEqualTo(menu.getMenuName());
         assertThat(save.getDescription()).isEqualTo(menu.getDescription());
         assertThat(save.getPrice()).isEqualTo(menu.getPrice());
-        assertThat(save.getMenuImg()).isEqualTo(menu.getMenuImg());
+        assertThat(save.getMenuPicture()).isEqualTo(menu.getMenuPicture());
         assertThat(save.getCreatedDate()).isEqualTo(menu.getCreatedDate());
 
     }
