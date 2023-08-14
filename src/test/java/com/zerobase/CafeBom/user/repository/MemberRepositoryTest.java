@@ -72,7 +72,6 @@ class MemberRepositoryTest {
         assertThat(actual.getPassword()).isEqualTo(expect.getPassword());
         assertThat(actual.getNickname()).isEqualTo(expect.getNickname());
         assertThat(actual.getPhone()).isEqualTo(expect.getPhone());
-        assertThat(actual.getNickname()).isEqualTo(expect.getNickname());
         assertThat(actual.getEmail()).isEqualTo(expect.getEmail());
     }
 }
