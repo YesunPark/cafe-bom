@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderRepositoryTest {
 
   @Autowired
-  private OrderRepository memberRepository;
+  private OrderRepository orderRepository;
 
 }
