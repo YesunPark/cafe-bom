@@ -4,44 +4,33 @@ package com.zerobase.CafeBom.cart;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "cart")
-@Getter
-@Setter
 @Builder
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class Cart {
+@AllArgsConstructor
+@Entity(name = "cart")
+public class Cart extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    private Menu menu;
-
-    @OneToOne
+    @JoinColumn(name="user_id")
     private User user;
 
     @OneToOne
-    private Option option;
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
-    @Column(nullable = false)
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Integer> options = new ArrayList<>();
+
+    @NotNull
     private Integer count;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public static Cart createCart(User user)
-    {
-        return  Cart.builder()
-                .user(user)
-                .count(0)
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
 
 }
