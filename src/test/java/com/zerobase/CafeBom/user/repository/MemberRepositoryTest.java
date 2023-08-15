@@ -65,7 +65,7 @@ class MemberRepositoryTest {
         // when
         Member actual = memberRepository.findById(expect.getId())
             .orElseThrow(() -> new RuntimeException("error"));
-        actual.setNickname("nickname2");
+//        actual.setNickname("nickname2");
 
         // then
         assertThat(actual.getId()).isEqualTo(expect.getId());
