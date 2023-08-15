@@ -1,8 +1,10 @@
 package com.zerobase.CafeBom.order.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
 import com.zerobase.CafeBom.order.domain.type.OrderStatus;
-import com.zerobase.CafeBom.user.domain.entity.Member;
+import java.util.Map;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,34 +24,28 @@ import lombok.Setter;
 
 @Builder
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "`order`")
 public class Order extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "member_id")
-  private Member member;
+  @NotNull
+  private String password;
 
   @NotNull
-  private String payment;
+  @Column(unique = true)
+  private String nickname;
 
   @NotNull
-  private String menus;
+  @Column(unique = true)
+  private String phone;
 
   @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrderStatus status;
-
-  private String cookingTime;
-
-  @NotNull
-  private boolean isCanceled;
-
+  @Column(unique = true)
+  private String email;
 }
