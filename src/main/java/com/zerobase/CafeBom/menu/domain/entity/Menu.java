@@ -1,40 +1,45 @@
 package com.zerobase.CafeBom.menu.domain.entity;
 
-import lombok.*;
+import com.zerobase.CafeBom.common.BaseTimeEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
-@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Menu {
+public class Menu extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @NotNull
-    private int categoryId;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category categoryId;
 
     @NotNull
     @Column(unique = true)
-    private String menuName;
+    private String name;
 
     private String description;
 
     @NotNull
     private int price;
 
-    @NotNull
-    private byte[] menuPicture;
+    @ElementCollection
+    private List<Integer> optionCategories = new ArrayList<>();
 
     @NotNull
-    private LocalDateTime createdDate;
+    private byte[] picture;
 
-    private LocalDateTime modifiedDate;
+
 
 }
