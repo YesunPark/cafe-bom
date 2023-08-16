@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
@@ -21,7 +19,7 @@ public class Menu extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
@@ -29,13 +27,15 @@ public class Menu extends BaseTimeEntity {
     @Column(unique = true)
     private String name;
 
+    @NotNull
     private String description;
 
     @NotNull
     private int price;
 
-    @ElementCollection
-    private List<Integer> optionCategories = new ArrayList<>();
+    @NotNull
+    private boolean isSoldOut;
+
 
     @NotNull
     private byte[] picture;
