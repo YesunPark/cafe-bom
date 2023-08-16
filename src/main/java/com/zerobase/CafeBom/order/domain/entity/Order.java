@@ -1,7 +1,7 @@
 package com.zerobase.CafeBom.order.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.order.domain.type.OrderStatus;
+import com.zerobase.CafeBom.type.OrderStatus;
 import com.zerobase.CafeBom.user.domain.entity.Member;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
