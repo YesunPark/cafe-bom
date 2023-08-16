@@ -1,6 +1,7 @@
-package com.zerobase.CafeBom.menu.domain.entity;
+package com.zerobase.CafeBom.option.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
+import com.zerobase.CafeBom.menu.domain.entity.Menu;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 @Builder
-public class Menu extends BaseTimeEntity {
+public class MenuOptionCategory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,22 +20,12 @@ public class Menu extends BaseTimeEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_ID")
-    private Category category;
+    @JoinColumn(name = "MENU_ID")
+    private Menu menu;
 
     @NotNull
-    private String name;
-
-    @NotNull
-    private String description;
-
-    @NotNull
-    private Integer price;
-
-    @NotNull
-    private String picture;
-
-    @NotNull
-    private boolean isSoldOut;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OPTION_CATEGORY_ID")
+    private OptionCategory optionCategory;
 
 }

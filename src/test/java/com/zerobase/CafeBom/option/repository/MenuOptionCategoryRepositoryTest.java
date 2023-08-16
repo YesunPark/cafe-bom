@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-class OptionCategoryRepositoryTest {
+class MenuOptionCategoryRepositoryTest {
 
     @Autowired
-    private OptionCategoryRepository optionCategoryRepository;
+    private MenuOptionCategoryRepository menuOptionCategoryRepository;
 
 }

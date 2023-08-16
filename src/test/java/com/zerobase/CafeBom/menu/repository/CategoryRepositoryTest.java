@@ -1,12 +1,12 @@
-package com.zerobase.CafeBom.option.repository;
+package com.zerobase.CafeBom.menu.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-class OptionCategoryRepositoryTest {
+class CategoryRepositoryTest {
 
     @Autowired
-    private OptionCategoryRepository optionCategoryRepository;
+    private CategoryRepository categoryRepository;
 
 }
