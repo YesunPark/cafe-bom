@@ -1,5 +1,7 @@
 package com.zerobase.CafeBom.cart.domain.entity;
 
+import com.zerobase.CafeBom.common.BaseTimeEntity;
+import com.zerobase.CafeBom.user.domain.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
