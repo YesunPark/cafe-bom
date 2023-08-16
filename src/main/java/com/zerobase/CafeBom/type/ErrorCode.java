@@ -9,6 +9,6 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     EXAMPLE("예시입니다. 처음 추가하는 분이 삭제해주세요.", HttpStatus.BAD_REQUEST);
 
-    private final String description;
+    private final String message;
     private final HttpStatus httpStatus;
 }
