@@ -2,9 +2,9 @@ package com.zerobase.CafeBom.type;
 
 public enum OrderStatus {
 
-  WAITING,
   CANCELED,
+  WAITING,
   COOKING,
-  FINISH,
-  RECEIVED
+  PREPARED,
+  FINISHED
 }
