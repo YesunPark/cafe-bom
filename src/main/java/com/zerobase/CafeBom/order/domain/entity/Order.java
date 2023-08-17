@@ -38,9 +38,6 @@ public class Order extends BaseTimeEntity {
   private String payment;
 
   @NotNull
-  private String menus;
-
-  @NotNull
   @Enumerated(EnumType.STRING)
   private OrderStatus status;
 
