@@ -1,13 +1,19 @@
 package com.zerobase.CafeBom.product.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
+import com.zerobase.CafeBom.productCategory.domain.entity.ProductCategory;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
@@ -20,8 +26,8 @@ public class Product extends BaseTimeEntity {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category categoryId;
+    @JoinColumn(name = "product_category_id")
+    private ProductCategory productCategoryId;
 
     @NotNull
     @Column(unique = true)
@@ -31,15 +37,12 @@ public class Product extends BaseTimeEntity {
     private String description;
 
     @NotNull
-    private int price;
+    private Integer price;
 
     @NotNull
-    private boolean isSoldOut;
-
+    private Boolean isSoldOut;
 
     @NotNull
-    private byte[] picture;
-
-
+    private Byte[] picture;
 
 }
