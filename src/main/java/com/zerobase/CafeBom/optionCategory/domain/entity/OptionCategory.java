@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.option.domain.entity;
+package com.zerobase.CafeBom.optionCategory.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
 import lombok.*;
