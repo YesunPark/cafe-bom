@@ -1,12 +1,21 @@
 package com.zerobase.CafeBom.productOptionCategory.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.menu.domain.entity.Menu;
 import com.zerobase.CafeBom.optionCategory.domain.entity.OptionCategory;
-import lombok.*;
-
-import javax.persistence.*;
+import com.zerobase.CafeBom.product.domain.entity.Product;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

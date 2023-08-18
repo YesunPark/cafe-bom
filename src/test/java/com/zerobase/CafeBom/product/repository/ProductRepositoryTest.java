@@ -1,9 +1,9 @@
-package com.zerobase.CafeBom.menu.repository;
+package com.zerobase.CafeBom.product.repository;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-class MenuRepositoryTest {
+class ProductRepositoryTest {
 
 
 }
