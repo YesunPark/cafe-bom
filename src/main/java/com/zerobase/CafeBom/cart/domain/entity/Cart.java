@@ -31,5 +31,5 @@ public class Cart extends BaseTimeEntity {
     private Integer count;
 
     @NotNull
-    private boolean isOrdered;
+    private Boolean isOrdered;
 }
