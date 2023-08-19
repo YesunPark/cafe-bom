@@ -5,32 +5,27 @@ import com.zerobase.CafeBom.user.domain.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity(name = "cart")
+@Entity
 public class Cart extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Integer> options = new ArrayList<>();
+    private int count;
 
-    @NotNull
-    private Integer count;
+    private boolean is_Ordered;
 }
