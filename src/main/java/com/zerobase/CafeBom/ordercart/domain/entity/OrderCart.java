@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.orderCart.domain.entity;
+package com.zerobase.CafeBom.ordercart.domain.entity;
 
 import com.zerobase.CafeBom.cart.Cart;
 import com.zerobase.CafeBom.common.BaseTimeEntity;
