@@ -1,0 +1,4 @@
+[submodule "submodule"]
+	path = submodule
+	url = https://github.com/YesunPark/cafe-bom-submodule.git
+	branch = main
