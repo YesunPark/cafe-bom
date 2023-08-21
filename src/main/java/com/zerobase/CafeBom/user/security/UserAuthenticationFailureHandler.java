@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.config;
+package com.zerobase.cafebom.user.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;

@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.user.controller;
+package com.zerobase.cafebom.user.controller;
 
-import com.zerobase.CafeBom.config.TokenProvider;
+import com.zerobase.cafebom.user.security.TokenProvider;
 import com.zerobase.CafeBom.user.controller.dto.SigninForm;
 import com.zerobase.CafeBom.user.controller.dto.SignupForm;
 import com.zerobase.CafeBom.user.service.AuthService;
@@ -22,7 +22,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final TokenProvider tokenProvider;
-
 
     // yesun-23.08.21
     @ApiOperation(value = "사용자 회원가입", notes = "이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")

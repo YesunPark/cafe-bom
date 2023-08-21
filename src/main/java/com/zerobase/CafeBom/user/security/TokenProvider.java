@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.config;
+package com.zerobase.cafebom.user.security;
 
 
 import com.zerobase.CafeBom.type.Role;
