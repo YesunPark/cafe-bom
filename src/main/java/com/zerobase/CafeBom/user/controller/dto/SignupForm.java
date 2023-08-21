@@ -1,9 +1,5 @@
 package com.zerobase.CafeBom.user.controller.dto;
 
-import com.zerobase.CafeBom.type.Role;
-import com.zerobase.CafeBom.user.domain.entity.Member;
-import com.zerobase.CafeBom.user.service.dto.SignupDto;
-import javax.crypto.Mac;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;

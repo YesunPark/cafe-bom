@@ -1,6 +1,7 @@
 package com.zerobase.CafeBom.config;
 
 
+import com.zerobase.CafeBom.type.Role;
 import com.zerobase.CafeBom.user.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -8,7 +9,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,15 +24,13 @@ public class TokenProvider {
 
     private final AuthService authService;
 
-//    @Value("${spring.jwt.secret}")
-    private String secretKey="sss";
+    //    @Value("${spring.jwt.secret}")
+    private String secretKey = "ssssdfsdsfsdfsfdsdfsdfsdsdfsdfsfd";
 
-    /**
-     * 토큰 생성(발급)_23.07.21
-     */
-    public String generateToken(Long userId, String phone, String role) {
+    // 토큰 생성(발급)-yesun-23.08.21
+    public String generateToken(Long userId, String email, Role role) {
         Claims claims = Jwts.claims() // 사용자의 정보를 저장하기 위한 claim
-            .setSubject(phone)
+            .setSubject(email)
             .setId(userId + "");
         claims.put(KEY_ROLE, role);
 
@@ -47,32 +45,24 @@ public class TokenProvider {
             .compact();
     }
 
-    /**
-     * jwt 에서 인증정보 추출_23.07.31
-     */
+    // jwt 에서 인증정보 추출-yesun-23.08.21
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = authService.loadUserByUsername(getPhone(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
     }
 
-    /**
-     * 토큰에서 사용자 휴대전화번호 추출_23.07.16
-     */
+    // 토큰에서 사용자 휴대전화번호 추출-yesun-23.08.21
     public String getPhone(String token) {
         return parseClaims(token).getSubject();
     }
 
-    /**
-     * 토큰에서 사용자 id 추출_23.08.01
-     */
+    // 토큰에서 사용자 id 추출-yesun-23.08.21
     public Long getId(String token) {
         return Long.parseLong(parseClaims(token).getId());
     }
 
-    /**
-     * 토큰 유효성검사_23.07.16
-     */
+    // 토큰 유효성검사-yesun-23.08.21
     public boolean validateToken(String token) {
         if (!StringUtils.hasText(token)) {
             return false;
@@ -82,9 +72,7 @@ public class TokenProvider {
         return !claims.getExpiration().before(new Date());
     }
 
-    /**
-     * 토큰에서 클레임 정보 추출_23.07.16
-     */
+    // 토큰에서 클레임 정보 추출-yesun-23.08.21
     private Claims parseClaims(String token) {
         try {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();

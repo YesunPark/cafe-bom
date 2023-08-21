@@ -37,14 +37,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     private String password;
 
-    // 우리 서비스에 회원가입 되어있는 회원인지 확인할 수 있는 컬럼
-//    private String kakaoId;
-
     @NotNull
     @Column(unique = true)
     private String nickname;
 
-    @Column(unique = true)
     private String phone;
 
     @Column(unique = true)
@@ -54,9 +50,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static Member from(SignupDto signupDto) {
+
+    public static Member from(SignupDto signupDto, String encoredPassword) {
         return Member.builder()
-            .password(signupDto.getPassword())
+            .password(encoredPassword)
             .nickname(signupDto.getNickname())
             .phone(signupDto.getPhone())
             .email(signupDto.getEmail())
@@ -64,7 +61,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
             .build();
     }
 
-    public Member(String kakaoId, String password, List<GrantedAuthority> grantedAuthorities) {
+    public Member(String toString, String password, List<GrantedAuthority> grantedAuthorities) {
         super();
     }
 

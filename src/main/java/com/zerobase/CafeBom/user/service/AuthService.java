@@ -1,21 +1,26 @@
 package com.zerobase.CafeBom.user.service;
 
+import static com.zerobase.CafeBom.type.ErrorCode.EMAIL_ALREADY_EXISTS;
+import static com.zerobase.CafeBom.type.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.CafeBom.type.ErrorCode.NICKNAME_ALREADY_EXISTS;
+import static com.zerobase.CafeBom.type.ErrorCode.PASSWORD_NOT_MATCH;
+
 import com.zerobase.CafeBom.exception.CustomException;
-import com.zerobase.CafeBom.type.ErrorCode;
 import com.zerobase.CafeBom.type.Role;
 import com.zerobase.CafeBom.user.domain.entity.Member;
 import com.zerobase.CafeBom.user.repository.MemberRepository;
+import com.zerobase.CafeBom.user.service.dto.SigninDto;
 import com.zerobase.CafeBom.user.service.dto.SignupDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -23,22 +28,41 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
 
+    private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
-    // 회원가입-yesun-23.08.19
+
+    // 사용자 회원가입-yesun-23.08.21
     public void signup(SignupDto signupDto) {
-        // 중복 회원가입 예외
-        try {
-            memberRepository.save(Member.from(signupDto));
-        } catch (DataIntegrityViolationException e) {
-            throw new CustomException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        if (memberRepository.findByNickname(signupDto.getNickname()).isPresent()) {
+            throw new CustomException(NICKNAME_ALREADY_EXISTS);
         }
+        if (memberRepository.findByEmail(signupDto.getEmail()).isPresent()) {
+            throw new CustomException(EMAIL_ALREADY_EXISTS);
+        }
+        memberRepository.save(
+            Member.from(signupDto, passwordEncoder.encode(signupDto.getPassword())));
+    }
+
+    // 공통 로그인-yesun-23.08.21
+    public SigninDto.Response signin(SigninDto.Request signinDto) {
+        Member member = memberRepository.findByEmail(signinDto.getEmail())
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
+
+        if (!passwordEncoder.matches(signinDto.getPassword(), member.getPassword())) {
+            throw new CustomException(PASSWORD_NOT_MATCH);
+        }
+        return SigninDto.Response.builder()
+            .memberId(member.getId())
+            .email(member.getEmail())
+            .role(member.getRole())
+            .build();
     }
 
     @Override
-    public UserDetails loadUserByUsername(String kakaoId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByKakaoId(kakaoId).orElseThrow(
-            () -> new CustomException(ErrorCode.USER_NOT_EXISTS)
+    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
+        Member member = memberRepository.findByNickname(nickname).orElseThrow(
+            () -> new CustomException(MEMBER_NOT_EXISTS)
         );
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
