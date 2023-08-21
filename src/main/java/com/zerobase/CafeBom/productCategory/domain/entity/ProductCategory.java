@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.productCategory.domain.entity;
+package com.zerobase.cafebom.productCategory.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
+import com.zerobase.cafebom.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.Entity;

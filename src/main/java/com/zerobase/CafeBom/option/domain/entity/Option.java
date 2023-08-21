@@ -1,7 +1,7 @@
-package com.zerobase.CafeBom.option.domain.entity;
+package com.zerobase.cafebom.option.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.optionCategory.domain.entity.OptionCategory;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.optionCategory.domain.entity.OptionCategory;
 import lombok.*;
 
 import javax.persistence.*;

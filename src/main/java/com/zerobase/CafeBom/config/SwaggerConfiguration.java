@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.config;
+package com.zerobase.cafebom.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
             .select()
-            .apis(RequestHandlerSelectors.basePackage("com.zerobase.CafeBom"))
+            .apis(RequestHandlerSelectors.basePackage("com.zerobase.cafebom"))
             .paths(PathSelectors.any())
             .build()
             .apiInfo(apiInfo())

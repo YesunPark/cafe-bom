@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.user.repository;
+package com.zerobase.cafebom.user.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

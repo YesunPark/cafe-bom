@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.exception;
+package com.zerobase.cafebom.exception;
 
-import com.zerobase.CafeBom.type.ErrorCode;
+import com.zerobase.cafebom.type.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

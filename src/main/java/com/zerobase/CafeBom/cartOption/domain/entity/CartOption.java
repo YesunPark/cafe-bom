@@ -1,7 +1,7 @@
-package com.zerobase.CafeBom.cartOption.domain.entity;
+package com.zerobase.cafebom.cartOption.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.option.domain.entity.Option;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.option.domain.entity.Option;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

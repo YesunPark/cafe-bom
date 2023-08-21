@@ -1,7 +1,7 @@
-package com.zerobase.CafeBom.user.service.dto;
+package com.zerobase.cafebom.user.service.dto;
 
-import com.zerobase.CafeBom.type.Role;
-import com.zerobase.CafeBom.user.controller.dto.SigninForm;
+import com.zerobase.cafebom.type.Role;
+import com.zerobase.cafebom.user.controller.dto.SigninForm;
 import lombok.Builder;
 import lombok.Getter;
 

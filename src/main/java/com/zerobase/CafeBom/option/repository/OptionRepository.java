@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.option.repository;
+package com.zerobase.cafebom.option.repository;
 
-import com.zerobase.CafeBom.option.domain.entity.Option;
+import com.zerobase.cafebom.option.domain.entity.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.zerobase.CafeBom.product.domain.entity;
+package com.zerobase.cafebom.product.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.productCategory.domain.entity.ProductCategory;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.productCategory.domain.entity.ProductCategory;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

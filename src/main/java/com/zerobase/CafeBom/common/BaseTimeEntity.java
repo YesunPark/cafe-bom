@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.common;
+package com.zerobase.cafebom.common;
 
 import java.time.LocalDateTime;
 import javax.persistence.EntityListeners;

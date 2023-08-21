@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.type;
+package com.zerobase.cafebom.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

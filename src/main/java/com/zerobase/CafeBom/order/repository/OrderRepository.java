@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.order.repository;
+package com.zerobase.cafebom.order.repository;
 
-import com.zerobase.CafeBom.order.domain.entity.Order;
+import com.zerobase.cafebom.order.domain.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

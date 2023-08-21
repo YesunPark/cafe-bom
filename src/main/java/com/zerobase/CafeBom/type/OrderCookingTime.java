@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.type;
+package com.zerobase.cafebom.type;
 
 public enum OrderCookingTime {
 

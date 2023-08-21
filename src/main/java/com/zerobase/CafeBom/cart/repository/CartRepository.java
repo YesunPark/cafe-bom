@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.cart.repository;
+package com.zerobase.cafebom.cart.repository;
 
-import com.zerobase.CafeBom.cart.domain.entity.Cart;
+import com.zerobase.cafebom.cart.domain.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

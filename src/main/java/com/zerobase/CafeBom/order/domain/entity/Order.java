@@ -1,9 +1,9 @@
-package com.zerobase.CafeBom.order.domain.entity;
+package com.zerobase.cafebom.order.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.type.OrderCookingTime;
-import com.zerobase.CafeBom.type.OrderStatus;
-import com.zerobase.CafeBom.user.domain.entity.Member;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.type.OrderCookingTime;
+import com.zerobase.cafebom.type.OrderStatus;
+import com.zerobase.cafebom.user.domain.entity.Member;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -47,6 +47,4 @@ public class Order extends BaseTimeEntity {
 
   @NotNull
   private boolean isCanceled;
-
-
 }

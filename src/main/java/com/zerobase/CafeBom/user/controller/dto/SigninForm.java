@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.user.controller.dto;
+package com.zerobase.cafebom.user.controller.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

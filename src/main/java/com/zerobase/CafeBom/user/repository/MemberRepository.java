@@ -1,6 +1,6 @@
-package com.zerobase.CafeBom.user.repository;
+package com.zerobase.cafebom.user.repository;
 
-import com.zerobase.CafeBom.user.domain.entity.Member;
+import com.zerobase.cafebom.user.domain.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,16 +1,16 @@
-package com.zerobase.CafeBom.user.service;
+package com.zerobase.cafebom.user.service;
 
-import static com.zerobase.CafeBom.type.ErrorCode.EMAIL_ALREADY_EXISTS;
-import static com.zerobase.CafeBom.type.ErrorCode.MEMBER_NOT_EXISTS;
-import static com.zerobase.CafeBom.type.ErrorCode.NICKNAME_ALREADY_EXISTS;
-import static com.zerobase.CafeBom.type.ErrorCode.PASSWORD_NOT_MATCH;
+import static com.zerobase.cafebom.type.ErrorCode.EMAIL_ALREADY_EXISTS;
+import static com.zerobase.cafebom.type.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.type.ErrorCode.NICKNAME_ALREADY_EXISTS;
+import static com.zerobase.cafebom.type.ErrorCode.PASSWORD_NOT_MATCH;
 
-import com.zerobase.CafeBom.exception.CustomException;
-import com.zerobase.CafeBom.type.Role;
-import com.zerobase.CafeBom.user.domain.entity.Member;
-import com.zerobase.CafeBom.user.repository.MemberRepository;
-import com.zerobase.CafeBom.user.service.dto.SigninDto;
-import com.zerobase.CafeBom.user.service.dto.SignupDto;
+import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.type.Role;
+import com.zerobase.cafebom.user.domain.entity.Member;
+import com.zerobase.cafebom.user.repository.MemberRepository;
+import com.zerobase.cafebom.user.service.dto.SigninDto;
+import com.zerobase.cafebom.user.service.dto.SignupDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
