@@ -7,6 +7,7 @@ import com.zerobase.CafeBom.user.service.AuthService;
 import com.zerobase.CafeBom.user.service.dto.SigninDto.Request;
 import com.zerobase.CafeBom.user.service.dto.SigninDto.Response;
 import com.zerobase.CafeBom.user.service.dto.SignupDto;
+import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,16 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
 
-    // 사용자 회원가입-yesun-23.08.21
+    // yesun-23.08.21
+    @ApiOperation(value = "사용자 회원가입", notes = "이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid SignupForm signupForm) {
         authService.signup(SignupDto.from(signupForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // 공통 로그인-yesun-23.08.21
+    // yesun-23.08.21
+    @ApiOperation(value = "공통 로그인", notes = "회원가입 시 입력한 이메일, 비밀번호로 로그인합니다.")
     @PostMapping("/signin")
     public ResponseEntity<SigninForm.Response> signin(
         @RequestBody @Valid SigninForm.Request signinForm

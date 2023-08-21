@@ -14,7 +14,7 @@ public class SigninForm {
         @Email(message = "이메일 형식을 확인해주세요.")
         private String email;
 
-        @NotBlank(message = "비밀번호는 필수로 입력해야합니다.")
+        @NotBlank(message = "비밀번호는 필수로 입력해야 합니다.")
         private String password;
     }
 
