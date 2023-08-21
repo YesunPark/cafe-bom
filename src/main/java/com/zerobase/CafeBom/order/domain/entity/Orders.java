@@ -1,8 +1,8 @@
 package com.zerobase.CafeBom.order.domain.entity;
 
 import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.type.OrderCookingTime;
-import com.zerobase.CafeBom.type.OrderStatus;
+import com.zerobase.CafeBom.type.OrdersCookingTime;
+import com.zerobase.CafeBom.type.OrdersStatus;
 import com.zerobase.CafeBom.user.domain.entity.Member;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,8 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Table(name = "ORDERS")
-public class Order extends BaseTimeEntity {
+public class Orders extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,10 +39,10 @@ public class Order extends BaseTimeEntity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private OrderStatus status;
+  private OrdersStatus status;
 
   @Enumerated(EnumType.STRING)
-  private OrderCookingTime cookingTime;
+  private OrdersCookingTime cookingTime;
 
   @NotNull
   private boolean isCanceled;

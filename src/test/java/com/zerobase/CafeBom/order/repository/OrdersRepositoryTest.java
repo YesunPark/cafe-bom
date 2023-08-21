@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-public class OrderRepositoryTest {
+public class OrdersRepositoryTest {
 
   @Autowired
-  private OrderRepository orderRepository;
+  private OrdersRepository ordersRepository;
 
 }

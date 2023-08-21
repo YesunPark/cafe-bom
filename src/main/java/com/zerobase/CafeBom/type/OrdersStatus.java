@@ -1,6 +1,6 @@
 package com.zerobase.CafeBom.type;
 
-public enum OrderStatus {
+public enum OrdersStatus {
 
   CANCELED,
   WAITING,
