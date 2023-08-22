@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.member.controller;
 
-import com.zerobase.cafebom.member.controller.dto.SigninForm;
-import com.zerobase.cafebom.member.controller.dto.SignupForm;
+import com.zerobase.cafebom.member.controller.form.SigninForm;
+import com.zerobase.cafebom.member.controller.form.SignupForm;
 import com.zerobase.cafebom.member.security.TokenProvider;
 import com.zerobase.cafebom.member.service.AuthService;
 import com.zerobase.cafebom.member.service.dto.SigninDto.Request;
