@@ -1,9 +1,9 @@
 package com.zerobase.cafebom.user.service;
 
-import static com.zerobase.cafebom.type.ErrorCode.EMAIL_ALREADY_EXISTS;
-import static com.zerobase.cafebom.type.ErrorCode.MEMBER_NOT_EXISTS;
-import static com.zerobase.cafebom.type.ErrorCode.NICKNAME_ALREADY_EXISTS;
-import static com.zerobase.cafebom.type.ErrorCode.PASSWORD_NOT_MATCH;
+import static com.zerobase.cafebom.exception.ErrorCode.EMAIL_ALREADY_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.NICKNAME_ALREADY_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PASSWORD_NOT_MATCH;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.type.Role;
