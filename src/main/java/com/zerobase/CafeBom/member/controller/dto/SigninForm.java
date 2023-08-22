@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.user.controller.dto;
+package com.zerobase.cafebom.member.controller.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Email;

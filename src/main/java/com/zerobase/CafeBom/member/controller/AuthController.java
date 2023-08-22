@@ -1,12 +1,12 @@
-package com.zerobase.cafebom.user.controller;
+package com.zerobase.cafebom.member.controller;
 
-import com.zerobase.cafebom.user.controller.dto.SigninForm;
-import com.zerobase.cafebom.user.controller.dto.SignupForm;
-import com.zerobase.cafebom.user.security.TokenProvider;
-import com.zerobase.cafebom.user.service.AuthService;
-import com.zerobase.cafebom.user.service.dto.SigninDto.Request;
-import com.zerobase.cafebom.user.service.dto.SigninDto.Response;
-import com.zerobase.cafebom.user.service.dto.SignupDto;
+import com.zerobase.cafebom.member.controller.dto.SigninForm;
+import com.zerobase.cafebom.member.controller.dto.SignupForm;
+import com.zerobase.cafebom.member.security.TokenProvider;
+import com.zerobase.cafebom.member.service.AuthService;
+import com.zerobase.cafebom.member.service.dto.SigninDto.Request;
+import com.zerobase.cafebom.member.service.dto.SigninDto.Response;
+import com.zerobase.cafebom.member.service.dto.SignupDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;

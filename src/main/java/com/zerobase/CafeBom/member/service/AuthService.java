@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.user.service;
+package com.zerobase.cafebom.member.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.EMAIL_ALREADY_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
@@ -6,11 +6,11 @@ import static com.zerobase.cafebom.exception.ErrorCode.NICKNAME_ALREADY_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PASSWORD_NOT_MATCH;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.user.security.Role;
-import com.zerobase.cafebom.user.domain.entity.Member;
-import com.zerobase.cafebom.user.repository.MemberRepository;
-import com.zerobase.cafebom.user.service.dto.SigninDto;
-import com.zerobase.cafebom.user.service.dto.SignupDto;
+import com.zerobase.cafebom.member.security.Role;
+import com.zerobase.cafebom.member.domain.entity.Member;
+import com.zerobase.cafebom.member.repository.MemberRepository;
+import com.zerobase.cafebom.member.service.dto.SigninDto;
+import com.zerobase.cafebom.member.service.dto.SignupDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
