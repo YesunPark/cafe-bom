@@ -25,6 +25,7 @@ public class SignupForm {
     private String nickname;
 
     @Schema(description = "휴대전화번호", example = "01012345678")
+    @Size(min = 11, max = 13, message = "전화번호는 11~13 자리로 입력해야 합니다.")
     @NotBlank(message = "전화번호는 필수로 입력해야 합니다.")
     private String phone;
 

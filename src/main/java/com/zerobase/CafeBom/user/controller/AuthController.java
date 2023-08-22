@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     // yesun-23.08.22
-    @ApiOperation(value = "공통 로그인", notes = "사용자, 관리자 공통으로 이메일, 비밀번호로 로그인합니다.")
+    @ApiOperation(value = "사용자, 관리자 공통 로그인", notes = "사용자, 관리자 공통으로 이메일, 비밀번호로 로그인합니다.")
     @PostMapping("/signin")
     public ResponseEntity<SigninForm.Response> signin(
         @RequestBody @Valid SigninForm.Request signinForm
