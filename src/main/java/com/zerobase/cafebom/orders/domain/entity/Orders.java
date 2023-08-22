@@ -1,9 +1,9 @@
-package com.zerobase.CafeBom.order.domain.entity;
+package com.zerobase.cafebom.orders.domain.entity;
 
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.type.OrdersCookingTime;
-import com.zerobase.CafeBom.type.OrdersStatus;
-import com.zerobase.CafeBom.user.domain.entity.Member;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
+import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
+import com.zerobase.cafebom.user.domain.entity.Member;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
