@@ -57,8 +57,8 @@ class AuthControllerTest {
         // given
         SignupForm form = SignupForm.builder()
             .phone("01011112222")
-            .nickname("nicknameTest")
-            .password("tttteeee")
+            .nickname("테스트닉넴")
+            .password("test12345@")
             .build();
 
         // when
@@ -75,7 +75,7 @@ class AuthControllerTest {
     void failSignupEmailInvalid() throws Exception {
         // given
         SignupForm form = SignupForm.builder()
-            .email("test")
+            .email("test@")
             .phone("01011112222")
             .nickname("테스트닉넴")
             .password("test12345@")
@@ -100,7 +100,7 @@ class AuthControllerTest {
             .email("test@test.com")
             .phone("01011112222")
             .nickname("테스트닉넴")
-            .password("@")
+            .password("test12345@!!!!!!!!!")
             .build();
 
         // when
