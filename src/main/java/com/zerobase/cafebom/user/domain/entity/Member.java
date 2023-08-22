@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.user.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.type.Role;
+import com.zerobase.cafebom.user.security.Role;
 import com.zerobase.cafebom.user.service.dto.SignupDto;
 import java.util.Collection;
 import java.util.List;
