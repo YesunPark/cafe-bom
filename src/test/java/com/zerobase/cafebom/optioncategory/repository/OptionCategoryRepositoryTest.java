@@ -7,5 +7,5 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 class OptionCategoryRepositoryTest {
 
     @Autowired
-    private com.zerobase.cafebom.optioncategory.repository.OptionCategoryRepository optionCategoryRepository;
+    private OptionCategoryRepository optionCategoryRepository;
 }
