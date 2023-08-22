@@ -1,4 +1,4 @@
-package com.zerobase.CafeBom.user.service.dto;
+package com.zerobase.cafebom.user.service.dto;
 
 import lombok.Builder;
 import lombok.Getter;
