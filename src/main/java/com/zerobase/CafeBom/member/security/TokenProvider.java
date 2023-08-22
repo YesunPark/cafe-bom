@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,8 @@ public class TokenProvider {
 
     private final AuthService authService;
 
-    //    @Value("${spring.jwt.secret}")
-    private String secretKey = "ssssdfsdsfsdfsfdsdfsdfsdsdfsdfsfd";
+    @Value("${spring.jwt.secret}")
+    private String secretKey;
 
     // 토큰 생성(발급)-yesun-23.08.21
     public String generateToken(Long userId, String email, Role role) {
