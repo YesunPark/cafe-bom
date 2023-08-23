@@ -2,18 +2,13 @@ package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
@@ -27,7 +22,7 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategoryId;
+    private ProductCategory productCategory;
 
     @NotNull
     @Column(unique = true)
