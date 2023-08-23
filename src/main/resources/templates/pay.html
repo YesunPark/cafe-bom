@@ -10,25 +10,27 @@
 <!--iamport.payment.js-->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <script>
-    var amount = Number(${amount});
 
-    $(document).ready(function(){
+    $(document).ready(
+        function(){
             $("#iamportPayment").click(function(){
-            payment();
-        });
-    })
+              payment();
+            });
+        }
+    )
 
     function payment(data){
+        var amount = [[${totalAmount}]];
         IMP.init('imp52321346');
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME",
             pay_method: "card",
-            merchant_uid: 'merchant_' + new Date().getTime(),
+            merchant_uid: "merchant_bom_" + new Date().getTime(),
             name: "총 주문 금액",
             amount: amount,
             buyer_email: "lynn08082@gmail.com",
             buyer_name: "카페 봄",
-            buyer_ter: "01011112222"
+            buyer_ter: "01012341234"
         }, function (rsp) {
             if(rsp.success){
               alert("감사합니다. 테스트 결제가 완료되었습니다.");
@@ -38,14 +40,13 @@
         });
     }
 
+
 </script>
 <DIV>
   <H2>카카오페이 결제하기</H2>
   <div>테스트 결제입니다.</div>
   </br>
   <button id="iamportPayment">결제 테스트</button>
-  <p th:text="'안녕하세요. ' + ${payName}" ></p>
-  <p th:text="'안녕하세요. ' + ${amount}" ></p>
 </DIV>
 </body>
 </html>

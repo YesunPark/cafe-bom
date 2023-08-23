@@ -9,8 +9,7 @@ public class PayController {
 
     @RequestMapping("/pay")
     public String pay(Model model) {
-        model.addAttribute("payName", "kakaoQR!!!!!!!");
-        model.addAttribute("amount", 1000);
+        model.addAttribute("totalAmount", 20000);
         return "pay";
     }
 }
