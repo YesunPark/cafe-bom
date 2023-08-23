@@ -1,8 +1,11 @@
 package com.zerobase.cafebom.product.service;
 
+import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
+import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +19,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ProductCategoryRepository productCategoryRepository;
+
     @Transactional
     public List<ProductDto> findProductList(Integer productCategoryId) {
+
+        if (!productCategoryRepository.existsById(productCategoryId)) {
+            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_FOUND);
+        }
+
         List<Product> productList = productRepository.findAllByProductCategoryIdAndIsSoldOutFalse(productCategoryId);
         List<ProductDto> productDtoList = new ArrayList<>();
 

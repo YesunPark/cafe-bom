@@ -5,6 +5,8 @@ import com.zerobase.cafebom.product.service.ProductService;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Tag(name = "product-controlelr", description = "상품 관련 API")
+@Tag(name = "product-controller", description = "상품 관련 API")
 @RestController
 @RequiredArgsConstructor
 public class ProductController {

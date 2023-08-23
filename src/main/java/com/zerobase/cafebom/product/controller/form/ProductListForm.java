@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
 
 public class ProductListForm {
 
     @AllArgsConstructor
     @NotNull
     @Builder
+    @Getter
     public static class Response {
 
         private Integer productId;
