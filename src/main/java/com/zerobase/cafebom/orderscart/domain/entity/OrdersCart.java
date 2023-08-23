@@ -25,7 +25,7 @@ public class OrdersCart extends BaseTimeEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Orders oder;
+    private Orders orders;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
