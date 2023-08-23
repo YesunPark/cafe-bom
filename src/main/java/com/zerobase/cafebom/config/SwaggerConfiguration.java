@@ -22,7 +22,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
             .select()
-            .apis(RequestHandlerSelectors.basePackage("com.zerobase.CafeBom"))
+            .apis(RequestHandlerSelectors.basePackage("com.zerobase.cafebom"))
             .paths(PathSelectors.any())
             .build()
             .apiInfo(apiInfo())
