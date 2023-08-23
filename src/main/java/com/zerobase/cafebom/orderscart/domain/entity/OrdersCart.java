@@ -1,8 +1,9 @@
-package com.zerobase.CafeBom.ordercart.domain.entity;
+package com.zerobase.cafebom.orderscart.domain.entity;
 
-import com.zerobase.CafeBom.cart.Cart;
-import com.zerobase.CafeBom.common.BaseTimeEntity;
-import com.zerobase.CafeBom.order.domain.Order;
+
+import com.zerobase.cafebom.cart.domain.entity.Cart;
+import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.orders.domain.entity.Orders;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,15 +17,15 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCart extends BaseTimeEntity {
+public class OrdersCart extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private Order oder;
+    private Orders oder;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
