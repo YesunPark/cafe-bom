@@ -45,15 +45,15 @@ public class TokenProvider {
             .compact();
     }
 
-    // jwt 에서 인증정보 추출-yesun-23.08.21
+    // jwt 에서 인증정보 추출-yesun-23.08.25
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = authService.loadUserByUsername(getPhone(token));
+        UserDetails userDetails = authService.loadUserByUsername(getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
     }
 
-    // 토큰에서 사용자 휴대전화번호 추출-yesun-23.08.21
-    public String getPhone(String token) {
+    // 토큰에서 사용자 이메일 추출-yesun-23.08.25
+    public String getEmail(String token) {
         return parseClaims(token).getSubject();
     }
 
