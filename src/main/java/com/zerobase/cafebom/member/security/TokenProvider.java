@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.member.security;
 
-
 import com.zerobase.cafebom.member.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -57,9 +56,9 @@ public class TokenProvider {
         return parseClaims(token).getSubject();
     }
 
-    // 토큰에서 사용자 id 추출-yesun-23.08.21
+    // 토큰에서 사용자 id 추출-yesun-23.08.25
     public Long getId(String token) {
-        return Long.parseLong(parseClaims(token).getId());
+        return Long.parseLong(parseClaims(removeBearerFromToken(token)).getId());
     }
 
     // 토큰 유효성검사-yesun-23.08.21
@@ -79,5 +78,11 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    // 토큰 인증 타입 제거-yesun-23.08.25
+    private String removeBearerFromToken(String token) {
+        String TOKEN_PREFIX = "Bearer ";
+        return token.substring(TOKEN_PREFIX.length());
     }
 }
