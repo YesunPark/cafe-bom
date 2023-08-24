@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.orders.domain.type;
 
-public enum OrdersPayment {
+public enum Payment {
 
   CARD,
   ACCOUNT_TRANSFER,

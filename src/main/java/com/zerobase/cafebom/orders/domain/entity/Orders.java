@@ -3,7 +3,7 @@ package com.zerobase.cafebom.orders.domain.entity;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.OrdersPayment;
+import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -38,7 +38,7 @@ public class Orders extends BaseTimeEntity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private OrdersPayment payment;
+  private Payment payment;
 
   @NotNull
   @Enumerated(EnumType.STRING)
