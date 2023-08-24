@@ -17,13 +17,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @Tag(name = "pay-controller", description = "결제 API")
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/auth/pay")
 public class PayController {
 
     private final PayService payService;
 
     // 카카오 QR 테스트 결제-yesun-23.08.24
-    @PostMapping("/pay/kakao")
+    @PostMapping("/kakao")
     public @ApiIgnore String payKakaoQR(Model model) {
         payService.payKakaoQR(model);
         return "pay";
@@ -32,7 +32,7 @@ public class PayController {
     // yesun-23.08.24
     @ApiOperation(value = "결제 시 주문 생성",
         notes = "주문한 상품, 상품의 옵션, 결제 수단 등을 받아 주문 테이블에 저장합니다.")
-    @PostMapping("/pay")
+    @PostMapping
     public void payOrders(
         @RequestHeader(name = "Authorization") String token,
         @RequestBody PayOrdersForm payOrdersForm) {
