@@ -17,9 +17,9 @@ public class PayOrdersDto {
 
     private List<OrderedProductDto> products;
 
-    public static PayOrdersDto from(PayOrdersForm form, String payment) {
+    public static PayOrdersDto from(PayOrdersForm form) {
         return PayOrdersDto.builder()
-            .payment(payment)
+            .payment(form.getPayment())
             .products(
                 form.getProducts()
                     .stream().map(OrderedProductDto::from)

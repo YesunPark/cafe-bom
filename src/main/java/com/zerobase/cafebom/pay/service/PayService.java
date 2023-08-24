@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.pay.service;
 
+import com.zerobase.cafebom.pay.service.dto.PayOrdersDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,11 @@ public class PayService {
 
     // 관리자 주문 거절 시 결제 취소-yesun-23.08.24
     public void cancelPayKakaoQR() {
+
+    }
+
+    // 상품 결제 및 주문-yesun-23.08.24
+    public void payOrders(String token, PayOrdersDto payOrdersDto) {
 
     }
 }
