@@ -13,4 +13,9 @@ public class PayService {
     public void payKakaoQR(Model model) {
         model.addAttribute("totalAmount", 20000);
     }
+
+    // 관리자 주문 거절 시 결제 취소-yesun-23.08.24
+    public void cancelPayKakaoQR() {
+
+    }
 }
