@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PayOrdersForm {
+public class AddOrdersForm {
 
     @Schema(description = "결제 수단", example = "KAKAO_PAY")
     private String payment; // enum 인데 임시로 스트링

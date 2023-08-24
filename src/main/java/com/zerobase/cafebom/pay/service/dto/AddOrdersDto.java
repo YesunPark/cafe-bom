@@ -1,24 +1,22 @@
 package com.zerobase.cafebom.pay.service.dto;
 
-import com.zerobase.cafebom.pay.controller.form.PayOrdersForm;
-import com.zerobase.cafebom.pay.controller.form.PayOrdersForm.OrderedProductForm;
+import com.zerobase.cafebom.pay.controller.form.AddOrdersForm;
+import com.zerobase.cafebom.pay.controller.form.AddOrdersForm.OrderedProductForm;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
-//@AllArgsConstructor
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-public class PayOrdersDto {
+public class AddOrdersDto {
 
     private String payment; // enum 인데 임시로 스트링
 
     private List<OrderedProductDto> products;
 
-    public static PayOrdersDto from(PayOrdersForm form) {
-        return PayOrdersDto.builder()
+    public static AddOrdersDto from(AddOrdersForm form) {
+        return AddOrdersDto.builder()
             .payment(form.getPayment())
             .products(
                 form.getProducts()

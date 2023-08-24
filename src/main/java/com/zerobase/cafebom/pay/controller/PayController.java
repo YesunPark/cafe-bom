@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.pay.controller;
 
-import com.zerobase.cafebom.pay.controller.form.PayOrdersForm;
+import com.zerobase.cafebom.pay.controller.form.AddOrdersForm;
 import com.zerobase.cafebom.pay.service.PayService;
-import com.zerobase.cafebom.pay.service.dto.PayOrdersDto;
+import com.zerobase.cafebom.pay.service.dto.AddOrdersDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +30,12 @@ public class PayController {
     }
 
     // yesun-23.08.24
-    @ApiOperation(value = "결제 시 주문 생성",
+    @ApiOperation(value = "결제 시 주문 저장",
         notes = "주문한 상품, 상품의 옵션, 결제 수단 등을 받아 주문 테이블에 저장합니다.")
     @PostMapping
-    public void payOrders(
+    public void ordersAdd(
         @RequestHeader(name = "Authorization") String token,
-        @RequestBody PayOrdersForm payOrdersForm) {
-        payService.payOrders(token,PayOrdersDto.from(payOrdersForm));
+        @RequestBody AddOrdersForm addOrdersForm) {
+        payService.addOrders(token, AddOrdersDto.from(addOrdersForm));
     }
 }
