@@ -32,12 +32,13 @@ class PayControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
+    String token = "Bearer token";
+
     // yesun-23.08.25
     @Test
     @DisplayName("주문 저장 성공 - 결제수단, 상품 id, 옵션 id")
     void successOrdersAdd() throws Exception {
         // given
-        String token = "Bearer token";
         AddOrdersForm form = AddOrdersForm.builder()
             .payment("KAKAO_PAY")
             .products(List.of(new OrderedProductForm[]{
@@ -61,7 +62,6 @@ class PayControllerTest {
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
     void failOrdersAddAuthorizationNotPresent() throws Exception {
         // given
-        String token = "Bearer token";
         AddOrdersForm form = AddOrdersForm.builder()
             .payment("KAKAO_PAY")
             .products(List.of(new OrderedProductForm[]{
@@ -74,6 +74,54 @@ class PayControllerTest {
         // when
         mockMvc.perform(post("/auth/pay")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token)
+                .content(objectMapper.writeValueAsString(form)))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
+    }
+
+    // yesun-23.08.25
+    @Test
+    @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
+    void failOrdersAddPaymentNotBlank() throws Exception {
+        // given
+        AddOrdersForm form = AddOrdersForm.builder()
+            .products(List.of(
+                new OrderedProductForm[]{
+                    OrderedProductForm.builder()
+                        .productId(1)
+                        .optionIds(List.of(new Integer[]{1, 2, 3}))
+                        .build()}))
+            .build();
+
+        // when
+        mockMvc.perform(post("/auth/pay")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token)
+                .content(objectMapper.writeValueAsString(form)))
+            .andExpect(status().isBadRequest())
+            .andDo(print());
+    }
+
+    // yesun-23.08.25
+    @Test
+    @DisplayName("주문 저장 실패 - 상품 ID 범위 이탈")
+    void failOrdersAddInvalidProductId() throws Exception {
+        // given
+        AddOrdersForm form = AddOrdersForm.builder()
+            .payment("KAKAO_PAY")
+            .products(List.of(
+                new OrderedProductForm[]{
+                    OrderedProductForm.builder()
+                        .productId(-1)
+                        .optionIds(List.of(new Integer[]{1, 2, 3}))
+                        .build()}))
+            .build();
+
+        // when
+        mockMvc.perform(post("/auth/pay")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", token)
                 .content(objectMapper.writeValueAsString(form)))
             .andExpect(status().isBadRequest())
             .andDo(print());
