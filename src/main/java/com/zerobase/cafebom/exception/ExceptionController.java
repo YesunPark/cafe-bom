@@ -31,10 +31,9 @@ public class ExceptionController {
                 .build());
     }
 
+    // 컨트롤러 @PathVariable validation 핸들러-wooyoung-23.08.24
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ExceptionResponse> methodArgumentTypeMismatchException(
-        final MethodArgumentTypeMismatchException e
-    ) {
+    public ResponseEntity<ExceptionResponse> methodArgumentTypeMismatchException() {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ExceptionResponse.builder()
@@ -46,8 +45,7 @@ public class ExceptionController {
 
     // CustiomException 핸들러-yesun-23.08.21
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ExceptionResponse> customRequestException(
-        final CustomException c) {
+    public ResponseEntity<ExceptionResponse> customRequestException(final CustomException c) {
         log.error("Api Exception => {}, {}", c.getErrorCode(), c.getErrorMessage());
         return ResponseEntity
             .status(c.getErrorStatus())

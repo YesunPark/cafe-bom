@@ -8,7 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.member.security.TokenProvider;
+import com.zerobase.cafebom.member.service.AuthService;
 import com.zerobase.cafebom.product.service.ProductService;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import java.util.ArrayList;
@@ -29,8 +30,11 @@ class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     // wooyoung-23.08.23
     @Test
