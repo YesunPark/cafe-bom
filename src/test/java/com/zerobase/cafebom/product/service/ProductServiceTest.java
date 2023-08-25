@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -8,6 +9,11 @@ import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
+=======
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
+
+>>>>>>> origin/wooyoung/product-list
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
@@ -21,7 +27,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
+=======
+>>>>>>> origin/wooyoung/product-list
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {

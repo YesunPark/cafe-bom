@@ -1,6 +1,9 @@
 package com.zerobase.cafebom.product.controller;
 
+<<<<<<< HEAD
 import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
+=======
+>>>>>>> origin/wooyoung/product-list
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -8,10 +11,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+<<<<<<< HEAD
 import com.zerobase.cafebom.member.service.AuthService;
 import com.zerobase.cafebom.product.service.ProductService;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.security.TokenProvider;
+=======
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.product.service.ProductService;
+import com.zerobase.cafebom.product.service.dto.ProductDto;
+>>>>>>> origin/wooyoung/product-list
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
