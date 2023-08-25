@@ -32,6 +32,7 @@ class PayControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
+    // yesun-23.08.25
     @Test
     @DisplayName("주문 저장 성공 - 결제수단, 상품 id, 옵션 id")
     void successOrdersAdd() throws Exception {
@@ -52,6 +53,29 @@ class PayControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
             .andExpect(status().isNoContent())
+            .andDo(print());
+    }
+
+    // yesun-23.08.25
+    @Test
+    @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
+    void failOrdersAddAuthorizationNotPresent() throws Exception {
+        // given
+        String token = "Bearer token";
+        AddOrdersForm form = AddOrdersForm.builder()
+            .payment("KAKAO_PAY")
+            .products(List.of(new OrderedProductForm[]{
+                OrderedProductForm.builder()
+                    .productId(1)
+                    .optionIds(List.of(new Integer[]{1, 2, 3}))
+                    .build()}))
+            .build();
+
+        // when
+        mockMvc.perform(post("/auth/pay")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(form)))
+            .andExpect(status().isBadRequest())
             .andDo(print());
     }
 }
