@@ -52,8 +52,7 @@ public class PayService {
 
     // 주문 생성-yesun-23.08.25
     public void addOrders(String token, AddOrdersDto addOrdersDto) {
-        Long userId = tokenProvider.getId(token.substring("Bearer ".length()));
-        // 토큰 프로바이더 수정되면 substring 생략
+        Long userId = tokenProvider.getId(token);
         Member member = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
 
