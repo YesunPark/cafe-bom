@@ -6,7 +6,7 @@ import static com.zerobase.cafebom.exception.ErrorCode.NICKNAME_ALREADY_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PASSWORD_NOT_MATCH;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.security.Role;
+import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.member.service.dto.SigninDto;

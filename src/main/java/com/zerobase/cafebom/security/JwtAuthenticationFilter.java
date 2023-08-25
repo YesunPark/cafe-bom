@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.member.security;
+package com.zerobase.cafebom.security;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
