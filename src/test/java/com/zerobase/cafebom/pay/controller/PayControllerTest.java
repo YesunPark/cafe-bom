@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.member.security.TokenProvider;
-import com.zerobase.cafebom.pay.controller.form.AddOrdersForm;
-import com.zerobase.cafebom.pay.controller.form.AddOrdersForm.OrderedProductForm;
+import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
+import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
 import com.zerobase.cafebom.pay.service.PayService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,7 @@ class PayControllerTest {
     @DisplayName("주문 저장 성공 - 결제수단, 상품 id, 옵션 id")
     void successOrdersAdd() throws Exception {
         // given
-        AddOrdersForm form = AddOrdersForm.builder()
+        OrdersAddForm form = OrdersAddForm.builder()
             .payment("KAKAO_PAY")
             .products(List.of(new OrderedProductForm[]{
                 OrderedProductForm.builder()
@@ -62,7 +62,7 @@ class PayControllerTest {
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
     void failOrdersAddAuthorizationNotPresent() throws Exception {
         // given
-        AddOrdersForm form = AddOrdersForm.builder()
+        OrdersAddForm form = OrdersAddForm.builder()
             .payment("KAKAO_PAY")
             .products(List.of(new OrderedProductForm[]{
                 OrderedProductForm.builder()
@@ -85,7 +85,7 @@ class PayControllerTest {
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {
         // given
-        AddOrdersForm form = AddOrdersForm.builder()
+        OrdersAddForm form = OrdersAddForm.builder()
             .products(List.of(
                 new OrderedProductForm[]{
                     OrderedProductForm.builder()
@@ -108,7 +108,7 @@ class PayControllerTest {
     @DisplayName("주문 저장 실패 - 상품 ID 범위 이탈")
     void failOrdersAddInvalidProductId() throws Exception {
         // given
-        AddOrdersForm form = AddOrdersForm.builder()
+        OrdersAddForm form = OrdersAddForm.builder()
             .payment("KAKAO_PAY")
             .products(List.of(
                 new OrderedProductForm[]{

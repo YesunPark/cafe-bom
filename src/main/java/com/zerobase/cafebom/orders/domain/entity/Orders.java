@@ -4,7 +4,7 @@ import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
 import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
 import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.pay.service.dto.AddOrdersDto;
+import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -48,7 +48,7 @@ public class Orders extends BaseTimeEntity {
     @NotNull
     private boolean isCanceled;
 
-    public static Orders fromAddOrdersDto(AddOrdersDto dto, Member member) {
+    public static Orders fromAddOrdersDto(OrdersAddDto dto, Member member) {
         return Orders.builder()
             .member(member)
             .payment(dto.getPayment())

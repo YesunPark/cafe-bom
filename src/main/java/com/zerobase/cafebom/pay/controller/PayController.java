@@ -1,10 +1,11 @@
 package com.zerobase.cafebom.pay.controller;
 
-import com.zerobase.cafebom.pay.controller.form.AddOrdersForm;
+import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.pay.service.PayService;
-import com.zerobase.cafebom.pay.service.dto.AddOrdersDto;
+import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +38,9 @@ public class PayController {
     @PostMapping
     public ResponseEntity<?> ordersAdd(
         @RequestHeader(name = "Authorization") String token,
-        @RequestBody AddOrdersForm addOrdersForm
+        @Valid @RequestBody OrdersAddForm ordersAddForm
     ) {
-        payService.addOrders(token, AddOrdersDto.from(addOrdersForm));
+        payService.addOrders(token, OrdersAddDto.from(ordersAddForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
