@@ -2,16 +2,10 @@ package com.zerobase.cafebom.orders.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.member.domain.entity.Member;
-<<<<<<< HEAD
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.domain.type.Payment;
-=======
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.Payment;
-import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
->>>>>>> main
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,7 +49,8 @@ public class Orders extends BaseTimeEntity {
   private OrdersCookingTime cookingTime;
 
   @NotNull
-  private boolean isCanceled;
+  @Enumerated(EnumType.STRING)
+  private OrdersReceiptStatus receiptStatus;
 
-  private LocalDateTime acceptanceTime;
+  private LocalDateTime receivedTime;
 }
