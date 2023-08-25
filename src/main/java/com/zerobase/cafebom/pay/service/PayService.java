@@ -1,13 +1,25 @@
 package com.zerobase.cafebom.pay.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.member.security.TokenProvider;
+import com.zerobase.cafebom.option.domain.entity.Option;
+import com.zerobase.cafebom.option.repository.OptionRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
+import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
+import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
+import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
 import com.zerobase.cafebom.pay.service.dto.AddOrdersDto;
+import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.product.repository.ProductRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +32,10 @@ public class PayService {
 
     private final MemberRepository memberRepository;
     private final OrdersRepository ordersRepository;
+    private final ProductRepository productRepository;
+    private final OrdersProductRepository ordersProductRepository;
+    private final OrdersProductOptionRepository ordersProductOptionRepository;
+    private final OptionRepository optionRepository;
 
 
     private final TokenProvider tokenProvider;
@@ -34,13 +50,36 @@ public class PayService {
 
     }
 
-    // 상품 결제 및 주문-yesun-23.08.25
+    // 주문 생성-yesun-23.08.25
     public void addOrders(String token, AddOrdersDto addOrdersDto) {
-        Long userId = tokenProvider.getId(token);
+        Long userId = tokenProvider.getId(token.substring("Bearer ".length()));
+        // 토큰 프로바이더 수정되면 substring 생략
         Member member = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
-        ordersRepository.save(Orders.fromAddOrdersDto(addOrdersDto, member));
-        // 레포지토리
 
+        Orders orders = ordersRepository.save(Orders.fromAddOrdersDto(addOrdersDto, member));
+
+        addOrdersDto.getProducts()
+            .forEach(product -> {
+                int productId = product.getProductId();
+                Product productById = productRepository.findById(productId)
+                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
+                OrdersProduct ordersProduct = ordersProductRepository.save(
+                    OrdersProduct.builder()
+                        .orders(orders)
+                        .product(productById)
+                        .build());
+
+                List<Integer> optionIds = product.getOptionIds();
+                optionIds.forEach(optionId -> {
+                    Option optionById = optionRepository.findById(optionId)
+                        .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                    ordersProductOptionRepository.save(OrdersProductOption.builder()
+                        .ordersProduct(ordersProduct)
+                        .option(optionById)
+                        .build());
+                });
+            });
     }
 }

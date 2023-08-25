@@ -6,6 +6,8 @@ import com.zerobase.cafebom.pay.service.dto.AddOrdersDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,13 +31,15 @@ public class PayController {
         return "pay";
     }
 
-    // yesun-23.08.24
+    // yesun-23.08.25
     @ApiOperation(value = "결제 시 주문 저장",
         notes = "주문한 상품, 상품의 옵션, 결제 수단 등을 받아 주문 테이블에 저장합니다.")
     @PostMapping
-    public void ordersAdd(
+    public ResponseEntity<?> ordersAdd(
         @RequestHeader(name = "Authorization") String token,
-        @RequestBody AddOrdersForm addOrdersForm) {
+        @RequestBody AddOrdersForm addOrdersForm
+    ) {
         payService.addOrders(token, AddOrdersDto.from(addOrdersForm));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

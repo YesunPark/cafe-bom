@@ -25,20 +25,20 @@ public class AddOrdersDto {
             )
             .build();
     }
-}
 
-@Getter
-@Builder
-class OrderedProductDto {
+    @Getter
+    @Builder
+    public static class OrderedProductDto {
 
-    private Integer productId;
+        private Integer productId;
 
-    private List<Integer> optionIds;
+        private List<Integer> optionIds;
 
-    public static OrderedProductDto from(OrderedProductForm form) {
-        return OrderedProductDto.builder()
-            .productId(form.getProductId())
-            .optionIds(form.getOptionIds())
-            .build();
+        public static OrderedProductDto from(OrderedProductForm form) {
+            return OrderedProductDto.builder()
+                .productId(form.getProductId())
+                .optionIds(form.getOptionIds())
+                .build();
+        }
     }
 }
