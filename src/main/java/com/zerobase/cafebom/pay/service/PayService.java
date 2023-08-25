@@ -53,15 +53,14 @@ public class PayService {
     // 주문 생성-yesun-23.08.25
     public void addOrders(String token, AddOrdersDto addOrdersDto) {
         Long userId = tokenProvider.getId(token);
-        Member member = memberRepository.findById(userId)
+        Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        Orders orders = ordersRepository.save(Orders.fromAddOrdersDto(addOrdersDto, member));
+        Orders orders = ordersRepository.save(Orders.fromAddOrdersDto(addOrdersDto, memberById));
 
         addOrdersDto.getProducts()
             .forEach(product -> {
-                int productId = product.getProductId();
-                Product productById = productRepository.findById(productId)
+                Product productById = productRepository.findById(product.getProductId())
                     .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
 
                 OrdersProduct ordersProduct = ordersProductRepository.save(
@@ -71,14 +70,14 @@ public class PayService {
                         .build());
 
                 List<Integer> optionIds = product.getOptionIds();
-                optionIds.forEach(optionId -> {
-                    Option optionById = optionRepository.findById(optionId)
-                        .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
-                    ordersProductOptionRepository.save(OrdersProductOption.builder()
-                        .ordersProductId(ordersProduct.getId())
-                        .option(optionById)
-                        .build());
-                });
+                optionIds.forEach(optionId ->
+                    ordersProductOptionRepository.save(
+                        OrdersProductOption.builder()
+                            .ordersProductId(ordersProduct.getId())
+                            .option(optionRepository.findById(optionId)
+                                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS)))
+                            .build())
+                );
             });
     }
 }
