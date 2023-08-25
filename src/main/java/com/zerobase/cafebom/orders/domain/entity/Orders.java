@@ -49,7 +49,8 @@ public class Orders extends BaseTimeEntity {
   private OrdersCookingTime cookingTime;
 
   @NotNull
+  @Enumerated(EnumType.STRING)
   private OrdersReceiptStatus receiptStatus;
 
-  private LocalDateTime acceptanceTime;
+  private LocalDateTime receivedTime;
 }
