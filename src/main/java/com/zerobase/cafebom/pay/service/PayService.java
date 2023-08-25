@@ -67,7 +67,7 @@ public class PayService {
 
                 OrdersProduct ordersProduct = ordersProductRepository.save(
                     OrdersProduct.builder()
-                        .orders(orders)
+                        .ordersId(orders.getId())
                         .product(productById)
                         .build());
 
@@ -76,7 +76,7 @@ public class PayService {
                     Option optionById = optionRepository.findById(optionId)
                         .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
                     ordersProductOptionRepository.save(OrdersProductOption.builder()
-                        .ordersProduct(ordersProduct)
+                        .ordersProductId(ordersProduct.getId())
                         .option(optionById)
                         .build());
                 });
