@@ -8,10 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.zerobase.cafebom.member.security.TokenProvider;
 import com.zerobase.cafebom.member.service.AuthService;
 import com.zerobase.cafebom.product.service.ProductService;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
+import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
