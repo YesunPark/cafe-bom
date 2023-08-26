@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,5 +33,13 @@ public class OrdersController {
 
         ordersService.updateOrdersStatus(ordersId, OrdersStatusDto.from(ordersStatusForm));
         return ResponseEntity.ok().build();
+    }
+
+    // minsu-23.08.23
+    @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다")
+    @GetMapping("/orders/{ordersId}/elapsed-time")
+    public ResponseEntity<Long> getElapsedTime(@PathVariable Long ordersId) {
+        Long elapsedTimeMinutes = ordersService.calculateElapsedTime(ordersId);
+        return ResponseEntity.ok(elapsedTimeMinutes);
     }
 }
