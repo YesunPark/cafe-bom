@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.member.security;
+package com.zerobase.cafebom.security;
 
 public enum Role {
     ROLE_USER,

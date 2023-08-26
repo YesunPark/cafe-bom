@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.pay.controller.form;
 
+import com.zerobase.cafebom.orders.domain.type.Payment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.constraints.Min;
@@ -13,8 +14,8 @@ import lombok.Getter;
 public class OrdersAddForm {
 
     @Schema(description = "결제 수단", example = "KAKAO_PAY")
-    @NotBlank(message = "결제 수단 필수로 입력해야 합니다.")
-    private String payment; // enum 인데 임시로 스트링
+    @NotNull(message = "결제 수단 필수로 입력해야 합니다.")
+    private Payment payment;
 
     @NotNull(message = "결제 수단은 필수로 입력해야 합니다.")
     private List<OrderedProductForm> products;

@@ -7,7 +7,6 @@ import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.member.security.TokenProvider;
 import com.zerobase.cafebom.option.repository.OptionRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
@@ -18,6 +17,7 @@ import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRe
 import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
+import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

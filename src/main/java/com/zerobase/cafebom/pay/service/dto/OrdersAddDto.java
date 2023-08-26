@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.pay.service.dto;
 
+import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
 import java.util.List;
@@ -11,7 +12,7 @@ import lombok.Getter;
 @Builder
 public class OrdersAddDto {
 
-    private String payment; // enum 인데 임시로 스트링
+    private Payment payment; // enum 인데 임시로 스트링
 
     private List<OrderedProductDto> products;
 

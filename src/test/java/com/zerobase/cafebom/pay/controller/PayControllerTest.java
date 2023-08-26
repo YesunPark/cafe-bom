@@ -5,10 +5,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.security.TokenProvider;
+import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
 import com.zerobase.cafebom.pay.service.PayService;
+import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class PayControllerTest {
     void successOrdersAdd() throws Exception {
         // given
         OrdersAddForm form = OrdersAddForm.builder()
-            .payment("KAKAO_PAY")
+            .payment(Payment.KAKAO_PAY)
             .products(List.of(new OrderedProductForm[]{
                 OrderedProductForm.builder()
                     .productId(1)
@@ -63,7 +64,7 @@ class PayControllerTest {
     void failOrdersAddAuthorizationNotPresent() throws Exception {
         // given
         OrdersAddForm form = OrdersAddForm.builder()
-            .payment("KAKAO_PAY")
+            .payment(Payment.KAKAO_PAY)
             .products(List.of(new OrderedProductForm[]{
                 OrderedProductForm.builder()
                     .productId(1)
@@ -108,7 +109,7 @@ class PayControllerTest {
 //    void failOrdersAddInvalidProductId() throws Exception {
 //        // given
 //        OrdersAddForm form = OrdersAddForm.builder()
-//            .payment("KAKAO_PAY")
+//            .payment(Payment.KAKAO_PAY)
 //            .products(List.of(
 //                new OrderedProductForm[]{
 //                    OrderedProductForm.builder()
