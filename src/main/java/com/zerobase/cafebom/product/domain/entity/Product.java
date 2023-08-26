@@ -1,22 +1,16 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Builder
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Builder(toBuilder = true)
 @Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -40,9 +34,12 @@ public class Product extends BaseTimeEntity {
     private Integer price;
 
     @NotNull
-    private Boolean isSoldOut;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus isSoldOut;
 
     @NotNull
-    private Byte[] picture;
+    private String picture;
+
+
 
 }
