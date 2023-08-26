@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.member.security;
+package com.zerobase.cafebom.security;
 
 import com.zerobase.cafebom.member.service.AuthService;
 import io.jsonwebtoken.Claims;

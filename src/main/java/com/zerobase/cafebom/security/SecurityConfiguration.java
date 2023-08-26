@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.member.security;
+package com.zerobase.cafebom.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/**/signup", "/**/signin").permitAll();
+            .antMatchers("/**/signup", "/**/signin", "/product/**").permitAll();
     }
 
     @Override
