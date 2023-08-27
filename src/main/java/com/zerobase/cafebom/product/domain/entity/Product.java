@@ -1,24 +1,19 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Builder
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Builder(toBuilder = true)
 @Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
     @Id
@@ -27,7 +22,7 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategoryId;
+    private ProductCategory productCategory;
 
     @NotNull
     @Column(unique = true)
@@ -40,9 +35,26 @@ public class Product extends BaseTimeEntity {
     private Integer price;
 
     @NotNull
-    private Boolean isSoldOut;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus isSoldOut;
 
     @NotNull
-    private Byte[] picture;
+    private String picture;
+
+    public void updateProduct(ProductForm productForm) {
+        if (productForm.getName() != null) {
+            this.name = productForm.getName();
+        }
+        if (productForm.getDescription() != null) {
+            this.description = productForm.getDescription();
+        }
+        if (productForm.getPrice() != null) {
+            this.price = productForm.getPrice();
+        }
+        if (productForm.getIsSoldOut() != null) {
+            this.isSoldOut = productForm.getIsSoldOut();
+        }
+    }
 
 }
+
