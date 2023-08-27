@@ -2,7 +2,7 @@ package com.zerobase.cafebom.product.service.dto;
 
 
 import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.domain.entity.ProductStatus;
+import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class ProductDto {
 
     private Integer price;
 
-    private ProductStatus isSoldOut;
+    private SoldOutStatus soldOutStatus;
 
     private String picture;
 
@@ -31,7 +31,7 @@ public class ProductDto {
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .isSoldOut(product.getIsSoldOut())
+                .soldOutStatus(product.getSoldOutStatus())
                 .picture(product.getPicture())
                 .build();
     }

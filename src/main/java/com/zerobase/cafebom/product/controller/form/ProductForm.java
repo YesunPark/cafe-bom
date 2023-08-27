@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.product.controller.form;
 
-import com.zerobase.cafebom.product.domain.entity.ProductStatus;
+import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class ProductForm {
 
     private Integer price;
 
-    private ProductStatus isSoldOut;
+    private SoldOutStatus soldOutStatus;
 
     private String picture;
 

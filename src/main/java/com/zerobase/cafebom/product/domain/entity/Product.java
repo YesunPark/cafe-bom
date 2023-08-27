@@ -36,7 +36,7 @@ public class Product extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private ProductStatus isSoldOut;
+    private SoldOutStatus soldOutStatus;
 
     @NotNull
     private String picture;
@@ -51,8 +51,8 @@ public class Product extends BaseTimeEntity {
         if (productForm.getPrice() != null) {
             this.price = productForm.getPrice();
         }
-        if (productForm.getIsSoldOut() != null) {
-            this.isSoldOut = productForm.getIsSoldOut();
+        if (productForm.getSoldOutStatus() != null) {
+            this.soldOutStatus = productForm.getSoldOutStatus();
         }
     }
 

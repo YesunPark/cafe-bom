@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
                 .description(productForm.getDescription())
                 .productCategory(productCategoryId)
                 .price(productForm.getPrice())
-                .isSoldOut(productForm.getIsSoldOut())
+                .soldOutStatus(productForm.getSoldOutStatus())
                 .picture(pictureUrl)
                 .build();
         Product addProduct = productRepository.save(product);
