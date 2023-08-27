@@ -50,7 +50,7 @@ public class PayService {
     }
 
     // 주문 생성-yesun-23.08.25
-    public void addOrders(String token, OrdersAddDto ordersAddDto) {
+    public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));

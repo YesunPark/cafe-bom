@@ -5,41 +5,47 @@ import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
 public class OrdersAddDto {
 
-    private Payment payment; // enum 인데 임시로 스트링
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Request {
 
-    private List<OrderedProductDto> products;
+        private Payment payment;
 
-    public static OrdersAddDto from(OrdersAddForm form) {
-        return OrdersAddDto.builder()
-            .payment(form.getPayment())
-            .products(
-                form.getProducts()
-                    .stream().map(OrderedProductDto::from)
-                    .collect(Collectors.toList())
-            )
-            .build();
+        private List<OrderedProductDto> products;
+
+        public static OrdersAddDto.Request from(OrdersAddForm form) {
+            return OrdersAddDto.Request.builder()
+                .payment(form.getPayment())
+                .products(
+                    form.getProducts()
+                        .stream().map(orderedProductForm ->
+                            OrderedProductDto.builder()
+                                .productId(orderedProductForm.getProductId())
+                                .optionIds(orderedProductForm.getOptionIds())
+                                .build())
+                        .collect(Collectors.toList())
+                )
+                .build();
+        }
     }
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class OrderedProductDto {
 
         private Integer productId;
 
         private List<Integer> optionIds;
-
-        public static OrderedProductDto from(OrderedProductForm form) {
-            return OrderedProductDto.builder()
-                .productId(form.getProductId())
-                .optionIds(form.getOptionIds())
-                .build();
-        }
     }
 }

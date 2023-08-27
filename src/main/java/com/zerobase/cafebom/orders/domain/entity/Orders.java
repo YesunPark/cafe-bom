@@ -53,7 +53,7 @@ public class Orders extends BaseTimeEntity {
 
     private LocalDateTime acceptanceTime;
 
-    public static Orders fromAddOrdersDto(OrdersAddDto dto, Member member) {
+    public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {
         return Orders.builder()
             .member(member)
             .payment(dto.getPayment())

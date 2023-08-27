@@ -40,7 +40,7 @@ public class PayController {
         @RequestHeader(name = "Authorization") String token,
         @Valid @RequestBody OrdersAddForm ordersAddForm
     ) {
-        payService.addOrders(token, OrdersAddDto.from(ordersAddForm));
+        payService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
