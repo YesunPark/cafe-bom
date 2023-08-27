@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.product.domain.entity;
 
-public enum ProductStatus {
+public enum SoldOutStatus {
 
     IN_STOCK,
     SOLD_OUT
