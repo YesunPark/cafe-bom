@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
-@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 //@NoArgsConstructor(access = AccessLevel.PROTECTED)
