@@ -19,5 +19,4 @@ public interface ProductService {
     // 상품 수정 - jiyeon-23.08.25
     boolean updateProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException;
 
-
 }

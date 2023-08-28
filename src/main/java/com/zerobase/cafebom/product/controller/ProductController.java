@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.product.controller;
 
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductService productService;
     private final S3UploaderService s3UploaderService;
+    private final MemberRepository memberRepository;
 
     // jiyeon-23.08.25
     @ApiOperation(value = "관리자 메뉴 전체조회", notes = "전체 리스트를 조회합니다.")
@@ -57,13 +60,14 @@ public class ProductController {
     @ApiOperation(value = "관리자 상품 등록", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(value = "/add", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductAdd(
+            HttpServletRequest request,
             @RequestParam(value = "image") MultipartFile image,
             ProductForm productForm) {
         try {
             productService.addProduct(image, productForm);
             return new ResponseEntity<>(CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(PRODUCT_NOT_EXISTS, INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -94,7 +98,5 @@ public class ProductController {
             return new ResponseEntity<>(PRODUCT_REMOVE_FAIL, NOT_FOUND);
         }
     }
-
-
 
 }

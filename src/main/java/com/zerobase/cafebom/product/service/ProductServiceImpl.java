@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.service;
 
 
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
@@ -8,6 +9,7 @@ import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,12 +19,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final S3UploaderService s3UploaderService;
-
+    private final MemberRepository memberRepository;
 
     // 등록 서비스 - jiyeon-23.08.25
     @Transactional
@@ -40,9 +43,9 @@ public class ProductServiceImpl implements ProductService {
                 .soldOutStatus(productForm.getSoldOutStatus())
                 .picture(pictureUrl)
                 .build();
-        Product addProduct = productRepository.save(product);
+        Product productAdd = productRepository.save(product);
 
-        return ProductDto.from(addProduct);
+        return ProductDto.from(productAdd);
     }
 
     // 수정 서비스 - jiyeon-23.08.25
