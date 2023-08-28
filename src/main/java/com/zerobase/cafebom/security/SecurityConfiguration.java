@@ -36,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/**/signup", "/**/signin", "/product/**").permitAll();
+//          .antMatchers("/admin/**").hasRole("ADMIN")
     }
 
     @Override
