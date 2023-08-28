@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class OrdersStatusForm {
+@AllArgsConstructor
+public class OrdersStatusModifyForm {
 
     private OrdersCookingStatus newStatus;
 }

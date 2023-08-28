@@ -8,7 +8,7 @@ import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +27,22 @@ public class OrdersService {
 
     // 주문 상태 변경-minsu-23.08.18
     @Transactional
-    public void updateOrdersStatus(Long orderId, OrdersStatusDto ordersStatusForm) {
+    public void updateOrdersStatus(Long orderId, OrdersStatusModifyDto ordersStatusDto) {
         Orders orders = ordersRepository.findById(orderId)
             .orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
 
-        OrdersCookingStatus newStatus = OrdersCookingStatus.valueOf(
-            String.valueOf(ordersStatusForm.getNewStatus()));
+        OrdersCookingStatus newStatus = ordersStatusDto.getNewStatus();
 
         if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
             && newStatus == OrdersCookingStatus.NONE) {
           throw new CustomException(COOKING_NOT_CHANGE_NONE);
         }
 
-        if (orders.getCookingStatus() == OrdersCookingStatus.NONE
-            && newStatus == OrdersCookingStatus.COOKING) {
-          orders.setReceivedTime(LocalDateTime.now());
-        }
+        orders.updateReceivedTime(newStatus);
 
-        orders.setCookingStatus(newStatus);
         ordersRepository.save(orders);
     }
+
 
     // 주문 수락 시간 저장-minsu-23.08.20
     public LocalDateTime getReceivedTime(Long ordersId) {
@@ -61,7 +57,7 @@ public class OrdersService {
     }
 
     // 주문 경과 시간 계산-minsu-23.08.21
-    public Long calculateElapsedTime(Long ordersId) {
+    public Long getElapsedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
 

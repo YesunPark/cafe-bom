@@ -29,28 +29,36 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Orders extends BaseTimeEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "member_id")
-  private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Payment payment;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Payment payment;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrdersCookingStatus cookingStatus;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OrdersCookingStatus cookingStatus;
 
-  @Enumerated(EnumType.STRING)
-  private OrdersCookingTime cookingTime;
+    @Enumerated(EnumType.STRING)
+    private OrdersCookingTime cookingTime;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrdersReceiptStatus receiptStatus;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OrdersReceiptStatus receiptStatus;
 
-  private LocalDateTime receivedTime;
+    private LocalDateTime receivedTime;
+
+    public void updateReceivedTime(OrdersCookingStatus newStatus) {
+        if (this.cookingStatus == OrdersCookingStatus.NONE
+            && newStatus == OrdersCookingStatus.COOKING) {
+            this.receivedTime = LocalDateTime.now();
+        }
+        this.cookingStatus = newStatus;
+    }
 }
