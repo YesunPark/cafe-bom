@@ -1,8 +1,7 @@
-package com.zerobase.cafebom.pay.service.dto;
+package com.zerobase.cafebom.orders.service.dto;
 
 import com.zerobase.cafebom.orders.domain.type.Payment;
-import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
+import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;

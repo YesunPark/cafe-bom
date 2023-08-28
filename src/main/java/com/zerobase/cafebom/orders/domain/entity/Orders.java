@@ -5,7 +5,7 @@ import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
 import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
 import com.zerobase.cafebom.orders.domain.type.Payment;
-import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

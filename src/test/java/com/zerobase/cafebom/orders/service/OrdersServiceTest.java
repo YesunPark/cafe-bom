@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.pay.service;
+package com.zerobase.cafebom.orders.service;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -9,8 +9,8 @@ import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
-import com.zerobase.cafebom.pay.service.dto.OrdersAddDto.OrderedProductDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto.OrderedProductDto;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.Role;
@@ -28,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @ExtendWith(MockitoExtension.class)
-class PayServiceTest {
+class OrdersServiceTest {
 
     @Spy
     @InjectMocks
-    private PayService payService;
+    private OrdersService ordersService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -87,10 +87,10 @@ class PayServiceTest {
             .willReturn(orders);
 
         // when
-        payService.addOrders(token, ordersAddDto);
+        ordersService.addOrders(token, ordersAddDto);
 
         // then
-        then(payService).should(times(1)).addOrders(token, ordersAddDto);
+        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
     }
 
     @Test
@@ -103,7 +103,7 @@ class PayServiceTest {
 //        given(accountRepository.save(any())).willReturn(accountEntity);
 
         // when
-        payService.addOrders(token, ordersAddDto);
+        ordersService.addOrders(token, ordersAddDto);
 
         // then
     }

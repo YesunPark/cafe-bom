@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.pay.controller.form;
+package com.zerobase.cafebom.orders.controller.form;
 
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import io.swagger.v3.oas.annotations.media.Schema;

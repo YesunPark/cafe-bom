@@ -1,14 +1,14 @@
-package com.zerobase.cafebom.pay.controller;
+package com.zerobase.cafebom.orders.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
+import com.zerobase.cafebom.orders.controller.form.OrdersAddForm.OrderedProductForm;
 import com.zerobase.cafebom.orders.domain.type.Payment;
-import com.zerobase.cafebom.pay.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.pay.controller.form.OrdersAddForm.OrderedProductForm;
-import com.zerobase.cafebom.pay.service.PayService;
+import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(PayController.class)
-class PayControllerTest {
+@WebMvcTest(OrdersController.class)
+class OrdersControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,7 +29,7 @@ class PayControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private PayService payService;
+    private OrdersService ordersService;
     @MockBean
     private TokenProvider tokenProvider;
 

@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.pay.service;
+package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
@@ -10,11 +10,11 @@ import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.option.repository.OptionRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
 import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
-import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
@@ -23,12 +23,11 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PayService {
+public class OrdersService {
 
     private final MemberRepository memberRepository;
     private final OrdersRepository ordersRepository;
@@ -37,20 +36,9 @@ public class PayService {
     private final OrdersProductOptionRepository ordersProductOptionRepository;
     private final OptionRepository optionRepository;
 
-
     private final TokenProvider tokenProvider;
 
-    // 카카오페이 QR 테스트 결제-yesun-23.08.23
-    public void payKakaoQR(Model model) {
-        model.addAttribute("totalAmount", 20000);
-    }
-
-    // 관리자 주문 거절 시 결제 취소-yesun-23.08.24
-    public void cancelPayKakaoQR() {
-
-    }
-
-    // 주문 생성-yesun-23.08.25
+    // 주문 생성-yesun-23.08.29
     @Transactional
     public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
         Long userId = tokenProvider.getId(token);
