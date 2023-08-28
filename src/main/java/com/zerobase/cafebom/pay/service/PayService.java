@@ -57,6 +57,7 @@ public class PayService {
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
 
+        // Orders 레파지토리 저장
         Orders orders = ordersRepository.save(Orders.fromAddOrdersDto(ordersAddDto, memberById));
 
         ordersAddDto.getProducts()
@@ -64,6 +65,7 @@ public class PayService {
                 Product productById = productRepository.findById(product.getProductId())
                     .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
 
+                // OrdersProduct 레파지토리 저장
                 OrdersProduct ordersProduct = ordersProductRepository.save(
                     OrdersProduct.builder()
                         .ordersId(orders.getId())
@@ -72,6 +74,7 @@ public class PayService {
 
                 List<Integer> optionIds = product.getOptionIds();
                 optionIds.forEach(optionId ->
+                    // OrdersProductOption 레파지토리 저장
                     ordersProductOptionRepository.save(
                         OrdersProductOption.builder()
                             .ordersProductId(ordersProduct.getId())
