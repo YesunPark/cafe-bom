@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,6 +56,7 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "관리자 상품 등록", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(value = "/add", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductAdd(
@@ -70,6 +72,7 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "관리자 상품 수정", notes = "관리자가 상품Id 별로 수정합니다.")
     @PutMapping(value = "/update/{id}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductUpdate(
@@ -86,6 +89,7 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "관리자 상품 삭제", notes = "관리자가 상품Id 별로 삭제합니다.")
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> ProductRemove(@PathVariable Integer id) {

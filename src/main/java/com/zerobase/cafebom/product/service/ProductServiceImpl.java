@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
