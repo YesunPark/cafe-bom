@@ -1,17 +1,21 @@
 package com.zerobase.cafebom.orders.service.dto;
 
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
 public class OrdersProductDto {
 
 
 
-    public OrdersProductDto(OrdersProduct ordersProduct)
+
+    public OrdersProductDto (OrdersProduct ordersProduct)
     {
 
         this.productName = ordersProduct.getProduct().getName();
@@ -19,6 +23,12 @@ public class OrdersProductDto {
         this.price = ordersProduct.getProduct().getPrice();
 
     }
+
+
+
+
+
+
 
 
     private String productName;

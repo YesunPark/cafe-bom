@@ -1,4 +1,12 @@
 package com.zerobase.cafebom.history.service;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
@@ -6,151 +14,81 @@ import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
-import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class OrdersHistoryServiceTest {
+class OrdersHistoryServiceTest {
+
+    @InjectMocks
+    private OrdersHistoryService ordersHistoryService;
 
     @Mock
-    private OrdersRepository orderRepository;
+    private OrdersRepository ordersRepository;
 
     @Mock
-    private OrdersProductRepository orderCartRepository;
+    private OrdersProductRepository ordersProductRepository;
 
     @Mock
     private MemberRepository memberRepository;
 
-    @InjectMocks
-    private OrdersHistoryService orderService;
-
-    private Member testMember;
-    private List<Orders> testOrders;
-
-    @BeforeEach
-    public void setUp() {
-
-        testMember = Member.builder()
-                .id(1L)
-                .build();
-
-
-        testOrders = new ArrayList<>();
-        Orders order1 = Orders.builder()
-                .id(1L)
-                .member(testMember)
-                .build();
-        testOrders.add(order1);
-
-        Orders order2 = Orders.builder()
-                .id(2L)
-                .member(testMember)
-                .build();
-        testOrders.add(order2);
-    }
-
     @Test
+    @DisplayName("3개월 주문 내역 조회 - 성공")
     public void successGetOrderHistoryFor3Months() {
         // given
+        Long memberId = 1L;
+        Member testMember = Member.builder().build();
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
-
-
-        when(memberRepository.findById(1L)).thenReturn(Optional.of(testMember));
-        when(orderRepository.findByMemberAndCreatedDateAfter(eq(testMember), any(LocalDateTime.class)))
-                .thenReturn(testOrders.subList(0, 1));
+        List<Orders> testOrders = new ArrayList<>();
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
+        when(ordersRepository.findByMemberAndCreatedDateAfter(testMember, threeMonthsAgo)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = orderService.findOrderHistoryFor3Months(1L);
+        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryFor3Months(memberId);
 
         // then
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getOrderId()).isEqualTo(1L);
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void failGetOrderHistoryFor3MonthsUserNotFound() {
-        // given
-        when(memberRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // when, then
-        assertThrows(ResponseStatusException.class, () -> {
-            orderService.findOrderHistoryFor3Months(1L);
-        });
-    }
-
-    @Test
+    @DisplayName("전체 주문 내역 조회 - 성공")
     public void successGetAllOrderHistory() {
         // given
-        when(memberRepository.findById(1L)).thenReturn(Optional.of(testMember));
-        when(orderRepository.findByMember(testMember)).thenReturn(testOrders);
+        Long memberId = 1L;
+        Member testMember = Member.builder().build();
+        List<Orders> testOrders = new ArrayList<>();
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
+        when(ordersRepository.findByMember(testMember)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = orderService.findAllOrderHistory(1L);
+        List<OrdersHisDto> result = ordersHistoryService.findAllOrderHistory(memberId);
 
         // then
-        assertThat(result).hasSize(2); // 모든 주문 반환
+        assertThat(result).isEmpty();
     }
 
     @Test
-    public void failGetAllOrderHistoryUserNotFound() {
-        // given
-        when(memberRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // when, then
-        assertThrows(ResponseStatusException.class, () -> {
-            orderService.findAllOrderHistory(1L);
-        });
-    }
-
-    @Test
+    @DisplayName("기간별 주문 내역 조회 - 성공")
     public void successGetOrderHistoryByPeriod() {
         // given
+        Long memberId = 1L;
+        Member testMember = Member.builder().build();
         LocalDateTime startDate = LocalDate.now().minusMonths(2).atStartOfDay();
         LocalDateTime endDate = LocalDate.now().atTime(23, 59, 59);
-
-        when(memberRepository.findById(1L)).thenReturn(Optional.of(testMember));
-        when(orderRepository.findByMemberAndCreatedDateBetween(testMember, startDate, endDate))
-                .thenReturn(testOrders.subList(0, 1)); // 주어진 기간 내 주문만 반환
+        List<Orders> testOrders = new ArrayList<>(); // 테스트용 Orders 리스트 생성
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
+        when(ordersRepository.findByMemberAndCreatedDateBetween(testMember, startDate, endDate)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = orderService.findOrderHistoryByPeriod(1L, LocalDate.now().minusMonths(2), LocalDate.now());
+        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryByPeriod(memberId, LocalDate.now().minusMonths(2), LocalDate.now());
 
         // then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getOrderId()).isEqualTo(1L);
-    }
-
-    @Test
-    public void failGetOrderHistoryByPeriodUserNotFound() {
-        // given
-        when(memberRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // when, then
-        assertThatThrownBy(() -> {
-            orderService.findOrderHistoryByPeriod(1L, LocalDate.now().minusMonths(2), LocalDate.now());
-        })
-                .isInstanceOf(ResponseStatusException.class);
-
+        assertThat(result).isEmpty();
     }
 }

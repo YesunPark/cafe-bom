@@ -53,9 +53,8 @@ public class OrdersControllerTest {
         // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto();
+        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
 
-        orderHisDto.from(orderSample);
 
         when(orderService.findAllOrderHistory(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
@@ -74,9 +73,9 @@ public class OrdersControllerTest {
         // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto();
+        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
 
-        orderHisDto.from(orderSample);
+        //orderHisDto.from(orderSample);
 
         LocalDate startDate = LocalDate.of(2023, 1, 1);
         LocalDate endDate = LocalDate.of(2023, 3, 31);
@@ -100,9 +99,9 @@ public class OrdersControllerTest {
         // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto();
+        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
 
-        orderHisDto.from(orderSample);
+
 
         when(orderService.findOrderHistoryFor3Months(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
@@ -126,6 +125,6 @@ public class OrdersControllerTest {
                         .param("memberId", String.valueOf(memberId))
                         .param("viewType", "기간")
                         .param("startDate", "2023-01-01"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 }

@@ -75,9 +75,7 @@ public class OrdersHistoryService {
 
         for (Orders order : orders) {
 
-            OrdersHisDto ordersHisDto = new OrdersHisDto();
-
-            ordersHisDto.from(order);
+            OrdersHisDto ordersHisDto = new OrdersHisDto(order);
 
             List<OrdersProduct> ordersProductList = ordersProductRepository.findByOrdersId(order.getId());
 

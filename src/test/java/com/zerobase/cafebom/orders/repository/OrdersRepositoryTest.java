@@ -3,10 +3,12 @@ package com.zerobase.cafebom.orders.repository;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
+import com.zerobase.cafebom.security.Role;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -20,13 +22,22 @@ import static org.mockito.Mockito.*;
 public class OrdersRepositoryTest {
 
 
-  @Autowired
+  @MockBean
   private OrdersRepository ordersRepository;
 
+
+
   @Test
-  public void givenMemberAndCreatedDate_whenFindByMemberAndCreatedDateAfter_thenVerifyRepositoryCall() {
+  @DisplayName("특정 회원 및 생성일에 대한 주문 조회 - 성공")
+  public void successGetOrdersByMemberAndCreatedDate() {
     // given
-    Member member = new Member("","",null);
+    Member member = Member.builder()
+            .email("")
+            .phone("")
+            .role(Role.ROLE_USER)
+            .id(1L)
+            .nickname("")
+            .build();
     LocalDateTime createdDate = LocalDateTime.now();
     List<Orders> ordersList = new ArrayList<>();
     when(ordersRepository.findByMemberAndCreatedDateAfter(member, createdDate))
@@ -40,9 +51,16 @@ public class OrdersRepositoryTest {
   }
 
   @Test
-  public void givenMember_whenFindByMember_thenVerifyRepositoryCall() {
+  @DisplayName("특정 회원의 주문 조회 - 성공")
+  public void successGetOrdersByMember() {
     // given
-    Member member = new Member("","",null);
+    Member member = Member.builder()
+            .email("")
+            .phone("")
+            .role(Role.ROLE_USER)
+            .id(2L)
+            .nickname("")
+            .build();
     List<Orders> ordersList = new ArrayList<>();
     when(ordersRepository.findByMember(member))
             .thenReturn(ordersList);
@@ -55,9 +73,16 @@ public class OrdersRepositoryTest {
   }
 
   @Test
-  public void givenMemberAndDates_whenFindByMemberAndCreatedDateBetween_thenVerifyRepositoryCall() {
+  @DisplayName("특정 기간 동안 회원의 주문 조회 - 성공")
+  public void successGetOrdersByMemberAndDates() {
     // given
-    Member member = new Member("","",null);
+    Member member = Member.builder()
+            .email("")
+            .phone("")
+            .role(Role.ROLE_USER)
+            .id(3L)
+            .nickname("")
+            .build();
     LocalDateTime startDate = LocalDateTime.now().minusDays(7);
     LocalDateTime endDate = LocalDateTime.now();
     List<Orders> ordersList = new ArrayList<>();

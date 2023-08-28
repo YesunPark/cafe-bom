@@ -3,6 +3,7 @@ package com.zerobase.cafebom.orders.service.dto;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,25 +14,31 @@ import java.util.List;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class OrdersHisDto {
 
-    public OrdersHisDto(){}
 
-    public OrdersHisDto from(Orders order)
+
+
+
+
+
+    public OrdersHisDto (Orders order)
     {
-        return OrdersHisDto.builder()
-                .orderId(order.getId())
-                .orderDate(order.getCreatedDate())
-                .ordersReceiptStatus(order.getReceiptStatus())
-                .build();
-/*
+
         this.orderId = order.getId();
 
         this.orderDate = order.getCreatedDate();
 
         this.ordersReceiptStatus = order.getReceiptStatus();
- */
+
+
+
     }
+
+
+
+
 
     private Long orderId;
 
