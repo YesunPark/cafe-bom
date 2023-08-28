@@ -1,12 +1,19 @@
 package com.zerobase.cafebom.pay.service;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
+import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.orders.repository.OrdersRepository;
 import com.zerobase.cafebom.pay.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.pay.service.dto.OrdersAddDto.OrderedProductDto;
+import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.product.repository.ProductRepository;
+import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,28 +38,64 @@ class PayServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
+    private OrdersRepository ordersRepository;
+
+    @Mock
+    private ProductRepository productRepository;
+
+
+    @Mock
     private TokenProvider tokenProvider;
 
     String token = "Bearer token";
 
-    OrdersAddDto.Request request;
+    OrdersAddDto.Request ordersAddDto = OrdersAddDto.Request.builder()
+        .payment(Payment.KAKAO_PAY)
+        .products(Collections.singletonList(OrderedProductDto.builder()
+            .productId(1)
+            .optionIds(Arrays.asList(1, 2))
+            .build()))
+        .build();
+    ;
+    Member member = Member.builder()
+        .id(2L)
+        .password("password")
+        .nickname("testNickname")
+        .phone("01022223333")
+        .email("test@naber.com")
+        .role(Role.ROLE_USER)
+        .build();
+    Orders orders = Orders.fromAddOrdersDto(ordersAddDto, member);
+
 
     @BeforeEach
     public void setUp() {
-        request = OrdersAddDto.Request.builder()
-            .payment(Payment.KAKAO_PAY)
-            .products(Collections.singletonList(OrderedProductDto.builder()
-                .productId(1)
-                .optionIds(Arrays.asList(1, 2))
-                .build()))
-            .build();
         given(tokenProvider.getId(token)).willReturn(2L);
     }
 
-
+    // yesun-23.08.27
     @Test
     @DisplayName("주문 저장 성공")
     void successAddOrders() {
+        // given
+        given(memberRepository.findById(2L))
+            .willReturn(Optional.ofNullable(member));
+        given(productRepository.findById(1)).willReturn(
+            Optional.ofNullable(Product.builder().build()));
+        given(ordersRepository.save(
+            Orders.fromAddOrdersDto(ordersAddDto, member)))
+            .willReturn(orders);
+
+        // when
+        payService.addOrders(token, ordersAddDto);
+
+        // then
+        then(payService).should(times(1)).addOrders(token, ordersAddDto);
+    }
+
+    @Test
+    @DisplayName("주문 저장 실패")
+    void failAddOrders() {
         // given
         given(memberRepository.findById(2L))
             .willReturn(Optional.ofNullable(Member.builder()
@@ -60,7 +103,7 @@ class PayServiceTest {
 //        given(accountRepository.save(any())).willReturn(accountEntity);
 
         // when
-        payService.addOrders(token, request);
+        payService.addOrders(token, ordersAddDto);
 
         // then
     }

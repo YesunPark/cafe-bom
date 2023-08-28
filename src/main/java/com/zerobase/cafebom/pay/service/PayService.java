@@ -19,6 +19,7 @@ import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class PayService {
     }
 
     // 주문 생성-yesun-23.08.25
+    @Transactional
     public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
