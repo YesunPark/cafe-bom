@@ -1,6 +1,8 @@
 package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -62,7 +64,6 @@ class OrdersServiceTest {
     private TokenProvider tokenProvider;
 
     String token = "Bearer token";
-
     OrdersAddDto.Request ordersAddDto = OrdersAddDto.Request.builder()
         .payment(Payment.KAKAO_PAY)
         .products(Collections.singletonList(OrderedProductDto.builder()
@@ -70,7 +71,6 @@ class OrdersServiceTest {
             .optionIds(Arrays.asList(1, 2))
             .build()))
         .build();
-
     Member member = Member.builder()
         .id(1L)
         .password("password")
@@ -79,18 +79,15 @@ class OrdersServiceTest {
         .email("test@naber.com")
         .role(Role.ROLE_USER)
         .build();
-
     Orders orders = Orders.fromAddOrdersDto(ordersAddDto, member);
-
     Product product = Product.builder()
         .id(1)
         .name("test")
         .build();
 
-
     @BeforeEach
     public void setUp() {
-        given(tokenProvider.getId(token)).willReturn(1L);
+        given(tokenProvider.getId(token)).willReturn(member.getId());
     }
 
     // yesun-23.08.28
@@ -98,9 +95,10 @@ class OrdersServiceTest {
     @DisplayName("주문 저장 성공 - 결제수단, 상품/옵션 목록을 통해 주문")
     void successAddOrders() {
         // given
-        given(tokenProvider.getId(token)).willReturn(member.getId());
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(productRepository.findById(1)).willReturn(Optional.of(product));
+        given(productRepository.findById(
+            ordersAddDto.getProducts().get(0).getProductId()))
+            .willReturn(Optional.of(product));
         given(ordersRepository.save(any(Orders.class))).willReturn(orders);
         given(ordersProductRepository.save(any(OrdersProduct.class))).willReturn(
             OrdersProduct.builder()
@@ -128,6 +126,47 @@ class OrdersServiceTest {
         assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(MEMBER_NOT_EXISTS.getMessage());
+        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+    }
+
+    // yesun-23.08.28
+    @Test
+    @DisplayName("주문 저장 실패 - 존재하지 않는 상품 ID로 요청")
+    void failAddOrdersProductNotExists() {
+        // given
+        given(memberRepository.findById(member.getId()))
+            .willReturn(Optional.of(member));
+        given(productRepository.findById(
+            ordersAddDto.getProducts().get(0).getProductId()))
+            .willReturn(Optional.empty());
+
+        // then
+        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(PRODUCT_NOT_EXISTS.getMessage());
+        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+    }
+
+    // yesun-23.08.28
+    @Test
+    @DisplayName("주문 저장 실패 - 존재하지 않는 옵션 ID로 요청")
+    void failAddOrdersOptionNotExists() {
+        // given
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(productRepository.findById(
+            ordersAddDto.getProducts().get(0).getProductId()))
+            .willReturn(Optional.of(product));
+        given(ordersRepository.save(any(Orders.class))).willReturn(orders);
+        given(ordersProductRepository.save(any(OrdersProduct.class))).willReturn(
+            OrdersProduct.builder()
+                .ordersId(1L)
+                .build());
+        given(optionRepository.findById(any())).willReturn(Optional.empty());
+
+        // then
+        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(OPTION_NOT_EXISTS.getMessage());
         then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
     }
 }
