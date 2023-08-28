@@ -18,8 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_REMOVE_FAIL;
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_UPDATE_FAIL;
+import static com.zerobase.cafebom.exception.ErrorCode.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -37,19 +36,19 @@ public class ProductController {
     // jiyeon-23.08.25
     @ApiOperation(value = "관리자 메뉴 전체조회", notes = "전체 리스트를 조회합니다.")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<Product> ProductList() {
+    public ResponseEntity<?> ProductList() {
         List<Product> products = productRepository.findAll();
-        return products;
+        return new ResponseEntity<>(OK);
     }
 
     // jiyeon-23.08.25
     @ApiOperation(value = "관리자 상품 Id별 조회", notes = "상품 Id 별로 조회합니다.")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> ProductIdGet(@PathVariable Integer id) {
+    public ResponseEntity<?> ProductIdGet(@PathVariable Integer id) {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isPresent()) {
-            return new ResponseEntity<>(product.get(), OK);
+            return new ResponseEntity<>(OK);
         } else {
             return new ResponseEntity<>(NOT_FOUND);
         }
@@ -66,7 +65,7 @@ public class ProductController {
             productService.addProduct(image, productForm);
             return new ResponseEntity<>(CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(PRODUCT_NOT_EXISTS, INTERNAL_SERVER_ERROR);
         }
     }
 
