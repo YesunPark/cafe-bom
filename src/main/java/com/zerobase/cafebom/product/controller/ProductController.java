@@ -8,6 +8,7 @@ import com.zerobase.cafebom.product.service.S3UploaderService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,14 +37,16 @@ public class ProductController {
 
     // jiyeon-23.08.25
     @ApiOperation(value = "관리자 메뉴 전체조회", notes = "전체 리스트를 조회합니다.")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> ProductList() {
         List<Product> products = productRepository.findAll();
-        return new ResponseEntity<>(OK);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(products);
     }
 
     // jiyeon-23.08.25
     @ApiOperation(value = "관리자 상품 Id별 조회", notes = "상품 Id 별로 조회합니다.")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> ProductIdGet(@PathVariable Integer id) {
         Optional<Product> product = productRepository.findById(id);
@@ -56,8 +59,9 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
-    @PreAuthorize("hasRole('ADMIN')")
+
     @ApiOperation(value = "관리자 상품 등록", notes = "관리자가 상품을 등록합니다.")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/add", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductAdd(
             HttpServletRequest request,
@@ -100,5 +104,7 @@ public class ProductController {
             return new ResponseEntity<>(PRODUCT_REMOVE_FAIL, NOT_FOUND);
         }
     }
+
+
 
 }
