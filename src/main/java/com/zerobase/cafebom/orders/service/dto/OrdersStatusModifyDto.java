@@ -11,9 +11,9 @@ public class OrdersStatusModifyDto {
 
     private OrdersCookingStatus newStatus;
 
-    public static OrdersStatusModifyDto from(OrdersStatusModifyForm ordersStatusForm) {
+    public static OrdersStatusModifyDto from(OrdersStatusModifyForm ordersStatusModifyForm) {
         return OrdersStatusModifyDto.builder()
-            .newStatus(ordersStatusForm.getNewStatus())
+            .newStatus(ordersStatusModifyForm.getNewStatus())
             .build();
     }
 }

@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.orders.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.COOKING_NOT_CHANGE_NONE;
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_COOKING_ORDER;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDER_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
@@ -27,30 +27,29 @@ public class OrdersService {
 
     // 주문 상태 변경-minsu-23.08.18
     @Transactional
-    public void updateOrdersStatus(Long orderId, OrdersStatusModifyDto ordersStatusDto) {
-        Orders orders = ordersRepository.findById(orderId)
-            .orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
+    public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
+        Orders orders = ordersRepository.findById(ordersId)
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
-        OrdersCookingStatus newStatus = ordersStatusDto.getNewStatus();
+        OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
 
         if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
             && newStatus == OrdersCookingStatus.NONE) {
-          throw new CustomException(COOKING_NOT_CHANGE_NONE);
+            throw new CustomException(ORDERS_ALREADY_COOKING_STATUS);
         }
 
-        orders.updateReceivedTime(newStatus);
+        orders.modifyReceivedTime(newStatus);
 
         ordersRepository.save(orders);
     }
 
-
     // 주문 수락 시간 저장-minsu-23.08.20
     public LocalDateTime getReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
-            throw new CustomException(NOT_COOKING_ORDER);
+            throw new CustomException(ORDERS_NOT_COOKING_STATUS);
         }
 
         return orders.getReceivedTime();
@@ -59,10 +58,10 @@ public class OrdersService {
     // 주문 경과 시간 계산-minsu-23.08.21
     public Long getElapsedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
-            throw new CustomException(NOT_COOKING_ORDER);
+            throw new CustomException(ORDERS_NOT_COOKING_STATUS);
         }
 
         LocalDateTime receivedTime = orders.getReceivedTime();

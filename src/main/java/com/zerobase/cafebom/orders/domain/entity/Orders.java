@@ -54,7 +54,7 @@ public class Orders extends BaseTimeEntity {
 
     private LocalDateTime receivedTime;
 
-    public void updateReceivedTime(OrdersCookingStatus newStatus) {
+    public void modifyReceivedTime(OrdersCookingStatus newStatus) {
         if (this.cookingStatus == OrdersCookingStatus.NONE
             && newStatus == OrdersCookingStatus.COOKING) {
             this.receivedTime = LocalDateTime.now();
