@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.history.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 
 import com.zerobase.cafebom.orders.controller.OrdersController;
@@ -8,21 +7,20 @@ import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
 import com.zerobase.cafebom.security.TokenProvider;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
+
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
+
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -39,7 +37,7 @@ public class OrdersControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean // 추가
+    @MockBean
     TokenProvider tokenProvider;
 
     @MockBean
@@ -48,16 +46,20 @@ public class OrdersControllerTest {
     @MockBean
     private MemberRepository memberRepository;
 
+    //youngseon 23.08.28
     @Test
+    @DisplayName("모든 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetAllOrderHistory() throws Exception {
-        // Given
+        // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        OrdersHisDto orderHisDto = new OrdersHisDto();
+
+        orderHisDto.from(orderSample);
 
         when(orderService.findAllOrderHistory(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
-        // When, Then
+        // when, then
         mockMvc.perform(get("/auth/pay-list")
                         .param("memberId", String.valueOf(memberId))
                         .param("viewType", "전체"))
@@ -65,19 +67,23 @@ public class OrdersControllerTest {
                 .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
+    //youngseon 23.08.28
     @Test
+    @DisplayName("주어진 기간 내 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetOrderHistoryByPeriod() throws Exception {
-        // Given
+        // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        OrdersHisDto orderHisDto = new OrdersHisDto();
+
+        orderHisDto.from(orderSample);
 
         LocalDate startDate = LocalDate.of(2023, 1, 1);
         LocalDate endDate = LocalDate.of(2023, 3, 31);
 
         when(orderService.findOrderHistoryByPeriod(memberId, startDate, endDate)).thenReturn(Collections.singletonList(orderHisDto));
 
-        // When, Then
+        // when, then
         mockMvc.perform(get("/auth/pay-list")
                         .param("memberId", String.valueOf(memberId))
                         .param("viewType", "기간")
@@ -87,16 +93,20 @@ public class OrdersControllerTest {
                 .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
+    //youngseon 23.08.28
     @Test
+    @DisplayName("최근 3개월간 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetOrderHistoryFor3Months() throws Exception {
-        // Given
+        // given
         Long memberId = 1L;
         Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        OrdersHisDto orderHisDto = new OrdersHisDto();
+
+        orderHisDto.from(orderSample);
 
         when(orderService.findOrderHistoryFor3Months(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
-        // When, Then
+        // when, then
         mockMvc.perform(get("/auth/pay-list")
                         .param("memberId", String.valueOf(memberId))
                         .param("viewType", ""))
@@ -104,12 +114,14 @@ public class OrdersControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
+    //youngseon 23.08.28
     @Test
+    @DisplayName(" 종료 날짜 누락으로 주문 내역 조회 실패하는 테스트")
     public void failGetOrderHistoryByPeriodMissingDate() throws Exception {
-        // Given
+        // given
         Long memberId = 1L;
 
-        // When, Then
+        // when, then
         mockMvc.perform(get("/auth/pay-list")
                         .param("memberId", String.valueOf(memberId))
                         .param("viewType", "기간")

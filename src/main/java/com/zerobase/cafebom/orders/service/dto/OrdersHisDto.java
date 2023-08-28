@@ -1,9 +1,10 @@
 package com.zerobase.cafebom.orders.service.dto;
 
 import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
+import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
+
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,23 +12,32 @@ import java.util.List;
 
 
 @Getter
-@Setter
+@Builder
 public class OrdersHisDto {
 
-    public OrdersHisDto(Orders order)
+    public OrdersHisDto(){}
+
+    public OrdersHisDto from(Orders order)
     {
+        return OrdersHisDto.builder()
+                .orderId(order.getId())
+                .orderDate(order.getCreatedDate())
+                .ordersReceiptStatus(order.getReceiptStatus())
+                .build();
+/*
         this.orderId = order.getId();
 
         this.orderDate = order.getCreatedDate();
 
-        this.ordersStatus = order.getStatus();
+        this.ordersReceiptStatus = order.getReceiptStatus();
+ */
     }
 
     private Long orderId;
 
     private LocalDateTime orderDate;
 
-    private OrdersStatus ordersStatus;
+    private OrdersReceiptStatus ordersReceiptStatus;
 
     private List<OrdersProductDto> orderedProductsList = new ArrayList<>();
 

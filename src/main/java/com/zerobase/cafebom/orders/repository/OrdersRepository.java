@@ -14,7 +14,7 @@ public interface OrdersRepository extends JpaRepository<Orders,Long> {
 
     List<Orders> findByMemberAndCreatedDateAfter(Member member, LocalDateTime createdDate);
 
-    List<Orders> findByMember(Member member); // findByMember 에서 MemberId 로 변경
+    List<Orders> findByMember(Member member);
 
     List<Orders> findByMemberAndCreatedDateBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -21,7 +21,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,12 +50,12 @@ public class OrdersHistoryServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // 테스트에 사용할 Member 객체 생성
+
         testMember = Member.builder()
                 .id(1L)
                 .build();
 
-        // 테스트에 사용할 Order 객체들 생성
+
         testOrders = new ArrayList<>();
         Orders order1 = Orders.builder()
                 .id(1L)
@@ -70,28 +72,28 @@ public class OrdersHistoryServiceTest {
 
     @Test
     public void successGetOrderHistoryFor3Months() {
-        // Given
+        // given
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
 
-        // Mock 객체에 행동 지정
+
         when(memberRepository.findById(1L)).thenReturn(Optional.of(testMember));
         when(orderRepository.findByMemberAndCreatedDateAfter(eq(testMember), any(LocalDateTime.class)))
                 .thenReturn(testOrders.subList(0, 1));
 
-        // When
+        // when
         List<OrdersHisDto> result = orderService.findOrderHistoryFor3Months(1L);
 
-        // Then
-        assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getOrderId());
+        // then
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getOrderId()).isEqualTo(1L);
     }
 
     @Test
     public void failGetOrderHistoryFor3MonthsUserNotFound() {
-        // Given
+        // given
         when(memberRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // When, Then
+        // when, then
         assertThrows(ResponseStatusException.class, () -> {
             orderService.findOrderHistoryFor3Months(1L);
         });
@@ -99,24 +101,23 @@ public class OrdersHistoryServiceTest {
 
     @Test
     public void successGetAllOrderHistory() {
-        // Given
+        // given
         when(memberRepository.findById(1L)).thenReturn(Optional.of(testMember));
         when(orderRepository.findByMember(testMember)).thenReturn(testOrders);
-        // findByMember 에서 findByMemberId 로 변경  testMember 에서 testMember.getId()로 변경
 
-        // When
+        // when
         List<OrdersHisDto> result = orderService.findAllOrderHistory(1L);
 
-        // Then
-        assertEquals(2, result.size()); // 모든 주문 반환
+        // then
+        assertThat(result).hasSize(2); // 모든 주문 반환
     }
 
     @Test
     public void failGetAllOrderHistoryUserNotFound() {
-        // Given
+        // given
         when(memberRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // When, Then
+        // when, then
         assertThrows(ResponseStatusException.class, () -> {
             orderService.findAllOrderHistory(1L);
         });
@@ -124,7 +125,7 @@ public class OrdersHistoryServiceTest {
 
     @Test
     public void successGetOrderHistoryByPeriod() {
-        // Given
+        // given
         LocalDateTime startDate = LocalDate.now().minusMonths(2).atStartOfDay();
         LocalDateTime endDate = LocalDate.now().atTime(23, 59, 59);
 
@@ -132,22 +133,24 @@ public class OrdersHistoryServiceTest {
         when(orderRepository.findByMemberAndCreatedDateBetween(testMember, startDate, endDate))
                 .thenReturn(testOrders.subList(0, 1)); // 주어진 기간 내 주문만 반환
 
-        // When
+        // when
         List<OrdersHisDto> result = orderService.findOrderHistoryByPeriod(1L, LocalDate.now().minusMonths(2), LocalDate.now());
 
-        // Then
-        assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getOrderId());
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getOrderId()).isEqualTo(1L);
     }
 
     @Test
     public void failGetOrderHistoryByPeriodUserNotFound() {
-        // Given
+        // given
         when(memberRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // When, Then
-        assertThrows(ResponseStatusException.class, () -> {
+        // when, then
+        assertThatThrownBy(() -> {
             orderService.findOrderHistoryByPeriod(1L, LocalDate.now().minusMonths(2), LocalDate.now());
-        });
+        })
+                .isInstanceOf(ResponseStatusException.class);
+
     }
 }

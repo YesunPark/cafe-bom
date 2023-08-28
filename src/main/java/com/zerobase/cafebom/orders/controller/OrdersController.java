@@ -1,5 +1,7 @@
 package com.zerobase.cafebom.orders.controller;
 
+import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
@@ -15,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+
 @Controller
 @RequiredArgsConstructor
 public class OrdersController {
@@ -26,6 +30,8 @@ public class OrdersController {
 
     private final MemberRepository memberRepository;
 
+
+    // youngseon 23.08.28
     @GetMapping("/auth/pay-list")
     public ResponseEntity<?> getOrderHistoryList(
             @RequestParam("memberId") Long memberId,
@@ -38,7 +44,9 @@ public class OrdersController {
 
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "기간별 조회에는 시작일과 종료일이 모두 필요합니다.");
+            throw new CustomException(MEMBER_NOT_EXISTS);
+
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "기간별 조회에는 시작일과 종료일이 모두 필요합니다.");
         }
 
         List<OrdersHisDto> orderHisDtoList;
