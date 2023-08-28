@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.*;
 
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
-@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -35,7 +33,7 @@ public class Product extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private ProductStatus isSoldOut;
+    private SoldOutStatus soldOutStatus;
 
     @NotNull
     private String picture;
