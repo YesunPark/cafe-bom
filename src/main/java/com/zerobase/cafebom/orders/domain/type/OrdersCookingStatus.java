@@ -1,9 +1,8 @@
 package com.zerobase.cafebom.orders.domain.type;
 
-public enum OrdersStatus {
+public enum OrdersCookingStatus {
 
-  CANCELED,
-  WAITING,
+  NONE,
   COOKING,
   PREPARED,
   FINISHED

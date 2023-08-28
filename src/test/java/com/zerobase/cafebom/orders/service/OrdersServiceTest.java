@@ -19,6 +19,7 @@ import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto.OrderedProductDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto.Request;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
@@ -64,7 +65,7 @@ class OrdersServiceTest {
     private TokenProvider tokenProvider;
 
     String token = "Bearer token";
-    OrdersAddDto.Request ordersAddDto = OrdersAddDto.Request.builder()
+    Request ordersAddDto = Request.builder()
         .payment(Payment.KAKAO_PAY)
         .products(Collections.singletonList(OrderedProductDto.builder()
             .productId(1)

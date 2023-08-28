@@ -2,8 +2,9 @@ package com.zerobase.cafebom.orders.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.member.domain.entity.Member;
+import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.OrdersStatus;
+import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import java.time.LocalDateTime;
@@ -43,22 +44,24 @@ public class Orders extends BaseTimeEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private OrdersStatus status;
+    private OrdersCookingStatus cookingStatus;
 
     @Enumerated(EnumType.STRING)
     private OrdersCookingTime cookingTime;
 
     @NotNull
-    private boolean isCanceled;
-
-    private LocalDateTime acceptanceTime;
+    @Enumerated(EnumType.STRING)
+    private OrdersReceiptStatus receiptStatus;
 
     public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {
         return Orders.builder()
             .member(member)
             .payment(dto.getPayment())
-            .status(OrdersStatus.WAITING)
-            .isCanceled(false)
+            .cookingStatus(OrdersCookingStatus.NONE)
+            .cookingTime(null)
+            .receiptStatus(OrdersReceiptStatus.WAITING)
             .build();
     }
+
+    private LocalDateTime receivedTime;
 }
