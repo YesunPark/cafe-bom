@@ -41,7 +41,7 @@ public class OrdersController {
     // minsu-23.08.23
     @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다")
     @GetMapping("/auth/orders-elapsed-time/{ordersId}")
-    public ResponseEntity<OrdersElapsedFindDto> ElapsedTimeDetail(@PathVariable Long ordersId) {
+    public ResponseEntity<OrdersElapsedFindDto> elapsedTimeGet(@PathVariable Long ordersId) {
         Long elapsedTimeMinutes = ordersService.getElapsedTime(ordersId);
         OrdersElapsedFindDto response = OrdersElapsedFindDto.builder()
             .elapsedTimeMinutes(elapsedTimeMinutes)
