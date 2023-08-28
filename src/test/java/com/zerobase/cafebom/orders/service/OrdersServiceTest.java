@@ -1,21 +1,32 @@
 package com.zerobase.cafebom.orders.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
+import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
+import com.zerobase.cafebom.option.domain.entity.Option;
+import com.zerobase.cafebom.option.repository.OptionRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto.OrderedProductDto;
+import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
+import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.security.TokenProvider;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,13 +47,16 @@ class OrdersServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
-
     @Mock
     private OrdersRepository ordersRepository;
-
     @Mock
     private ProductRepository productRepository;
-
+    @Mock
+    private OptionRepository optionRepository;
+    @Mock
+    private OrdersProductRepository ordersProductRepository;
+    @Mock
+    private OrdersProductOptionRepository ordersProductOptionRepository;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -56,35 +70,44 @@ class OrdersServiceTest {
             .optionIds(Arrays.asList(1, 2))
             .build()))
         .build();
-    ;
+
     Member member = Member.builder()
-        .id(2L)
+        .id(1L)
         .password("password")
         .nickname("testNickname")
         .phone("01022223333")
         .email("test@naber.com")
         .role(Role.ROLE_USER)
         .build();
+
     Orders orders = Orders.fromAddOrdersDto(ordersAddDto, member);
+
+    Product product = Product.builder()
+        .id(1)
+        .name("test")
+        .build();
 
 
     @BeforeEach
     public void setUp() {
-        given(tokenProvider.getId(token)).willReturn(2L);
+        given(tokenProvider.getId(token)).willReturn(1L);
     }
 
-    // yesun-23.08.27
+    // yesun-23.08.28
     @Test
-    @DisplayName("주문 저장 성공")
+    @DisplayName("주문 저장 성공 - 결제수단, 상품/옵션 목록을 통해 주문")
     void successAddOrders() {
         // given
-        given(memberRepository.findById(2L))
-            .willReturn(Optional.ofNullable(member));
-        given(productRepository.findById(1)).willReturn(
-            Optional.ofNullable(Product.builder().build()));
-        given(ordersRepository.save(
-            Orders.fromAddOrdersDto(ordersAddDto, member)))
-            .willReturn(orders);
+        given(tokenProvider.getId(token)).willReturn(member.getId());
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(productRepository.findById(1)).willReturn(Optional.of(product));
+        given(ordersRepository.save(any(Orders.class))).willReturn(orders);
+        given(ordersProductRepository.save(any(OrdersProduct.class))).willReturn(
+            OrdersProduct.builder()
+                .ordersId(1L)
+                .build());
+        given(optionRepository.findById(any())).willReturn(
+            Optional.ofNullable(Option.builder().id(1).build()));
 
         // when
         ordersService.addOrders(token, ordersAddDto);
@@ -93,18 +116,18 @@ class OrdersServiceTest {
         then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
     }
 
+    // yesun-23.08.28
     @Test
-    @DisplayName("주문 저장 실패")
-    void failAddOrders() {
+    @DisplayName("주문 저장 실패 - 존재하지 않는 회원 ID로 요청")
+    void failAddOrdersMemberNotExists() {
         // given
-        given(memberRepository.findById(2L))
-            .willReturn(Optional.ofNullable(Member.builder()
-                .build()));
-//        given(accountRepository.save(any())).willReturn(accountEntity);
-
-        // when
-        ordersService.addOrders(token, ordersAddDto);
+        given(memberRepository.findById(member.getId()))
+            .willReturn(Optional.empty());
 
         // then
+        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
+        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
     }
 }
