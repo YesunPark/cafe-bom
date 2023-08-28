@@ -45,8 +45,6 @@ public class OrdersController {
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
 
             throw new CustomException(MEMBER_NOT_EXISTS);
-
-            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "기간별 조회에는 시작일과 종료일이 모두 필요합니다.");
         }
 
         List<OrdersHisDto> orderHisDtoList;

@@ -2,7 +2,6 @@ package com.zerobase.cafebom.orders.repository;
 
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.security.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +26,7 @@ public class OrdersRepositoryTest {
 
 
 
+  //youngseon 23-08-28
   @Test
   @DisplayName("특정 회원 및 생성일에 대한 주문 조회 - 성공")
   public void successGetOrdersByMemberAndCreatedDate() {
@@ -50,6 +50,7 @@ public class OrdersRepositoryTest {
     verify(ordersRepository, times(1)).findByMemberAndCreatedDateAfter(member, createdDate);
   }
 
+  //youngseon 23-08-28
   @Test
   @DisplayName("특정 회원의 주문 조회 - 성공")
   public void successGetOrdersByMember() {
@@ -58,7 +59,7 @@ public class OrdersRepositoryTest {
             .email("")
             .phone("")
             .role(Role.ROLE_USER)
-            .id(2L)
+            .id(1L)
             .nickname("")
             .build();
     List<Orders> ordersList = new ArrayList<>();
@@ -72,6 +73,7 @@ public class OrdersRepositoryTest {
     verify(ordersRepository, times(1)).findByMember(member);
   }
 
+  //youngseon 23-08-28
   @Test
   @DisplayName("특정 기간 동안 회원의 주문 조회 - 성공")
   public void successGetOrdersByMemberAndDates() {
@@ -80,7 +82,7 @@ public class OrdersRepositoryTest {
             .email("")
             .phone("")
             .role(Role.ROLE_USER)
-            .id(3L)
+            .id(1L)
             .nickname("")
             .build();
     LocalDateTime startDate = LocalDateTime.now().minusDays(7);
