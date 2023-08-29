@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.product.controller.form;
 
 import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class ProductForm {
 
-    private ProductCategory productCategoryId;
+    private Integer productCategoryId;
 
     @Schema(description = "상품명", example = "아메리카노")
     @Pattern(regexp = "^[가-힣a-zA-Z]+$", message = "상품명은 한글, 영어 대소문자만 입력해야 합니다.")

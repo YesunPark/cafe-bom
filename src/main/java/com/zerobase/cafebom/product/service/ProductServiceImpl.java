@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final S3UploaderService s3UploaderService;
     private final MemberRepository memberRepository;
+    private final EntityManager entityManager;
 
     // 관리자 상품 등록-jiyeon-23.08.25
     @Transactional
@@ -31,23 +33,25 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto addProduct(MultipartFile image, ProductForm productForm) throws IOException {
         String pictureUrl = s3UploaderService.uploadFileToS3(image, "dirName");
 
-        ProductCategory productCategoryId = productForm.getProductCategoryId();
+        Integer productCategoryId = productForm.getProductCategoryId();
+        ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product category id: " + productCategoryId));
 
         Product product = Product.builder()
                 .name(productForm.getName())
                 .description(productForm.getDescription())
-                .productCategory(productCategoryId)
+                .productCategory(productCategory)
                 .price(productForm.getPrice())
                 .soldOutStatus(productForm.getSoldOutStatus())
                 .picture(pictureUrl)
                 .build();
         Product productAdd = productRepository.save(product);
-
         return ProductDto.from(productAdd);
     }
 
     // 관리자 상품 수정-jiyeon-23.08.25
     @Override
+    @Transactional
     public boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException {
         Optional<Product> updateProduct = productRepository.findById(id);
 
@@ -69,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
                         .build();
             }
 
-            productRepository.save(productToUpdate);
+            System.out.println("productToUpdate = " + productToUpdate.toString());
             return true;
         }
 
