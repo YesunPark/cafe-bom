@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.productoptioncategory.repository;
 
-import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;

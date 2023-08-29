@@ -2,7 +2,7 @@ package com.zerobase.cafebom.product.service.dto;
 
 import com.zerobase.cafebom.option.domain.entity.Option;
 import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productoptioncategory.domain.entity.ProductOptionCategory;
 import java.util.List;
 import java.util.Map;
