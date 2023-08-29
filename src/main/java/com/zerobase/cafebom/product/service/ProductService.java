@@ -26,6 +26,7 @@ public class ProductService {
 
     private final OptionRepository optionRepository;
 
+    // wooyoung-23.08.28
     public ProductDetailDto findProductDetails(Integer productId) {
 
         Product product = productRepository.findById(productId)
