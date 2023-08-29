@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Orders-controller", description = "주문 관련 API")
+@Tag(name = "orders-controller", description = "주문 관련 API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth/pay")
