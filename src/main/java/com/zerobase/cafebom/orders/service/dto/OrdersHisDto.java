@@ -17,12 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 public class OrdersHisDto {
 
-
-
-
-
-
-
     public OrdersHisDto (Orders order)
     {
 
@@ -32,13 +26,7 @@ public class OrdersHisDto {
 
         this.ordersReceiptStatus = order.getReceiptStatus();
 
-
-
     }
-
-
-
-
 
     private Long orderId;
 
@@ -50,7 +38,6 @@ public class OrdersHisDto {
 
     public void addOrderProductDto(OrdersProductDto ordersProductDto)
     {
-
         orderedProductsList.add(ordersProductDto);
     }
 

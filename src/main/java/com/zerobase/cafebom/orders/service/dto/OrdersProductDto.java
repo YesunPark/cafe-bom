@@ -25,12 +25,6 @@ public class OrdersProductDto {
     }
 
 
-
-
-
-
-
-
     private String productName;
 
 
