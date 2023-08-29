@@ -18,11 +18,11 @@ public class OrdersAddForm {
     private Payment payment;
 
     @NotNull(message = "결제 수단은 필수로 입력해야 합니다.")
-    private List<OrderedProductForm> products;
+    private List<ProductOrderedForm> products;
 
     @Getter
     @Builder
-    public static class OrderedProductForm {
+    public static class ProductOrderedForm {
 
         @Schema(description = "상품 ID", example = "1")
         @NotBlank(message = "상품 ID는 필수로 입력해야 합니다.")

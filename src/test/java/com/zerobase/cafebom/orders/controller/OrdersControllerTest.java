@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm.OrderedProductForm;
+import com.zerobase.cafebom.orders.controller.form.OrdersAddForm.ProductOrderedForm;
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
@@ -42,8 +42,8 @@ class OrdersControllerTest {
         // given
         OrdersAddForm form = OrdersAddForm.builder()
             .payment(Payment.KAKAO_PAY)
-            .products(List.of(new OrderedProductForm[]{
-                OrderedProductForm.builder()
+            .products(List.of(new ProductOrderedForm[]{
+                ProductOrderedForm.builder()
                     .productId(1)
                     .optionIds(List.of(new Integer[]{1, 2, 3}))
                     .build()}))
@@ -65,8 +65,8 @@ class OrdersControllerTest {
         // given
         OrdersAddForm form = OrdersAddForm.builder()
             .payment(Payment.KAKAO_PAY)
-            .products(List.of(new OrderedProductForm[]{
-                OrderedProductForm.builder()
+            .products(List.of(new ProductOrderedForm[]{
+                ProductOrderedForm.builder()
                     .productId(1)
                     .optionIds(List.of(new Integer[]{1, 2, 3}))
                     .build()}))
@@ -87,8 +87,8 @@ class OrdersControllerTest {
         // given
         OrdersAddForm form = OrdersAddForm.builder()
             .products(List.of(
-                new OrderedProductForm[]{
-                    OrderedProductForm.builder()
+                new ProductOrderedForm[]{
+                    ProductOrderedForm.builder()
                         .productId(1)
                         .optionIds(List.of(new Integer[]{1, 2, 3}))
                         .build()}))
@@ -111,8 +111,8 @@ class OrdersControllerTest {
 //        OrdersAddForm form = OrdersAddForm.builder()
 //            .payment(Payment.KAKAO_PAY)
 //            .products(List.of(
-//                new OrderedProductForm[]{
-//                    OrderedProductForm.builder()
+//                new ProductOrderedForm[]{
+//                    ProductOrderedForm.builder()
 //                        .productId(0)
 //                        .optionIds(List.of(new Integer[]{1, 2, 3}))
 //                        .build()}))

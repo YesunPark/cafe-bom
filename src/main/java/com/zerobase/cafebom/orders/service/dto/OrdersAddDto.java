@@ -19,7 +19,7 @@ public class OrdersAddDto {
 
         private Payment payment;
 
-        private List<OrderedProductDto> products;
+        private List<ProductOrderedDto> products;
 
         public static OrdersAddDto.Request from(OrdersAddForm form) {
             return OrdersAddDto.Request.builder()
@@ -27,7 +27,7 @@ public class OrdersAddDto {
                 .products(
                     form.getProducts()
                         .stream().map(orderedProductForm ->
-                            OrderedProductDto.builder()
+                            ProductOrderedDto.builder()
                                 .productId(orderedProductForm.getProductId())
                                 .optionIds(orderedProductForm.getOptionIds())
                                 .build())
@@ -41,7 +41,7 @@ public class OrdersAddDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class OrderedProductDto {
+    public static class ProductOrderedDto {
 
         private Integer productId;
 

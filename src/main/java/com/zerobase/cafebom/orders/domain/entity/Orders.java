@@ -53,6 +53,8 @@ public class Orders extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrdersReceiptStatus receiptStatus;
 
+    private LocalDateTime receivedTime;
+
     public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {
         return Orders.builder()
             .member(member)
@@ -62,6 +64,4 @@ public class Orders extends BaseTimeEntity {
             .receiptStatus(OrdersReceiptStatus.WAITING)
             .build();
     }
-
-    private LocalDateTime receivedTime;
 }
