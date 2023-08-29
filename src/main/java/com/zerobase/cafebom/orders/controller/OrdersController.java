@@ -1,8 +1,10 @@
 package com.zerobase.cafebom.orders.controller;
 
+import com.zerobase.cafebom.orders.controller.form.OrdersReceiptModifyForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.service.dto.OrdersElapsedFindDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,5 +49,17 @@ public class OrdersController {
             .elapsedTimeMinutes(elapsedTimeMinutes)
             .build();
         return ResponseEntity.ok(response);
+    }
+
+    // minsu-23.08.25
+    @ApiOperation(value = "주문 수락 또는 거절", notes = "관리자가 주문을 수락 또는 거절합니다.")
+    @PatchMapping("/admin/orders-receipt-status/{ordersId}")
+    public ResponseEntity<String> ordersReceiptModify(
+        @PathVariable Long ordersId,
+        @RequestBody OrdersReceiptModifyForm ordersReceiptModifyForm) {
+
+        ordersService.modifyOrdersReceiptStatus(ordersId,
+            OrdersReceiptModifyDto.from(ordersReceiptModifyForm));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

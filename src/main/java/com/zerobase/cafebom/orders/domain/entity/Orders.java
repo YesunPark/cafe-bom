@@ -61,4 +61,8 @@ public class Orders extends BaseTimeEntity {
         }
         this.cookingStatus = newStatus;
     }
+
+    public void modifyReceiptStatus(OrdersReceiptStatus newReceiptStatus) {
+        this.receiptStatus = newReceiptStatus;
+    }
 }

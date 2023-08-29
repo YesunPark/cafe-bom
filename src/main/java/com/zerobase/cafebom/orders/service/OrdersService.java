@@ -1,13 +1,19 @@
 package com.zerobase.cafebom.orders.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
+import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
+import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
+import com.zerobase.cafebom.orders.service.dto.OrdersCookingTimeModifyDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -69,5 +75,28 @@ public class OrdersService {
         Duration duration = Duration.between(receivedTime, currentTime);
 
         return duration.toMinutes();
+    }
+
+    // 주문 수락 또는 거절-minsu-23.08.25
+    @Transactional
+    public void modifyOrdersReceiptStatus(Long ordersId,
+        OrdersReceiptModifyDto ordersReceiptModifyDto) {
+        Orders orders = ordersRepository.findById(ordersId)
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+
+        OrdersReceiptStatus newReceiptStatus = ordersReceiptModifyDto.getNewReceiptStatus();
+
+        if (newReceiptStatus == OrdersReceiptStatus.RECEIVED) {
+            orders.modifyReceivedTime(OrdersCookingStatus.COOKING);
+        }
+
+        if (orders.getReceiptStatus() == OrdersReceiptStatus.CANCELED
+            || orders.getReceiptStatus() == OrdersReceiptStatus.REJECTED) {
+            throw new CustomException(ORDERS_ALREADY_CANCELED);
+        }
+
+        orders.modifyReceiptStatus(newReceiptStatus);
+
+        ordersRepository.save(orders);
     }
 }
