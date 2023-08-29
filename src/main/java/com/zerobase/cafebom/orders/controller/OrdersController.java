@@ -1,8 +1,10 @@
 package com.zerobase.cafebom.orders.controller;
 
+import com.zerobase.cafebom.orders.controller.form.OrdersCookingTimeModifyForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersReceiptModifyForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
 import com.zerobase.cafebom.orders.service.OrdersService;
+import com.zerobase.cafebom.orders.service.dto.OrdersCookingTimeModifyDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersElapsedFindDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
@@ -68,6 +70,18 @@ public class OrdersController {
     @PatchMapping("/auth/orders-cancel/{ordersId}")
     public ResponseEntity<String> ordersCancelModify(@PathVariable Long ordersId) {
         ordersService.modifyOrdersCancel(ordersId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    // minsu-23.08.27
+    @ApiOperation(value = "주문 조리 예정 시간 선택", notes = "관리자가 수락된 주문 조리 예정 시간을 선택합니다.")
+    @PatchMapping("/admin/orders-cooking-time/{ordersId}")
+    public ResponseEntity<String> ordersCookingTimeModify(
+        @PathVariable Long ordersId,
+        @RequestBody OrdersCookingTimeModifyForm cookingTimeModifyForm) {
+
+        ordersService.modifyOrdersCookingTime(ordersId,
+            OrdersCookingTimeModifyDto.from(cookingTimeModifyForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

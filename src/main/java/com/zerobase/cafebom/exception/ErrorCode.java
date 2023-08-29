@@ -17,7 +17,9 @@ public enum ErrorCode {
     ORDERS_NOT_FOUND("해당 주문이 없습니다.", HttpStatus.NOT_FOUND),
     ORDERS_ALREADY_COOKING_STATUS("이미 조리 중인 주문입니다.", HttpStatus.BAD_REQUEST),
     ORDERS_NOT_COOKING_STATUS("조리 중인 주문이 아닙니다.", HttpStatus.BAD_REQUEST),
-    ORDERS_ALREADY_CANCELED("이미 취소된 주문입니다.", HttpStatus.BAD_REQUEST);
+    ORDERS_ALREADY_CANCELED("이미 취소된 주문입니다.", HttpStatus.BAD_REQUEST),
+    ORDERS_NOT_RECEIVED_STATUS("수락되지 않은 주문입니다.", HttpStatus.BAD_REQUEST),
+    ORDERS_COOKING_TIME_ALREADY_SET("이미 조리 예정 시간이 설정되어 있습니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

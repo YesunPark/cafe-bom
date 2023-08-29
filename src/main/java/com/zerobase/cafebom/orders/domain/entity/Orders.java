@@ -1,6 +1,9 @@
 package com.zerobase.cafebom.orders.domain.entity;
 
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
+
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
@@ -64,5 +67,13 @@ public class Orders extends BaseTimeEntity {
 
     public void modifyReceiptStatus(OrdersReceiptStatus newReceiptStatus) {
         this.receiptStatus = newReceiptStatus;
+    }
+
+    public void modifyCookingTime(OrdersCookingTime selectCookingTime) {
+        if (this.cookingTime == null) {
+            this.cookingTime = selectCookingTime;
+        } else {
+            throw new CustomException(ORDERS_COOKING_TIME_ALREADY_SET);
+        }
     }
 }
