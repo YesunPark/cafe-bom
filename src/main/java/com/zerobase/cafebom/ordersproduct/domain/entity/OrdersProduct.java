@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.ordersproduct.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +27,8 @@ public class OrdersProduct extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orders_id")
-    private Orders orders;
+    @NotNull
+    private Long ordersId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
