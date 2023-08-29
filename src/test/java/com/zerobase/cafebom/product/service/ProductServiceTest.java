@@ -1,13 +1,12 @@
 package com.zerobase.cafebom.product.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_FOUND;
+import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -34,9 +32,9 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    // wooyoung-23.08.23
+    // wooyoung-23.08.29
     @Test
-    @DisplayName("findProductList 성공")
+    @DisplayName("ProductDto 리스트 가져오기 성공")
     void successFindProductList() {
         // given
         List<Product> productList = new ArrayList<>();
@@ -45,7 +43,6 @@ class ProductServiceTest {
             .id(1)
             .name("커피")
             .build();
-        Byte[] picture = {1, 2, 3};
 
         productList.add(Product.builder()
             .id(1)
@@ -53,13 +50,13 @@ class ProductServiceTest {
             .name("아메리카노")
             .description("시원해요")
             .price(2000)
-            .isSoldOut(false)
-            .picture(picture)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture")
             .build());
 
         given(productCategoryRepository.existsById(1)).willReturn(true);
 
-        given(productRepository.findAllByProductCategoryIdAndIsSoldOutFalse(anyInt()))
+        given(productRepository.findAllByProductCategoryId(1))
             .willReturn(productList);
 
         // when
@@ -69,22 +66,17 @@ class ProductServiceTest {
         assertThat(productDtoList.get(0).getProductId()).isNotNull();
         assertThat(productDtoList.get(0).getName()).isEqualTo("아메리카노");
         assertThat(productDtoList.get(0).getPrice()).isEqualTo(2000);
-        assertThat(productDtoList.get(0).getPicture()).isEqualTo(picture);
+        assertThat(productDtoList.get(0).getPicture()).isEqualTo("picture");
     }
 
-    // wooyoung-23.08.24
+    // wooyoung-23.08.29
     @Test
-    @DisplayName("findProductList 실패 - 존재하지 않는 상품 카테고리")
+    @DisplayName("ProductDto 리스트 가져오기 실패 - 존재하지 않는 상품 카테고리")
     void failFindProductListProductCategoryNotFound() {
-        // given
-
         // when
-        CustomException customException = assertThrows(CustomException.class,
-            () -> productService.findProductList(1));
-
-        // then
-        assertEquals(ErrorCode.PRODUCTCATEGORY_NOT_FOUND, customException.getErrorCode());
-        assertEquals(HttpStatus.BAD_REQUEST, customException.getErrorStatus());
+        assertThatThrownBy(() -> productService.findProductList(1))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(PRODUCTCATEGORY_NOT_FOUND.getMessage());
 
     }
 }

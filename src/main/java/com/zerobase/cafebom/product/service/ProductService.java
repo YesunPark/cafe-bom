@@ -28,7 +28,7 @@ public class ProductService {
             throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_FOUND);
         }
 
-        List<Product> productList = productRepository.findAllByProductCategoryIdAndIsSoldOutFalse(productCategoryId);
+        List<Product> productList = productRepository.findAllByProductCategoryId(productCategoryId);
         List<ProductDto> productDtoList = new ArrayList<>();
 
         for (Product product : productList) {

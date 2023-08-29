@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.controller;
 
 import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
+import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,46 +36,39 @@ class ProductControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // wooyoung-23.08.23
+    // wooyoung-23.08.29
     @Test
     @DisplayName("카테고리 별 상품 조회 성공")
     void successProductList() throws Exception {
         // given
         List<ProductDto> productDtoList = new ArrayList<>();
 
-        Byte[] picture = {1, 2, 3};
-
         productDtoList.add(ProductDto.builder()
             .productId(1)
             .name("아메리카노")
             .price(2000)
-            .picture(picture)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture")
             .build());
 
         given(productService.findProductList(anyInt())).willReturn(productDtoList);
 
         // when
-
-        // then
         mockMvc.perform(get("/product-list/1"))
             .andDo(print())
             .andExpect(jsonPath("$[0].productId").value("1"))
             .andExpect(jsonPath("$[0].name").value("아메리카노"))
             .andExpect(jsonPath("$[0].price").value(2000))
-            // S3 연동 후 작성
-//            .andExpect(jsonPath("$[0].picture").value(picture))
+            .andExpect(jsonPath("$[0].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$[0].picture").value("picture"))
             .andExpect(status().isOk());
     }
 
-    // wooyoung-23.08.24
+    // wooyoung-23.08.29
     @Test
     @DisplayName("카테고리 별 상품 조회 실패 - 입력 타입 불일치")
     void failProductListMethodArgumentTypeMismatch() throws Exception {
-        // given
-
         // when
-
-        // then
         mockMvc.perform(get("/product-list/test"))
             .andDo(print())
             .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))

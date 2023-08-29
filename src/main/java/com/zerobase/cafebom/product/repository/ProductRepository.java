@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
 
-    List<Product> findAllByProductCategoryIdAndIsSoldOutFalse(Integer productCategoryId);
+    List<Product> findAllByProductCategoryId(Integer productCategoryId);
 
 }

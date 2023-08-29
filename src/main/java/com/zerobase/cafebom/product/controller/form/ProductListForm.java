@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.product.controller.form;
 
+import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,15 +22,18 @@ public class ProductListForm {
 
         private Integer price;
 
-        private Byte[] picture;
+        private SoldOutStatus soldOutStatus;
+
+        private String picture;
 
         public static ProductListForm.Response from(ProductDto productDto) {
             return ProductListForm.Response.builder()
-                    .productId(productDto.getProductId())
-                    .name(productDto.getName())
-                    .price(productDto.getPrice())
-                    .picture(productDto.getPicture())
-                    .build();
+                .productId(productDto.getProductId())
+                .name(productDto.getName())
+                .price(productDto.getPrice())
+                .soldOutStatus(productDto.getSoldOutStatus())
+                .picture(productDto.getPicture())
+                .build();
         }
     }
 }

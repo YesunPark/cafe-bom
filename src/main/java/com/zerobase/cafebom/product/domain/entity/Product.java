@@ -35,9 +35,10 @@ public class Product extends BaseTimeEntity {
     private Integer price;
 
     @NotNull
-    private Boolean isSoldOut;
+    @Enumerated(EnumType.STRING)
+    private SoldOutStatus soldOutStatus;
 
     @NotNull
-    private Byte[] picture;
+    private String picture;
 
 }
