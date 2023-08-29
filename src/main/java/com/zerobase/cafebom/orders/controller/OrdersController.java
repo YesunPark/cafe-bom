@@ -62,4 +62,12 @@ public class OrdersController {
             OrdersReceiptModifyDto.from(ordersReceiptModifyForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    // minsu-23.08.25
+    @ApiOperation(value = "주문 취소", notes = "사용자가 주문을 취소합니다.")
+    @PatchMapping("/auth/orders-cancel/{ordersId}")
+    public ResponseEntity<String> ordersCancelModify(@PathVariable Long ordersId) {
+        ordersService.modifyOrdersCancel(ordersId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
