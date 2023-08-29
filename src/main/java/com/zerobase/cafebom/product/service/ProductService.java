@@ -21,6 +21,7 @@ public class ProductService {
 
     private final ProductCategoryRepository productCategoryRepository;
 
+    // wooyoung-23.08.22
     @Transactional
     public List<ProductDto> findProductList(Integer productCategoryId) {
 
