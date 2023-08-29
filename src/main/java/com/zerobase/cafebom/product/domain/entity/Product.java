@@ -10,9 +10,8 @@ import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
-@RequiredArgsConstructor
 @AllArgsConstructor
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
     @Id
@@ -40,7 +39,8 @@ public class Product extends BaseTimeEntity {
     @NotNull
     private String picture;
 
-    public void updateProduct(ProductForm productForm) {
+
+    public void modifyProductForm(ProductForm productForm) {
         if (productForm.getName() != null) {
             this.name = productForm.getName();
         }

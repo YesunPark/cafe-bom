@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.product.controller;
 
+import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
@@ -36,7 +37,7 @@ public class ProductController {
     private final S3UploaderService s3UploaderService;
 
     // jiyeon-23.08.25
-    @ApiOperation(value = "관리자 메뉴 전체조회", notes = "전체 리스트를 조회합니다.")
+    @ApiOperation(value = "상품 전체 조회(관리자)", notes = "관리자가 상품 전체 리스트를 조회합니다")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> ProductList() {
@@ -45,7 +46,7 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
-    @ApiOperation(value = "관리자 상품 Id별 조회", notes = "상품 Id 별로 조회합니다.")
+    @ApiOperation(value = "상품 Id별 조회(관리자)", notes = "관리자가 상품 Id 별로 조회합니다.")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> ProductIdGet(@PathVariable Integer id) {
@@ -60,7 +61,7 @@ public class ProductController {
 
     // jiyeon-23.08.25
 
-    @ApiOperation(value = "관리자 상품 등록", notes = "관리자가 상품을 등록합니다.")
+    @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/add", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductAdd(
@@ -71,19 +72,19 @@ public class ProductController {
             productService.addProduct(image, productForm);
             return new ResponseEntity<>(CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(PRODUCT_NOT_EXISTS, INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ErrorCode.PRODUCT_ADD_FAIL, INTERNAL_SERVER_ERROR);
         }
     }
 
     // jiyeon-23.08.25
     @PreAuthorize("hasRole('ADMIN')")
-    @ApiOperation(value = "관리자 상품 수정", notes = "관리자가 상품Id 별로 수정합니다.")
-    @PutMapping(value = "/update/{id}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> ProductUpdate(
+    @ApiOperation(value = "상품 수정(관리자)", notes = "관리자가 상품Id 별로 수정합니다.")
+    @PutMapping(value = "/{id}", consumes = MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> ProductModify(
             @RequestParam(value = "image") MultipartFile image,
             @PathVariable Integer id,
             ProductForm productForm) throws IOException {
-        boolean isUpdated = productService.updateProduct(image, id, productForm);
+        boolean isUpdated = productService.modifyProduct(image, id, productForm);
         if (isUpdated) {
             return new ResponseEntity<>(OK);
         } else {
@@ -94,8 +95,8 @@ public class ProductController {
 
     // jiyeon-23.08.25
     @PreAuthorize("hasRole('ADMIN')")
-    @ApiOperation(value = "관리자 상품 삭제", notes = "관리자가 상품Id 별로 삭제합니다.")
-    @DeleteMapping("/remove/{id}")
+    @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> ProductRemove(@PathVariable Integer id) {
         boolean removeProduct = productService.removeProduct(id);
         if (removeProduct) {
