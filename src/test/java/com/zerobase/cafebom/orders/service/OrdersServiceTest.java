@@ -122,7 +122,7 @@ class OrdersServiceTest {
         given(memberRepository.findById(member.getId()))
             .willReturn(Optional.empty());
 
-        // then
+        // when, then
         assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(MEMBER_NOT_EXISTS.getMessage());
@@ -140,7 +140,7 @@ class OrdersServiceTest {
             ordersAddDto.getProducts().get(0).getProductId()))
             .willReturn(Optional.empty());
 
-        // then
+        // when, then
         assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(PRODUCT_NOT_EXISTS.getMessage());
@@ -163,7 +163,7 @@ class OrdersServiceTest {
                 .build());
         given(optionRepository.findById(any())).willReturn(Optional.empty());
 
-        // then
+        // when, then
         assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(OPTION_NOT_EXISTS.getMessage());
