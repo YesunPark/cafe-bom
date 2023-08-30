@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.option.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.option.controller.form.OptionModifyForm;
 import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Builder
+@Builder(toBuilder = true)
 public class Option extends BaseTimeEntity {
 
     @Id
@@ -30,4 +31,11 @@ public class Option extends BaseTimeEntity {
     @NotNull
     private Integer price;
 
+    public static Option modifyOption(Option option, OptionModifyForm form, OptionCategory optionCategory) {
+        return Option.builder()
+                .optionCategory(optionCategory)
+                .name(form.getName())
+                .price(form.getPrice())
+                .build();
+    }
 }
