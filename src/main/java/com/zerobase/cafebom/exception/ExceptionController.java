@@ -31,7 +31,7 @@ public class ExceptionController {
                 .build());
     }
 
-    // 컨트롤러 @PathVariable validation 핸들러-wooyoung-23.08.24
+    // 컨트롤러 @PathVariable TypeMismatch 핸들러-wooyoung-23.08.24
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ExceptionResponse> methodArgumentTypeMismatchException() {
         return ResponseEntity
