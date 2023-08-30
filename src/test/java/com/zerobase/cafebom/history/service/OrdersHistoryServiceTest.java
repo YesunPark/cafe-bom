@@ -26,7 +26,7 @@ import org.mockito.quality.Strictness;
 
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT) // 추가
+@MockitoSettings(strictness = Strictness.LENIENT)
 class OrdersHistoryServiceTest {
 
     @InjectMocks
