@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.option.service.dto;
 
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
+import com.zerobase.cafebom.option.controller.form.OptionAddForm;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,18 +10,17 @@ public class OptionAddDto {
 
     private Integer id;
 
-    private OptionCategory optionCategory;
+    private Integer optionCategory;
 
     private String name;
 
     private Integer price;
 
-    public static OptionAddDto from(Option option) {
+    public static OptionAddDto from(OptionAddForm optionAddForm) {
         return OptionAddDto.builder()
-                .id(option.getId())
-                .optionCategory(option.getOptionCategory())
-                .name(option.getName())
-                .price(option.getPrice())
+                .optionCategory(optionAddForm.getOptionCategory())
+                .name(optionAddForm.getName())
+                .price(optionAddForm.getPrice())
                 .build();
     }
 }

@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 public class OptionAddForm {
 
     @Schema(description = "옵션카테고리 아이디", example = "1")
-    @Pattern(regexp = "^[0-9]+$", message = "옵션카테고리 아이디는 숫자만 입력 가능합니다.")
     @Size(min = 1,max = 10,message = "옵션카테고리 아이디는 1~10 자리로 입력해야 합니다.")
     private Integer optionCategory;
 
