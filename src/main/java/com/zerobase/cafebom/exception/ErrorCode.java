@@ -14,8 +14,7 @@ public enum ErrorCode {
     PHONE_ALREADY_EXISTS("이미 존재하는 휴대전화번호입니다.", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     // Option
-    NOT_FOUND_OPTION_CATEGORY("옵션 카테고리를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
-    OPTION_ADD_FAIL("옵션 등록에 실패했습니다.", HttpStatus.BAD_REQUEST);
+    NOT_FOUND_OPTION_CATEGORY("옵션 카테고리를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
     private final String message;
     private final HttpStatus httpStatus;
 }
