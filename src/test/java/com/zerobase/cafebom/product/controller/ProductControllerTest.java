@@ -54,7 +54,7 @@ class ProductControllerTest {
         given(productService.findProductList(anyInt())).willReturn(productDtoList);
 
         // when
-        mockMvc.perform(get("/product-list/1"))
+        mockMvc.perform(get("/product/list/1"))
             .andDo(print())
             .andExpect(jsonPath("$[0].productId").value("1"))
             .andExpect(jsonPath("$[0].name").value("아메리카노"))
@@ -69,7 +69,7 @@ class ProductControllerTest {
     @DisplayName("카테고리 별 상품 조회 실패 - 입력 타입 불일치")
     void failProductListMethodArgumentTypeMismatch() throws Exception {
         // when
-        mockMvc.perform(get("/product-list/test"))
+        mockMvc.perform(get("/product/list/test"))
             .andDo(print())
             .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))
             .andExpect(jsonPath("$.errorMessage").value(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage()))
