@@ -15,8 +15,7 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     // Option
-    OPTION_NOT_EXIST("옵션이 존재하지 않습니다..", HttpStatus.BAD_REQUEST),
-    OPTION_REMOVE_FAIL("옵션 삭제 실패했습니다.", HttpStatus.BAD_REQUEST);
+    NOT_FOUND_OPTION_ID("옵션을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;
