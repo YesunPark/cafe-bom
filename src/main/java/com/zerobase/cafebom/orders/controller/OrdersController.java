@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.zerobase.cafebom.exception.ErrorCode.INVALID_INPUT;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 
 @Controller
@@ -44,7 +45,7 @@ public class OrdersController {
 
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
 
-            throw new CustomException(MEMBER_NOT_EXISTS);
+            throw new CustomException(INVALID_INPUT);
         }
 
         List<OrdersHisDto> orderHisDtoList;
