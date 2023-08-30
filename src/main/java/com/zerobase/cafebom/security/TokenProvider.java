@@ -1,5 +1,4 @@
-package com.zerobase.cafebom.member.security;
-
+package com.zerobase.cafebom.security;
 
 import com.zerobase.cafebom.member.service.AuthService;
 import io.jsonwebtoken.Claims;
@@ -45,21 +44,21 @@ public class TokenProvider {
             .compact();
     }
 
-    // jwt 에서 인증정보 추출-yesun-23.08.21
+    // jwt 에서 인증정보 추출-yesun-23.08.25
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = authService.loadUserByUsername(getPhone(token));
+        UserDetails userDetails = authService.loadUserByUsername(getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",
             userDetails.getAuthorities());
     }
 
-    // 토큰에서 사용자 휴대전화번호 추출-yesun-23.08.21
-    public String getPhone(String token) {
+    // 토큰에서 사용자 이메일 추출-yesun-23.08.25
+    public String getEmail(String token) {
         return parseClaims(token).getSubject();
     }
 
-    // 토큰에서 사용자 id 추출-yesun-23.08.21
+    // 토큰에서 사용자 id 추출-yesun-23.08.25
     public Long getId(String token) {
-        return Long.parseLong(parseClaims(token).getId());
+        return Long.parseLong(parseClaims(removeBearerFromToken(token)).getId());
     }
 
     // 토큰 유효성검사-yesun-23.08.21
@@ -79,5 +78,11 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    // 토큰 인증 타입 제거-yesun-23.08.25
+    private String removeBearerFromToken(String token) {
+        String TOKEN_PREFIX = "Bearer ";
+        return token.substring(TOKEN_PREFIX.length());
     }
 }
