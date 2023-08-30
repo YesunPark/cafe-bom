@@ -1,12 +1,11 @@
 package com.zerobase.cafebom.product.service.dto;
 
 import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NotNull

@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.controller;
 
 import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
-import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

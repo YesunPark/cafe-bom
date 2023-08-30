@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.repository;
 
-import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
-import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.SOLD_OUT;
+import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.SOLD_OUT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.zerobase.cafebom.product.domain.entity.Product;

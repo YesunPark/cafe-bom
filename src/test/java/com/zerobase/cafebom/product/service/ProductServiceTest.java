@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_FOUND;
-import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
