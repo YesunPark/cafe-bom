@@ -63,7 +63,7 @@ public class ProductController {
 
     @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/add", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> ProductAdd(
             HttpServletRequest request,
             @RequestParam(value = "image") MultipartFile image,
