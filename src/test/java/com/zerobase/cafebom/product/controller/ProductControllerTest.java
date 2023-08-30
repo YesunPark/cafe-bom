@@ -135,8 +135,8 @@ class ProductControllerTest {
                         .file(imageFile)
                         .params(params))
 
-                // then
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        // then
+        .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
@@ -161,8 +161,8 @@ class ProductControllerTest {
                         .file(imageFile)
                         .params(params))
 
-                // then
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+        // then
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
@@ -193,8 +193,8 @@ class ProductControllerTest {
                                     return request;
                                 }))
 
-                // then
-                .andExpect(status().isOk());
+        // then
+        .andExpect(status().isOk());
         verify(productService).modifyProduct(any(), eq(1), any(ProductForm.class));
 
     }
@@ -227,8 +227,8 @@ class ProductControllerTest {
                                     return request;
                                 }))
 
-                // then
-                .andExpect(status().isForbidden());
+        // then
+        .andExpect(status().isForbidden());
 
         verify(productService, never()).modifyProduct(any(), eq(1), any(ProductForm.class));
 
