@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static javax.persistence.FetchType.LAZY;
 
 @Builder
 @Getter
