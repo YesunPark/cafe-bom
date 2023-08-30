@@ -32,7 +32,7 @@ public class ProductServiceTest {
 
     // jiyeon-23.08.29
     @Test
-    @DisplayName("관리자 상품 품절여부 수정 성공 테스트")
+    @DisplayName("관리자 상품 품절여부 수정 성공")
     public void successAdminProductSoldOut() {
         // given
         Integer productId = 1;
@@ -63,12 +63,12 @@ public class ProductServiceTest {
 
     // jiyeon-23.08.29
     @Test
-    @DisplayName("관리자 상품 품절여부 수정 실패 테스트")
+    @DisplayName("관리자 상품 품절여부 수정 실패")
     public void failAdminProductSoldOut() {
         // given
         Integer productId = 1;
         SoldOutStatusForm form = SoldOutStatusForm.builder()
-                .soldOutStatus("SOLD_OUT")
+                .soldOutStatus(SoldOutStatus.SOLD_OUT)
                 .build();
 
         when(productRepository.findById(eq(productId))).thenReturn(Optional.empty());
