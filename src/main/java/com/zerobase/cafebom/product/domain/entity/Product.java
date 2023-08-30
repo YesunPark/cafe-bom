@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.*;
 
