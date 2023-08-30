@@ -3,15 +3,16 @@ package com.zerobase.cafebom.option.controller;
 import com.zerobase.cafebom.option.controller.form.OptionModifyForm;
 import com.zerobase.cafebom.option.repository.OptionRepository;
 import com.zerobase.cafebom.option.service.OptionService;
+import com.zerobase.cafebom.option.service.dto.OptionModifyDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import static com.zerobase.cafebom.exception.ErrorCode.OPTION_MODIFY_FAIL;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,11 +27,7 @@ public class OptionController {
     public ResponseEntity<?> OptionModify(
             @PathVariable Integer id,
             @RequestBody OptionModifyForm form) {
-        boolean result = optionService.modifyOption(id, form);
-        if (result) {
-            return new ResponseEntity<>(OK);
-        } else {
-            return new ResponseEntity<>(OPTION_MODIFY_FAIL, BAD_REQUEST);
-        }
+        optionService.modifyOption(id, OptionModifyDto.Request.from(form));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
