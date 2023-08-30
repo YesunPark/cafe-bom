@@ -1,12 +1,11 @@
 package com.zerobase.cafebom.product.controller;
 
-import com.zerobase.cafebom.member.security.TokenProvider;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.ProductService;
 import com.zerobase.cafebom.product.service.S3UploaderService;
+import com.zerobase.cafebom.security.TokenProvider;
 import org.assertj.core.api.Assertions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +30,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.product.domain.entity.SoldOutStatus.SOLD_OUT;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -79,7 +80,7 @@ class ProductControllerTest {
                 .name("아메리카노")
                 .description("아메리카노입니다.")
                 .price(2800)
-                .soldOutStatus(SoldOutStatus.IN_STOCK)
+                .soldOutStatus(IN_STOCK)
                 .picture("url1")
                 .build());
 
@@ -88,7 +89,7 @@ class ProductControllerTest {
                 .name("라떼")
                 .description("라떼입니다.")
                 .price(3800)
-                .soldOutStatus(SoldOutStatus.SOLD_OUT)
+                .soldOutStatus(SOLD_OUT)
                 .picture("url2")
                 .build());
 
@@ -134,8 +135,8 @@ class ProductControllerTest {
                         .file(imageFile)
                         .params(params))
 
-        // then
-        .andExpect(MockMvcResultMatchers.status().isCreated());
+                // then
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
 
@@ -160,8 +161,8 @@ class ProductControllerTest {
                         .file(imageFile)
                         .params(params))
 
-        // then
-        .andExpect(MockMvcResultMatchers.status().isForbidden());
+                // then
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
@@ -192,8 +193,8 @@ class ProductControllerTest {
                                     return request;
                                 }))
 
-        // then
-        .andExpect(status().isOk());
+                // then
+                .andExpect(status().isOk());
         verify(productService).modifyProduct(any(), eq(1), any(ProductForm.class));
 
     }
@@ -226,8 +227,8 @@ class ProductControllerTest {
                                     return request;
                                 }))
 
-        // then
-        .andExpect(status().isForbidden());
+                // then
+                .andExpect(status().isForbidden());
 
         verify(productService, never()).modifyProduct(any(), eq(1), any(ProductForm.class));
 
@@ -258,5 +259,7 @@ class ProductControllerTest {
                         .with(csrf()))
                 .andExpect(status().isForbidden());
     }
+
+
 
 }
