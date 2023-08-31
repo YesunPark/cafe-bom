@@ -10,7 +10,7 @@ public class OptionAddDto {
 
     private Integer id;
 
-    private Integer optionCategory;
+    private Integer optionCategoryId;
 
     private String name;
 
@@ -18,7 +18,7 @@ public class OptionAddDto {
 
     public static OptionAddDto from(OptionAddForm optionAddForm) {
         return OptionAddDto.builder()
-                .optionCategory(optionAddForm.getOptionCategory())
+                .optionCategoryId(optionAddForm.getOptionCategoryId())
                 .name(optionAddForm.getName())
                 .price(optionAddForm.getPrice())
                 .build();
