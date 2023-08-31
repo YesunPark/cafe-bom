@@ -10,7 +10,7 @@ public class OptionModifyDto {
     @Builder
     public static class Request {
 
-        private Integer optionCategory;
+        private Integer optionCategoryId;
 
         private String name;
 
@@ -18,7 +18,7 @@ public class OptionModifyDto {
 
         public static OptionModifyDto.Request from(OptionModifyForm form) {
             return Request.builder()
-                    .optionCategory(form.getOptionCategory())
+                    .optionCategoryId(form.getOptionCategoryId())
                     .name(form.getName())
                     .price(form.getPrice())
                     .build();

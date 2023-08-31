@@ -24,7 +24,7 @@ public class OptionController {
 
     @ApiOperation(value = "옵션 수정(관리자)", notes = "관리자가 옵션을 수정합니다.")
     @PutMapping("/{id}")
-    public ResponseEntity<?> OptionModify(
+    public ResponseEntity<?> optionModify(
             @PathVariable Integer id,
             @RequestBody OptionModifyForm form) {
         optionService.modifyOption(id, OptionModifyDto.Request.from(form));

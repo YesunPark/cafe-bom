@@ -20,7 +20,7 @@ public class OptionServiceImpl implements OptionService {
     // 옵션 수정-jiyeon-23.08.30
     @Override
     public void modifyOption(Integer id, OptionModifyDto.Request request) {
-        Integer optionCategoryId = request.getOptionCategory();
+        Integer optionCategoryId = request.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_OPTION_CATEGORY));
 
@@ -33,11 +33,9 @@ public class OptionServiceImpl implements OptionService {
                 .price(request.getPrice())
                 .build();
 
-        Option option = modifyOption.toBuilder()
+        optionRepository.save(modifyOption.toBuilder()
                 .id(optionId.getId())
-                .build();
-
-        optionRepository.save(option);
+                .build());
 
     }
 }
