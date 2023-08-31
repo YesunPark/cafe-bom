@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 
 import com.zerobase.cafebom.cart.domain.entity.Cart;
@@ -8,7 +9,6 @@ import com.zerobase.cafebom.cart.repository.CartRepository;
 import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
 import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.option.repository.OptionRepository;
@@ -41,7 +41,6 @@ public class OrdersService {
     private final OptionRepository optionRepository;
 
     private final OrdersRepository ordersRepository;
-    private final ProductRepository productRepository;
     private final OrdersProductRepository ordersProductRepository;
     private final OrdersProductOptionRepository ordersProductOptionRepository;
 
@@ -52,7 +51,7 @@ public class OrdersService {
     public void addOrders(String token, OrdersAddForm ordersAddForm) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         Orders savedOrders = ordersRepository.save(Orders.builder()
             .member(memberById)
