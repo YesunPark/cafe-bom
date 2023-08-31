@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.product.controller.form.ProductForm;
+import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.*;
 
@@ -40,18 +40,21 @@ public class Product extends BaseTimeEntity {
     private String picture;
 
 
-    public void modifyProductForm(ProductForm productForm) {
-        if (productForm.getName() != null) {
-            this.name = productForm.getName();
+    public void modifyProductForm(ProductDto productDto, ProductCategory productCategory) {
+        if (productDto.getName() != null) {
+            this.name = productDto.getName();
         }
-        if (productForm.getDescription() != null) {
-            this.description = productForm.getDescription();
+        if (productDto.getProductCategory() != null) {
+            this.productCategory = productCategory;
         }
-        if (productForm.getPrice() != null) {
-            this.price = productForm.getPrice();
+        if (productDto.getDescription() != null) {
+            this.description = productDto.getDescription();
         }
-        if (productForm.getSoldOutStatus() != null) {
-            this.soldOutStatus = productForm.getSoldOutStatus();
+        if (productDto.getPrice() != null) {
+            this.price = productDto.getPrice();
+        }
+        if (productDto.getSoldOutStatus() != null) {
+            this.soldOutStatus = productDto.getSoldOutStatus();
         }
     }
 

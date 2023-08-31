@@ -4,7 +4,6 @@ package com.zerobase.cafebom.product.service;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
@@ -16,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_PRODUCT;
+import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_PRODUCT_CATEGORY;
 
 @Service
 @RequiredArgsConstructor
@@ -51,32 +50,25 @@ public class ProductServiceImpl implements ProductService {
     // 관리자 상품 수정-jiyeon-23.08.25
     @Override
     @Transactional
-    public boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException {
-        Optional<Product> updateProduct = productRepository.findById(id);
+    public void modifyProduct(MultipartFile image, Integer id, ProductDto productDto) throws IOException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
 
-        if (updateProduct.isPresent()) {
-            Product productToUpdate = updateProduct.get();
+        ProductCategory productCategory = productCategoryRepository.findById(productDto.getProductCategory())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT_CATEGORY));
 
-            productToUpdate.modifyProductForm(productForm);
+        product.modifyProductForm(productDto,productCategory);
 
-            if (image != null && !image.isEmpty()) {
-                String oldPicture = productToUpdate.getPicture();
-                if (oldPicture != null) {
-                    s3UploaderService.deleteFile(oldPicture);
-                }
-
-                String newImageUrl = s3UploaderService.uploadFileToS3(image, "dirName");
-
-                productToUpdate = productToUpdate.toBuilder()
-                        .picture(newImageUrl)
-                        .build();
+        if (image != null && !image.isEmpty()) {
+            String oldPicture = product.getPicture();
+            if (oldPicture != null) {
+                s3UploaderService.deleteFile(oldPicture);
             }
-
-            System.out.println("productToUpdate = " + productToUpdate.toString());
-            return true;
+            String newImageUrl = s3UploaderService.uploadFileToS3(image, "dirName");
+            product.toBuilder()
+                    .picture(newImageUrl)
+                    .build();
         }
-
-        return false;
     }
 
     // 관리자 상품 삭제-jiyeon-23.08.25

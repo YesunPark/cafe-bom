@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.product.service;
 
-import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +13,7 @@ public interface ProductService {
     void addProduct(MultipartFile image, ProductDto productDto) throws IOException;
 
     // 상품 수정-jiyeon-23.08.25
-    boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException;
+    void modifyProduct(MultipartFile image, Integer id, ProductDto productDto) throws IOException;
 
     // 상품 삭제-jiyeon-23.08.25
     void removeProduct(Integer id);

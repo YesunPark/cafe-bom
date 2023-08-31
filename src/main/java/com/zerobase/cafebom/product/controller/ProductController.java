@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_UPDATE_FAIL;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -76,13 +75,8 @@ public class ProductController {
             @RequestParam(value = "image") MultipartFile image,
             @PathVariable Integer id,
             ProductForm productForm) throws IOException {
-        boolean isUpdated = productService.modifyProduct(image, id, productForm);
-        if (isUpdated) {
-            return new ResponseEntity<>(OK);
-        } else {
-            return new ResponseEntity<>(PRODUCT_UPDATE_FAIL, BAD_REQUEST);
-
-        }
+        productService.modifyProduct(image, id, ProductDto.from(productForm));
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 
     // jiyeon-23.08.25
