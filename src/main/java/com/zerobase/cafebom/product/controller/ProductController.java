@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.product.controller;
 
 import com.zerobase.cafebom.product.controller.form.SoldOutStatusForm;
-import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,12 +20,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductRepository productRepository;
     private final ProductService productService;
 
     @ApiOperation(value = "상품 품절여부 수정(관리자)", notes = "관리자가 상품의 품절여부를 수정합니다.")
-    @PatchMapping("/soldOut/{id}")
-    public ResponseEntity<?> ProductSoldOutModify(
+    @PatchMapping("/product-status/{id}")
+    public ResponseEntity<?> productSoldOutModify(
             @PathVariable Integer id,
             @Valid SoldOutStatusForm form){
         productService.modifyProductSoldOut(id,form);
