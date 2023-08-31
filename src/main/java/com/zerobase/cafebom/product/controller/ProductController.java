@@ -45,7 +45,6 @@ public class ProductController {
     }
 
     // jiyeon-23.08.25
-
     @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> productAdd(
