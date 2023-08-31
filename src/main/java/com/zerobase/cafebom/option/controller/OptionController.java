@@ -26,21 +26,21 @@ public class OptionController {
 
     @ApiOperation(value = "옵션 삭제(관리자)", notes = "관리자가 옵션을 삭제합니다.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> OptionRemove(@PathVariable Integer id) {
+    public ResponseEntity<?> optionRemove(@PathVariable Integer id) {
         optionService.removeOption(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @ApiOperation(value = "옵션 조회(관리자)", notes = "관리자가 옵션을 조회합니다.")
+    @ApiOperation(value = "옵션 전체 조회(관리자)", notes = "관리자가 옵션을 전체 조회합니다.")
     @GetMapping
-    public ResponseEntity<?> OptionList() {
+    public ResponseEntity<?> optionList() {
         List<OptionForm.Response> optionList = optionService.findAllOption();
         return  ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(optionList);
     }
 
     @ApiOperation(value = "옵션Id별 조회(관리자)", notes = "관리자가 옵션Id를 통해 조회합니다.")
     @GetMapping("/{id}")
-    public ResponseEntity<?> OptionListById(@PathVariable Integer id){
+    public ResponseEntity<?> optionListById(@PathVariable Integer id){
         OptionForm.Response response = optionService.findByIdOption(id);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }

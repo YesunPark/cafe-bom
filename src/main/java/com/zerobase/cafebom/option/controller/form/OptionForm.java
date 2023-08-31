@@ -12,7 +12,7 @@ public class OptionForm {
 
         private Integer id;
 
-        private Integer optionCategory;
+        private Integer optionCategoryId;
 
         private String name;
 
@@ -21,7 +21,7 @@ public class OptionForm {
         public static OptionForm.Response from(Option option) {
             Response response = Response.builder()
                     .id(option.getId())
-                    .optionCategory(option.getOptionCategory().getId())
+                    .optionCategoryId(option.getOptionCategory().getId())
                     .name(option.getName())
                     .price(option.getPrice())
                     .build();
