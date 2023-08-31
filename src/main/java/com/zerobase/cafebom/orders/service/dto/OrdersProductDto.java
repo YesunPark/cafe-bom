@@ -12,9 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrdersProductDto {
 
-
-
-
     public OrdersProductDto (OrdersProduct ordersProduct)
     {
 

@@ -42,7 +42,6 @@ public class OrdersController {
 
 
 
-
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
 
             throw new CustomException(INVALID_INPUT);

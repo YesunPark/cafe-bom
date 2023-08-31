@@ -52,7 +52,7 @@ public class OrdersHistoryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        List<Orders> orders = ordersRepository.findByMember(member); // findByMember 에서 MemberId로 변경
+        List<Orders> orders = ordersRepository.findByMember(member);
         return from(orders);
     }
 

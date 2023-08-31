@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders,Long> {
 
-
     List<Orders> findByMemberAndCreatedDateAfter(Member member, LocalDateTime createdDate);
 
     List<Orders> findByMember(Member member);
