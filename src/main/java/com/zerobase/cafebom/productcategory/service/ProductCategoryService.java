@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 public interface ProductCategoryService {
 
     // 상품 카테고리 수정-jiyeon-23.08.31
-    void modifyProductCategory(Integer id, ProductCategoryDto.Response productCategoryDto);
+    void modifyProductCategory(Integer id, ProductCategoryDto.Request productCategoryDto);
 }

@@ -25,8 +25,8 @@ public class ProductCategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<?> productCategoryModify(
             @PathVariable Integer id,
-            @RequestBody ProductCategoryForm.Response form) {
-        productCategoryService.modifyProductCategory(id, ProductCategoryDto.Response.from(form));
+            @RequestBody ProductCategoryForm.Request form) {
+        productCategoryService.modifyProductCategory(id, ProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 }
