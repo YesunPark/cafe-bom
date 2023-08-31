@@ -13,11 +13,9 @@ public enum ErrorCode {
     NICKNAME_ALREADY_EXISTS("이미 존재하는 닉네임입니다.", HttpStatus.BAD_REQUEST),
     PHONE_ALREADY_EXISTS("이미 존재하는 휴대전화번호입니다.", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
-    // AdminProductService
-    PRODUCT_ADD_FAIL("상품 등록에 실패했습니다.", HttpStatus.BAD_REQUEST),
+
+    // Product
     NOT_FOUND_PRODUCT_CATEGORY("상품 카테고리를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
-    PRODUCT_UPDATE_FAIL("상품 업데이트에 실패했습니다.", HttpStatus.BAD_REQUEST),
-    PRODUCT_REMOVE_FAIL("상품 삭제에 실패했습니다.", HttpStatus.BAD_REQUEST),
     NOT_FOUND_PRODUCT("상품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
