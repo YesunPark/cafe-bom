@@ -1,21 +1,26 @@
 package com.zerobase.cafebom.orders.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
+import com.zerobase.cafebom.cart.domain.entity.Cart;
+import com.zerobase.cafebom.cart.repository.CartRepository;
+import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
+import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.option.repository.OptionRepository;
+import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
+import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
+import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
 import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
-import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
@@ -30,46 +35,59 @@ import org.springframework.stereotype.Service;
 public class OrdersService {
 
     private final MemberRepository memberRepository;
+
+    private final CartRepository cartRepository;
+    private final CartOptionRepository cartOptionRepository;
+    private final OptionRepository optionRepository;
+
     private final OrdersRepository ordersRepository;
     private final ProductRepository productRepository;
     private final OrdersProductRepository ordersProductRepository;
     private final OrdersProductOptionRepository ordersProductOptionRepository;
-    private final OptionRepository optionRepository;
 
     private final TokenProvider tokenProvider;
 
-    // 주문 생성-yesun-23.08.29
+    // 주문 생성-yesun-23.08.31
     @Transactional
-    public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
+    public void addOrders(String token, OrdersAddForm ordersAddForm) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        // Orders 레파지토리 저장
-        Orders orders = ordersRepository.save(Orders.fromAddOrdersDto(ordersAddDto, memberById));
+        Orders savedOrders = ordersRepository.save(Orders.builder()
+            .member(memberById)
+            .payment(ordersAddForm.getPayment())
+            .cookingStatus(OrdersCookingStatus.NONE)
+            .receiptStatus(OrdersReceiptStatus.WAITING)
+            .build());
 
-        ordersAddDto.getProducts()
-            .forEach(product -> {
-                Product productById = productRepository.findById(product.getProductId())
-                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+        // Member Entity 로 사용자 장바구니 전체 조회
+        List<Cart> cartListByMember = cartRepository.findAllByMember(memberById);
+        if (cartListByMember.isEmpty()) {
+            throw new CustomException(CART_IS_EMPTY);
+        }
 
-                // OrdersProduct 레파지토리 저장
-                OrdersProduct ordersProduct = ordersProductRepository.save(
-                    OrdersProduct.builder()
-                        .ordersId(orders.getId())
-                        .product(productById)
-                        .build());
+        // Cart Entity 로 장바구니_옵션 테이블 조회
+        cartListByMember.forEach(cart -> {
+            // 장바구니 테이블의 상품 정보들을 주문_상품 테이블에 저장
+            ordersProductRepository.save(OrdersProduct.builder()
+                .ordersId(savedOrders.getId())
+                .product(cart.getProduct())
+                .build());
 
-                List<Integer> optionIds = product.getOptionIds();
-                optionIds.forEach(optionId ->
-                    // OrdersProductOption 레파지토리 저장
-                    ordersProductOptionRepository.save(
-                        OrdersProductOption.builder()
-                            .ordersProductId(ordersProduct.getId())
-                            .option(optionRepository.findById(optionId)
-                                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS)))
-                            .build())
-                );
-            });
+            // 장바구니_옵션 테이블의 옵션 정보들을 주문_상품_옵션 테이블에 저장
+            List<CartOption> cartOptionList = cartOptionRepository.findAllByCart(cart);
+            cartOptionList.forEach(cartOption ->
+                ordersProductOptionRepository.save(
+                    OrdersProductOption.builder()
+                        .ordersProductId(Long.valueOf(cart.getProduct().getId()))
+                        .option(optionRepository.findById(cartOption.getOption().getId())
+                            .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS)))
+                        .build())
+            );
+        });
+
+        // 장바구니 테이블에서 사용자의 모든 장바구니 정보 삭제
+        cartRepository.deleteAllByMember(memberById);
     }
 }

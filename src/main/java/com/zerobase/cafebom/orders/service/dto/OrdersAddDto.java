@@ -1,9 +1,7 @@
 package com.zerobase.cafebom.orders.service.dto;
 
 import com.zerobase.cafebom.orders.domain.type.Payment;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,21 +18,6 @@ public class OrdersAddDto {
         private Payment payment;
 
         private List<ProductOrderedDto> products;
-
-        public static OrdersAddDto.Request from(OrdersAddForm form) {
-            return OrdersAddDto.Request.builder()
-                .payment(form.getPayment())
-                .products(
-                    form.getProducts()
-                        .stream().map(orderedProductForm ->
-                            ProductOrderedDto.builder()
-                                .productId(orderedProductForm.getProductId())
-                                .optionIds(orderedProductForm.getOptionIds())
-                                .build())
-                        .collect(Collectors.toList())
-                )
-                .build();
-        }
     }
 
     @Getter
@@ -44,6 +27,8 @@ public class OrdersAddDto {
     public static class ProductOrderedDto {
 
         private Integer productId;
+
+        private Integer count;
 
         private List<Integer> optionIds;
     }

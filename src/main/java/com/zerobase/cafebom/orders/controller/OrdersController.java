@@ -1,8 +1,7 @@
 package com.zerobase.cafebom.orders.controller;
 
-import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.service.OrdersService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
@@ -23,15 +22,13 @@ public class OrdersController {
 
     private final OrdersService ordersService;
 
-    // yesun-23.08.29
+    // yesun-23.08.31
     @ApiOperation(value = "주문 내역 저장",
-        notes = "주문한 상품, 상품의 옵션, 결제 수단 등을 받아 주문 테이블에 저장합니다.")
+        notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
     @PostMapping
-    public ResponseEntity<?> ordersAdd(
-        @RequestHeader(name = "Authorization") String token,
-        @Valid @RequestBody OrdersAddForm ordersAddForm
-    ) {
-        ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<?> ordersAdd(@RequestHeader(name = "Authorization") String token,
+        @Valid @RequestBody OrdersAddForm ordersAddForm) {
+        ordersService.addOrders(token, ordersAddForm);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
