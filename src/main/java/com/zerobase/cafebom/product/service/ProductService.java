@@ -11,12 +11,13 @@ import java.io.IOException;
 public interface ProductService {
 
     // 상품 추가-jiyeon-23.08.25
-    ProductDto addProduct(MultipartFile image, ProductForm productForm) throws IOException;
+    void addProduct(MultipartFile image, ProductDto productDto) throws IOException;
+
+    // 상품 수정-jiyeon-23.08.25
+    boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException;
 
     // 상품 삭제-jiyeon-23.08.25
     void removeProduct(Integer id);
 
-    // 상품 수정-jiyeon-23.08.25
-    boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException;
 
 }

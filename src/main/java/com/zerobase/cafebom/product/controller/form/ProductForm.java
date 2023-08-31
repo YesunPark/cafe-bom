@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -34,9 +35,8 @@ public class ProductForm {
     private Integer price;
 
     @Schema(description = "품절여부", example = "SOLD_OUT")
-    @Pattern(regexp = "^[a-zA-Z\\\\p{Punct}]+$", message = "품절여부는 영어, 특수문자만 입력 가능합니다")
     @Size(min = 1, max = 10, message = "품절여부는 1~10 자리로 입력해야 합니다.")
-    @NotBlank(message = "품절여부는 필수로 입력해야 합니다.")
+    @NotNull(message = "품절여부는 필수로 입력해야 합니다.")
     private SoldOutStatus soldOutStatus;
 
     private String picture;

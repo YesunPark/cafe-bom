@@ -2,6 +2,7 @@ package com.zerobase.cafebom.product.service;
 
 
 import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -28,28 +28,24 @@ public class ProductServiceImpl implements ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final S3UploaderService s3UploaderService;
     private final MemberRepository memberRepository;
-    private final EntityManager entityManager;
 
     // 관리자 상품 등록-jiyeon-23.08.25
-    @Transactional
     @Override
-    public ProductDto addProduct(MultipartFile image, ProductForm productForm) throws IOException {
+    public void addProduct(MultipartFile image, ProductDto productDto) throws IOException {
         String pictureUrl = s3UploaderService.uploadFileToS3(image, "dirName");
 
-        Integer productCategoryId = productForm.getProductCategoryId();
+        Integer productCategoryId = productDto.getProductCategory();
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product category id: " + productCategoryId));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_CATEGORY));
 
-        Product product = Product.builder()
-                .name(productForm.getName())
-                .description(productForm.getDescription())
+        productRepository.save(Product.builder()
+                .name(productDto.getName())
+                .description(productDto.getDescription())
                 .productCategory(productCategory)
-                .price(productForm.getPrice())
-                .soldOutStatus(productForm.getSoldOutStatus())
+                .price(productDto.getPrice())
+                .soldOutStatus(productDto.getSoldOutStatus())
                 .picture(pictureUrl)
-                .build();
-        Product productAdd = productRepository.save(product);
-        return ProductDto.from(productAdd);
+                .build());
     }
 
     // 관리자 상품 수정-jiyeon-23.08.25
