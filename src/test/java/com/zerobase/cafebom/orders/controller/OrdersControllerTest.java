@@ -6,11 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm.ProductOrderedForm;
 import com.zerobase.cafebom.orders.domain.type.Payment;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
-import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,43 +34,34 @@ class OrdersControllerTest {
 
     String token = "Bearer token";
 
-    // yesun-23.08.25
-    @Test
-    @DisplayName("주문 저장 성공 - 결제수단, 상품 id, 옵션 id")
-    void successOrdersAdd() throws Exception {
-        // given
-        OrdersAddForm form = OrdersAddForm.builder()
-            .payment(Payment.KAKAO_PAY)
-            .products(List.of(new ProductOrderedForm[]{
-                ProductOrderedForm.builder()
-                    .productId(1)
-                    .optionIds(List.of(new Integer[]{1, 2, 3}))
-                    .build()}))
-            .build();
+    OrdersAddForm.Request form;
 
+    // yesun-23.08.31
+    @BeforeEach
+    public void setUp() {
+        // given
+        form = OrdersAddForm.Request.builder()
+            .payment(Payment.KAKAO_PAY)
+            .build();
+    }
+
+    // yesun-23.08.31
+    @Test
+    @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
+    void successOrdersAdd() throws Exception {
         // when
         mockMvc.perform(post("/auth/pay")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isNoContent())
+            .andExpect(status().is(201))
             .andDo(print());
     }
 
-    // yesun-23.08.25
+    // yesun-23.08.31
     @Test
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
     void failOrdersAddAuthorizationNotPresent() throws Exception {
-        // given
-        OrdersAddForm form = OrdersAddForm.builder()
-            .payment(Payment.KAKAO_PAY)
-            .products(List.of(new ProductOrderedForm[]{
-                ProductOrderedForm.builder()
-                    .productId(1)
-                    .optionIds(List.of(new Integer[]{1, 2, 3}))
-                    .build()}))
-            .build();
-
         // when
         mockMvc.perform(post("/auth/pay")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,18 +70,12 @@ class OrdersControllerTest {
             .andDo(print());
     }
 
-    // yesun-23.08.25
+    // yesun-23.08.31큰
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {
         // given
-        OrdersAddForm form = OrdersAddForm.builder()
-            .products(List.of(
-                new ProductOrderedForm[]{
-                    ProductOrderedForm.builder()
-                        .productId(1)
-                        .optionIds(List.of(new Integer[]{1, 2, 3}))
-                        .build()}))
+        OrdersAddForm.Request form = OrdersAddForm.Request.builder()
             .build();
 
         // when
@@ -102,28 +86,4 @@ class OrdersControllerTest {
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
-
-    // yesun-23.08.25 // 실패해서 임시 주석. 피드백 받고 수정하기
-//    @Test
-//    @DisplayName("주문 저장 실패 - 상품 ID 범위 이탈")
-//    void failOrdersAddInvalidProductId() throws Exception {
-//        // given
-//        OrdersAddForm form = OrdersAddForm.builder()
-//            .payment(Payment.KAKAO_PAY)
-//            .products(List.of(
-//                new ProductOrderedForm[]{
-//                    ProductOrderedForm.builder()
-//                        .productId(0)
-//                        .optionIds(List.of(new Integer[]{1, 2, 3}))
-//                        .build()}))
-//            .build();
-//
-//        // when
-//        mockMvc.perform(post("/auth/pay")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .header("Authorization", token)
-//                .content(objectMapper.writeValueAsString(form)))
-//            .andExpect(status().isBadRequest())
-//            .andDo(print());
-//    }
 }
