@@ -23,4 +23,7 @@ public class ProductCategory extends BaseTimeEntity {
     @NotNull
     private String name;
 
+    public void modifyProductCategory(String productCategoryName) {
+        this.name = productCategoryName;
+    }
 }
