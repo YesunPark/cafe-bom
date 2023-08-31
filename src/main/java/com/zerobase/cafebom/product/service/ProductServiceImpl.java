@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.service;
 
 
+import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.product.controller.form.ProductForm;
 import com.zerobase.cafebom.product.domain.entity.Product;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_PRODUCT;
 
 @Service
 @RequiredArgsConstructor
@@ -82,13 +85,10 @@ public class ProductServiceImpl implements ProductService {
 
     // 관리자 상품 삭제-jiyeon-23.08.25
     @Override
-    public boolean removeProduct(Integer id) {
-        Optional<Product> productDeleteId = productRepository.findById(id);
-        if (productDeleteId.isPresent()) {
-            productRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void removeProduct(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
+        productRepository.deleteById(product.getId());
     }
 
 }

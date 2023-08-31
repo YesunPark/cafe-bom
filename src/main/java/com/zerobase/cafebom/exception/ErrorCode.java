@@ -17,7 +17,7 @@ public enum ErrorCode {
     PRODUCT_ADD_FAIL("상품 등록에 실패했습니다.", HttpStatus.BAD_REQUEST),
     PRODUCT_UPDATE_FAIL("상품 업데이트에 실패했습니다.", HttpStatus.BAD_REQUEST),
     PRODUCT_REMOVE_FAIL("상품 삭제에 실패했습니다.", HttpStatus.BAD_REQUEST),
-    PRODUCT_NOT_EXISTS("상품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    NOT_FOUND_PRODUCT("상품이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

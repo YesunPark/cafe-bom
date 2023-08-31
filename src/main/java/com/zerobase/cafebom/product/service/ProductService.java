@@ -14,7 +14,7 @@ public interface ProductService {
     ProductDto addProduct(MultipartFile image, ProductForm productForm) throws IOException;
 
     // 상품 삭제-jiyeon-23.08.25
-    boolean removeProduct(Integer id);
+    void removeProduct(Integer id);
 
     // 상품 수정-jiyeon-23.08.25
     boolean modifyProduct(MultipartFile image, Integer id, ProductForm productForm) throws IOException;

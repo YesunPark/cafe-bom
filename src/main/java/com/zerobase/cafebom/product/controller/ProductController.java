@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.zerobase.cafebom.exception.ErrorCode.*;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_UPDATE_FAIL;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -98,14 +98,7 @@ public class ProductController {
     @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> ProductRemove(@PathVariable Integer id) {
-        boolean removeProduct = productService.removeProduct(id);
-        if (removeProduct) {
-            return new ResponseEntity<>(OK);
-        } else {
-            return new ResponseEntity<>(PRODUCT_REMOVE_FAIL, NOT_FOUND);
-        }
+        productService.removeProduct(id);
+        return ResponseEntity.status(NO_CONTENT).build();
     }
-
-
-
 }
