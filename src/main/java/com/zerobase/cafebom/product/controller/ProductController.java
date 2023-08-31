@@ -6,7 +6,6 @@ import com.zerobase.cafebom.product.service.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public class ProductController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> productList() {
         List<ProductForm.Response> productList = productService.findProductList();
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(productList);
+        return ResponseEntity.ok().body(productList);
     }
 
     // jiyeon-23.08.25
@@ -42,7 +41,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> productIdGet(@PathVariable Integer id) {
         ProductForm.Response response = productService.findProductById(id);
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+        return ResponseEntity.ok().body(response);
     }
 
     // jiyeon-23.08.25
