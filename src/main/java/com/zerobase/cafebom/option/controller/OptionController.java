@@ -26,7 +26,7 @@ public class OptionController {
 
     @ApiOperation(value = "옵션 등록(관리자)", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
-    public ResponseEntity<?> OptionAdd(@RequestBody OptionAddForm optionAddForm) {
+    public ResponseEntity<?> optionAdd(@RequestBody OptionAddForm optionAddForm) {
         optionService.addOption(OptionAddDto.from(optionAddForm));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
