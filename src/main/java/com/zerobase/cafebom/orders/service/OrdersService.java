@@ -12,16 +12,15 @@ import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
 import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
-import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -48,14 +47,14 @@ public class OrdersService {
 
     // 주문 생성-yesun-23.08.31
     @Transactional
-    public void addOrders(String token, OrdersAddForm ordersAddForm) {
+    public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         Orders savedOrders = ordersRepository.save(Orders.builder()
             .member(memberById)
-            .payment(ordersAddForm.getPayment())
+            .payment(ordersAddDto.getPayment())
             .cookingStatus(OrdersCookingStatus.NONE)
             .receiptStatus(OrdersReceiptStatus.WAITING)
             .build());

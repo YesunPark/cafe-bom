@@ -2,6 +2,7 @@ package com.zerobase.cafebom.orders.controller;
 
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.service.OrdersService;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
@@ -27,8 +28,8 @@ public class OrdersController {
         notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
     @PostMapping
     public ResponseEntity<?> ordersAdd(@RequestHeader(name = "Authorization") String token,
-        @Valid @RequestBody OrdersAddForm ordersAddForm) {
-        ordersService.addOrders(token, ordersAddForm);
+        @Valid @RequestBody OrdersAddForm.Request ordersAddForm) {
+        ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
