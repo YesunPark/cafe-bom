@@ -41,6 +41,7 @@ class OrdersHistoryServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    //youngseon-23.08.28
     @Test
     @DisplayName("3개월 주문 내역 조회 - 성공")
     public void successGetOrderHistoryFor3Months() {
@@ -59,6 +60,7 @@ class OrdersHistoryServiceTest {
         assertThat(result).isEmpty();
     }
 
+    //youngseon-23.08.28
     @Test
     @DisplayName("전체 주문 내역 조회 - 성공")
     public void successGetAllOrderHistory() {
@@ -76,6 +78,7 @@ class OrdersHistoryServiceTest {
         assertThat(result).isEmpty();
     }
 
+    //youngseon-23.08.28
     @Test
     @DisplayName("기간별 주문 내역 조회 - 성공")
     public void successGetOrderHistoryByPeriod() {

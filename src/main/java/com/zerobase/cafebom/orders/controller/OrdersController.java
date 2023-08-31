@@ -32,7 +32,7 @@ public class OrdersController {
     private final MemberRepository memberRepository;
 
 
-    // youngseon 23.08.28
+    // youngseon-23.08.28
     @GetMapping("/auth/pay-list")
     public ResponseEntity<?> getOrderHistoryList(
             @RequestParam("memberId") Long memberId,

@@ -35,7 +35,7 @@ public class OrdersHistoryService {
 
     private final MemberRepository memberRepository;
 
-    //youngseon 23.08.28
+    //지난 3개월 동안에 정보를 조회하는 기능- youngseon-23.08.28
     public List<OrdersHisDto> findOrderHistoryFor3Months(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
@@ -46,7 +46,7 @@ public class OrdersHistoryService {
         return from(orders);
     }
 
-    // youngseon 23.08.28
+    // 모든 주문 정보를 조회하는 기능- youngseon-23.08.28
     public List<OrdersHisDto> findAllOrderHistory(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
@@ -56,7 +56,7 @@ public class OrdersHistoryService {
         return from(orders);
     }
 
-    // youngseon 23.08.28
+    // 정해진 기간의 정보를 조회하는 기능- youngseon-23.08.28
     public List<OrdersHisDto> findOrderHistoryByPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
 
         Member member = memberRepository.findById(memberId)
@@ -68,7 +68,7 @@ public class OrdersHistoryService {
         return from(orders);
     }
 
-    //youngseon 23.08.28
+    //주문 정보중 사용자에게 보여줄 정보를 담아서 반환하는 기능- youngseon-23.08.28
     public List<OrdersHisDto> from(List<Orders> orders) {
 
         List<OrdersHisDto> ordersHisDtoList = new ArrayList<>();
