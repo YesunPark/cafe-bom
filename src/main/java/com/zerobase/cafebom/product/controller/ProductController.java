@@ -12,10 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "product-controller", description = "상품 관련 API")
 @RestController
+@RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -23,7 +25,7 @@ public class ProductController {
 
     // wooyoung-23.08.22
     @ApiOperation(value = "상품 카테고리 별 상품 목록 조회", notes = "상품 카테고리 별로 상품을 조회합니다.")
-    @GetMapping("/product-list/{productCategoryId}")
+    @GetMapping("/list/{productCategoryId}")
     public ResponseEntity<List<ProductListForm.Response>> productList(@PathVariable Integer productCategoryId) {
 
         List<ProductDto> productDtoList = productService.findProductList(productCategoryId);
