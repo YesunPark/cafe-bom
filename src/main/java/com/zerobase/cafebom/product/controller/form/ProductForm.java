@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.controller.form;
 
-import com.zerobase.cafebom.product.domain.entity.SoldOutStatus;
+import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +41,38 @@ public class ProductForm {
     private SoldOutStatus soldOutStatus;
 
     private String picture;
+
+    @Getter
+    @Builder
+    public static class Response{
+
+        private Integer id;
+
+        private Integer productCategoryId;
+
+        private String name;
+
+        private String description;
+
+        private Integer price;
+
+        private SoldOutStatus soldOutStatus;
+
+        private String picture;
+
+        public static ProductForm.Response from(Product product) {
+            return Response.builder()
+                    .id(product.getId())
+                    .productCategoryId(product.getProductCategory().getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .soldOutStatus(product.getSoldOutStatus())
+                    .picture(product.getPicture())
+                    .build();
+        }
+
+
+
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.domain.entity;
+package com.zerobase.cafebom.product.domain.type;
 
 public enum SoldOutStatus {
 

@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.*;
@@ -44,7 +45,7 @@ public class Product extends BaseTimeEntity {
         if (productDto.getName() != null) {
             this.name = productDto.getName();
         }
-        if (productDto.getProductCategory() != null) {
+        if (productDto.getProductCategoryId() != null) {
             this.productCategory = productCategory;
         }
         if (productDto.getDescription() != null) {
