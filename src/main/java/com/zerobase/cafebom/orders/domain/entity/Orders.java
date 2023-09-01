@@ -6,6 +6,7 @@ import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,29 +23,40 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Orders extends BaseTimeEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "member_id")
-  private Member member;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private Payment payment;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Payment payment;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrdersCookingStatus cookingStatus;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OrdersCookingStatus cookingStatus;
 
-  @Enumerated(EnumType.STRING)
-  private OrdersCookingTime cookingTime;
+    @Enumerated(EnumType.STRING)
+    private OrdersCookingTime cookingTime;
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrdersReceiptStatus receiptStatus;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OrdersReceiptStatus receiptStatus;
 
   private LocalDateTime receivedTime;
 
+
+
+    public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {
+        return Orders.builder()
+            .member(member)
+            .payment(dto.getPayment())
+            .cookingStatus(OrdersCookingStatus.NONE)
+            .cookingTime(null)
+            .receiptStatus(OrdersReceiptStatus.WAITING)
+            .build();
+    }
 }
