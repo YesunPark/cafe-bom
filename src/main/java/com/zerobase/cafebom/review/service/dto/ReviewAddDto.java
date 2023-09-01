@@ -1,13 +1,10 @@
 package com.zerobase.cafebom.review.service.dto;
 
 import com.zerobase.cafebom.review.controller.form.ReviewAddForm;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 public class ReviewAddDto {
 
