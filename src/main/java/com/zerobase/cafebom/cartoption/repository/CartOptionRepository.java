@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface CartOptionRepository extends JpaRepository<CartOption, Long> {
 
     List<CartOption> findAllByCart(Cart cart);
-
 }
