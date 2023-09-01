@@ -1,7 +1,5 @@
 package com.zerobase.cafebom.review.controller;
 
-import com.zerobase.cafebom.member.controller.form.SignupForm;
-import com.zerobase.cafebom.member.service.dto.SignupDto;
 import com.zerobase.cafebom.review.controller.form.ReviewAddForm;
 import com.zerobase.cafebom.review.service.ReviewService;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
@@ -28,7 +26,7 @@ public class ReviewController {
     // yesun-23.09.01
     @ApiOperation(value = "리뷰 작성", notes = "토큰, 주문상품 정보, 별점, 내용, 사진을 받아 리뷰 작성")
     @PostMapping
-    public ResponseEntity<?> reviewAdd(
+    public ResponseEntity<Void> reviewAdd(
         @RequestHeader String token,
         @RequestBody @Valid ReviewAddForm.Request reviewAddForm) {
         reviewService.addReview(token, ReviewAddDto.Request.from(reviewAddForm));
