@@ -86,6 +86,7 @@ public class OrdersService {
         });
 
         // 장바구니 테이블에서 사용자의 모든 장바구니 정보 삭제
-        cartRepository.deleteAllByMember(memberById);
+        // cartRepository.deleteAllByMember(memberById);
+        // 데일리스크럼 때 논의해보고 처리할 예정
     }
 }
