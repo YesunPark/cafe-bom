@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,8 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/product-category")
+@RequestMapping("/admin/category")
+//@PreAuthorize(("hasRole('ADMIN')"))
 public class ProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
@@ -29,4 +31,11 @@ public class ProductCategoryController {
         productCategoryService.modifyProductCategory(id, ProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
+    @ApiOperation(value = "상품 카테고리 등록(관리자)", notes = "관리자가 상품 카테고리를 등록합니다.")
+    @PostMapping
+    public ResponseEntity<?> productCategoryAdd(@RequestBody ProductCategoryForm.Response form) {
+        productCategoryService.addProductCategory(ProductCategoryDto.from(form));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
 }

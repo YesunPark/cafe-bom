@@ -1,9 +1,12 @@
 package com.zerobase.cafebom.product.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +30,7 @@ public class Product extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategoryId;
+    private ProductCategory productCategory;
 
     @NotNull
     @Column(unique = true)
@@ -40,9 +43,10 @@ public class Product extends BaseTimeEntity {
     private Integer price;
 
     @NotNull
-    private Boolean isSoldOut;
+    @Enumerated(EnumType.STRING)
+    private SoldOutStatus soldOutStatus;
 
     @NotNull
-    private Byte[] picture;
+    private String picture;
 
 }
