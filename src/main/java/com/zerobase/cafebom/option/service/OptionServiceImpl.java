@@ -1,17 +1,19 @@
 package com.zerobase.cafebom.option.service;
 
 import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.option.controller.form.OptionForm;
 import com.zerobase.cafebom.option.domain.entity.Option;
 import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.option.service.dto.OptionAddDto;
-import com.zerobase.cafebom.option.service.dto.OptionModifyDto;
+import com.zerobase.cafebom.option.service.dto.OptionDto;
 import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
 import com.zerobase.cafebom.optioncategory.repository.OptionCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION;
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION_CATEGORY;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zerobase.cafebom.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class OptionServiceImpl implements OptionService {
 
     // 옵션 등록-jiyeon-23.08.30
     @Override
-    public void addOption(OptionAddDto optionAddDto) {
+    public void addOption(OptionDto.Request optionAddDto) {
         Integer optionCategoryId = optionAddDto.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
@@ -36,7 +38,7 @@ public class OptionServiceImpl implements OptionService {
 
     // 옵션 수정-jiyeon-23.08.30
     @Override
-    public void modifyOption(Integer id, OptionModifyDto.Request request) {
+    public void modifyOption(Integer id, OptionDto.Request request) {
         Integer optionCategoryId = request.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
@@ -55,19 +57,12 @@ public class OptionServiceImpl implements OptionService {
                 .build());
 
     }
-}
-
-@Service
-@RequiredArgsConstructor
-public class OptionServiceImpl implements OptionService{
-
-    private final OptionRepository optionRepository;
 
     // 옵션 삭제-jiyeon-23.08.30
     @Override
     public void removeOption(Integer id) {
         Option option = optionRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_OPTION_ID));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_ID));
         optionRepository.deleteById(option.getId());
     }
 
@@ -85,7 +80,7 @@ public class OptionServiceImpl implements OptionService{
     @Override
     public OptionForm.Response findByIdOption(Integer id) {
         Option option = optionRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_OPTION_ID));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_ID));
         OptionForm.Response response = OptionForm.Response.from(option);
         return response;
     }

@@ -1,10 +1,10 @@
 package com.zerobase.cafebom.option.service.dto;
 
-import com.zerobase.cafebom.option.controller.form.OptionModifyForm;
+import com.zerobase.cafebom.option.controller.form.OptionForm;
 import lombok.Builder;
 import lombok.Getter;
 
-public class OptionModifyDto {
+public class OptionDto {
 
     @Getter
     @Builder
@@ -16,13 +16,12 @@ public class OptionModifyDto {
 
         private Integer price;
 
-        public static OptionModifyDto.Request from(OptionModifyForm form) {
-            return Request.builder()
+        public static OptionDto.Request from(OptionForm.Request form) {
+            return OptionDto.Request.builder()
                     .optionCategoryId(form.getOptionCategoryId())
                     .name(form.getName())
                     .price(form.getPrice())
                     .build();
         }
     }
-
 }
