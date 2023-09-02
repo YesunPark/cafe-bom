@@ -1,5 +1,7 @@
 package com.zerobase.cafebom.exception;
 
+import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 @Slf4j
@@ -26,6 +29,18 @@ public class ExceptionController {
                 .errorCode(bindingResult.getFieldErrors().get(0).getCode())
                 .errorMessage(bindingResult.getFieldErrors().get(0).getDefaultMessage())
                 .build());
+    }
+
+    // 컨트롤러 @PathVariable TypeMismatch 핸들러-wooyoung-23.08.24
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ExceptionResponse> methodArgumentTypeMismatchException() {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ExceptionResponse.builder()
+                .errorCode(METHOD_ARGUMENT_TYPE_MISMATCH)
+                .errorMessage(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage())
+                .build()
+            );
     }
 
     // CustiomException 핸들러-yesun-23.08.21
