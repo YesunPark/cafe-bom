@@ -26,7 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
-class OrdersServiceTest {
+class OrdersStatusServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,7 +45,7 @@ class OrdersServiceTest {
 
     // minsu-23.08.24
     @Test
-    @DisplayName("주문 상태 변경 실패 - 다음 주문 상태 이외에는 주문 상태 변경 불가")
+    @DisplayName("주문 상태 변경 실패 - 다음 상태 이외의 주문으로는 변경 불가")
     void failUpdateOrdersStatusNotNone() {
         // given
         Long ordersId = 1L;

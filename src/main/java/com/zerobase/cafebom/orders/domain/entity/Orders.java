@@ -6,6 +6,7 @@ import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -60,5 +61,15 @@ public class Orders extends BaseTimeEntity {
             this.receivedTime = LocalDateTime.now();
         }
         this.cookingStatus = newStatus;
+    }
+
+    public static Orders fromAddOrdersDto (OrdersAddDto.Request dto, Member member){
+        return Orders.builder()
+            .member(member)
+            .payment(dto.getPayment())
+            .cookingStatus(OrdersCookingStatus.NONE)
+            .cookingTime(null)
+            .receiptStatus(OrdersReceiptStatus.WAITING)
+            .build();
     }
 }
