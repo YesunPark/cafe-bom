@@ -82,7 +82,6 @@ class OrdersServiceTest {
         .member(member)
         .product(Product.builder().build())
         .count(2)
-        .isOrdered(false)
         .build();
 
     // yesun-23.08.31

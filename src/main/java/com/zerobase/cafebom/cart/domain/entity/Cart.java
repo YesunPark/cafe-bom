@@ -1,12 +1,21 @@
 package com.zerobase.cafebom.cart.domain.entity;
 
+import com.zerobase.cafebom.cart.domain.entity.type.CartOrderStatus;
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.member.domain.entity.Member;
-import lombok.*;
-
-import javax.persistence.*;
+import com.zerobase.cafebom.product.domain.entity.Product;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
@@ -31,5 +40,5 @@ public class Cart extends BaseTimeEntity {
     private Integer count;
 
     @NotNull
-    private Boolean isOrdered;
+    private CartOrderStatus status;
 }
