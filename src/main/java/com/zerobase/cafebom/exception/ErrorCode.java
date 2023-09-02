@@ -23,7 +23,10 @@ public enum ErrorCode {
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", HttpStatus.BAD_REQUEST),
 
     // Cart
-    CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", HttpStatus.BAD_REQUEST);
+    CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", HttpStatus.BAD_REQUEST),
+
+    // ProductCategory
+    NOT_FOUND_PRODUCT_CATEGORY("상품 카테고리가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;
