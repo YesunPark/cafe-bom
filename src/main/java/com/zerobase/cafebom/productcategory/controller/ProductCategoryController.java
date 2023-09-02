@@ -23,6 +23,13 @@ public class ProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
 
+    @ApiOperation(value = "상품 카테고리 등록(관리자)", notes = "관리자가 상품 카테고리를 등록합니다.")
+    @PostMapping
+    public ResponseEntity<?> productCategoryAdd(@RequestBody ProductCategoryForm.Request form) {
+        productCategoryService.addProductCategory(ProductCategoryDto.Request.from(form));
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
     @ApiOperation(value = "상품 카테고리 수정(관리자)", notes = "관리자가 상품 카테고리를 수정합니다.")
     @PutMapping("/{id}")
     public ResponseEntity<?> productCategoryModify(
@@ -31,11 +38,8 @@ public class ProductCategoryController {
         productCategoryService.modifyProductCategory(id, ProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
-    @ApiOperation(value = "상품 카테고리 등록(관리자)", notes = "관리자가 상품 카테고리를 등록합니다.")
-    @PostMapping
-    public ResponseEntity<?> productCategoryAdd(@RequestBody ProductCategoryForm.Response form) {
-        productCategoryService.addProductCategory(ProductCategoryDto.from(form));
-        return ResponseEntity.status(NO_CONTENT).build();
-    }
+
+
+
 
 }
