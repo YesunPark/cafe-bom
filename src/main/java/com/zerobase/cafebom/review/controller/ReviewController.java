@@ -24,7 +24,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // yesun-23.09.01
-    @ApiOperation(value = "리뷰 작성", notes = "토큰, 주문상품 정보, 별점, 내용, 사진을 받아 리뷰 작성")
+    @ApiOperation(value = "리뷰 생성", notes = "토큰, 주문상품 정보, 별점, 내용, 사진을 받아 리뷰를 생성합니다.")
     @PostMapping
     public ResponseEntity<Void> reviewAdd(
         @RequestHeader(name = "Authorization") String token,
