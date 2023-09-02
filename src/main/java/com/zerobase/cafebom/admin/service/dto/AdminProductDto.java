@@ -1,14 +1,14 @@
-package com.zerobase.cafebom.product.service.dto;
+package com.zerobase.cafebom.admin.service.dto;
 
 
-import com.zerobase.cafebom.product.controller.form.ProductForm;
+import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductDto {
+public class AdminProductDto {
 
     private Integer id;
 
@@ -24,8 +24,8 @@ public class ProductDto {
 
     private String picture;
 
-    public static ProductDto from(ProductForm productForm){
-        return ProductDto.builder()
+    public static AdminProductDto from(AdminProductForm productForm){
+        return AdminProductDto.builder()
                 .name(productForm.getName())
                 .productCategoryId(productForm.getProductCategoryId())
                 .description(productForm.getDescription())

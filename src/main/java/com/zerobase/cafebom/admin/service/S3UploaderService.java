@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.service;
+package com.zerobase.cafebom.admin.service;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;

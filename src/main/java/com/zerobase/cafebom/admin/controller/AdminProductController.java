@@ -1,8 +1,8 @@
-package com.zerobase.cafebom.product.controller;
+package com.zerobase.cafebom.admin.controller;
 
-import com.zerobase.cafebom.product.controller.form.ProductForm;
-import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
+import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
+import com.zerobase.cafebom.admin.service.AdminProductService;
+import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +24,15 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequestMapping("/admin/product")
 @RequiredArgsConstructor
 //@PreAuthorize("hasRole('ADMIN')")
-public class ProductController {
+public class AdminProductController {
 
-    private final ProductService productService;
+    private final AdminProductService adminProductService;
 
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 전체 조회(관리자)", notes = "관리자가 상품 전체 리스트를 조회합니다")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> productList() {
-        List<ProductForm.Response> productList = productService.findProductList();
+        List<AdminProductForm.Response> productList = adminProductService.findProductList();
         return ResponseEntity.ok().body(productList);
     }
 
@@ -40,7 +40,7 @@ public class ProductController {
     @ApiOperation(value = "상품 Id별 조회(관리자)", notes = "관리자가 상품 Id 별로 조회합니다.")
     @GetMapping("/{id}")
     public ResponseEntity<?> productIdGet(@PathVariable Integer id) {
-        ProductForm.Response response = productService.findProductById(id);
+        AdminProductForm.Response response = adminProductService.findProductById(id);
         return ResponseEntity.ok().body(response);
     }
 
@@ -50,8 +50,8 @@ public class ProductController {
     public ResponseEntity<?> productAdd(
             HttpServletRequest request,
             @RequestParam(value = "image") MultipartFile image,
-            ProductForm productForm) throws IOException {
-        productService.addProduct(image, ProductDto.from(productForm));
+            AdminProductForm adminProductForm) throws IOException {
+        adminProductService.addProduct(image, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
@@ -61,8 +61,8 @@ public class ProductController {
     public ResponseEntity<?> productModify(
             @RequestParam(value = "image") MultipartFile image,
             @PathVariable Integer id,
-            ProductForm productForm) throws IOException {
-        productService.modifyProduct(image, id, ProductDto.from(productForm));
+            AdminProductForm adminProductForm) throws IOException {
+        adminProductService.modifyProduct(image, id, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
@@ -70,7 +70,7 @@ public class ProductController {
     @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> productRemove(@PathVariable Integer id) {
-        productService.removeProduct(id);
+        adminProductService.removeProduct(id);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 }

@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.product.domain.entity;
 
+import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import lombok.*;
 
@@ -41,7 +41,7 @@ public class Product extends BaseTimeEntity {
     private String picture;
 
 
-    public void modifyProductForm(ProductDto productDto, ProductCategory productCategory) {
+    public void modifyProductForm(AdminProductDto productDto, ProductCategory productCategory) {
         if (productDto.getName() != null) {
             this.name = productDto.getName();
         }

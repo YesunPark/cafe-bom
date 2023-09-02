@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.controller.form;
+package com.zerobase.cafebom.admin.controller.form;
 
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Builder
-public class ProductForm {
+public class AdminProductForm {
 
     private Integer productCategoryId;
 
@@ -60,7 +60,7 @@ public class ProductForm {
 
         private String picture;
 
-        public static ProductForm.Response from(Product product) {
+        public static Response from(Product product) {
             return Response.builder()
                     .id(product.getId())
                     .productCategoryId(product.getProductCategory().getId())
