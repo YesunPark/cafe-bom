@@ -29,7 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(OrdersController.class)
-public class OrdersControllerTest {
+public class OrdersStatusControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -164,7 +164,6 @@ public class OrdersControllerTest {
         mockMvc.perform(patch("/admin/orders-cooking-time/{ordersId}", ordersId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isNoContent())
-            .andDo(print());
+            .andExpect(status().isNoContent());
     }
 }

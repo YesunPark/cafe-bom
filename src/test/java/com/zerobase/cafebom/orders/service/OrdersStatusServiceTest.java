@@ -34,7 +34,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
-class OrdersServiceTest {
+class OrdersStatusServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,6 +51,7 @@ class OrdersServiceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     // minsu-23.08.24
     @Test
     @DisplayName("주문 상태 변경 실패 - 이미 조리 중인 주문 none으로 상태 변경 불가")
@@ -58,14 +59,16 @@ class OrdersServiceTest {
         // given
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
+            .willReturn(
+                Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
 
         OrdersStatusModifyDto modifyDto = OrdersStatusModifyDto.builder()
             .newStatus(OrdersCookingStatus.NONE)
             .build();
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
     }
 
@@ -96,7 +99,8 @@ class OrdersServiceTest {
                 .build()));
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.getElapsedTime(ordersId));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.getElapsedTime(ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_COOKING_STATUS);
     }
 
@@ -108,14 +112,16 @@ class OrdersServiceTest {
         Long ordersId = 1L;
 
         given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
+            .willReturn(
+                Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
 
         OrdersReceiptModifyDto modifyDto = OrdersReceiptModifyDto.builder()
             .newReceiptStatus(OrdersReceiptStatus.RECEIVED)
             .build();
 
         // When
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersReceiptStatus(ordersId, modifyDto));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersReceiptStatus(ordersId, modifyDto));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_CANCELED);
@@ -128,10 +134,12 @@ class OrdersServiceTest {
         // given
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
+            .willReturn(
+                Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersCancel(ordersId));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersCancel(ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
     }
 
@@ -142,14 +150,16 @@ class OrdersServiceTest {
         // given
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
+            .willReturn(
+                Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
 
         OrdersCookingTimeModifyDto modifyDto = OrdersCookingTimeModifyDto.builder()
             .selectedCookingTime(OrdersCookingTime._5_TO_10_MINUTES)
             .build();
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersCookingTime(ordersId, modifyDto));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersCookingTime(ordersId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_RECEIVED_STATUS);
     }
 
@@ -174,7 +184,8 @@ class OrdersServiceTest {
             .build();
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersCookingTime(ordersId, modifyDto));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersCookingTime(ordersId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_COOKING_TIME_ALREADY_SET);
     }
 }
