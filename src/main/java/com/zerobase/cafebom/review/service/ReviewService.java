@@ -41,5 +41,7 @@ public class ReviewService {
             .content(request.getContent())
             .picture(request.getPicture())
             .build());
+
+        // 리뷰 사진 S3 에 저장되는 부분은 지연님과 얘기해서 추가해야 함
     }
 }
