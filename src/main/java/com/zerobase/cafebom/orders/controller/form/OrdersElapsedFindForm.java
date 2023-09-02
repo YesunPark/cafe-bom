@@ -1,11 +1,11 @@
-package com.zerobase.cafebom.orders.service.dto;
+package com.zerobase.cafebom.orders.controller.form;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class OrdersElapsedFindDto {
+public class OrdersElapsedFindForm {
 
     private Long elapsedTimeMinutes;
 }

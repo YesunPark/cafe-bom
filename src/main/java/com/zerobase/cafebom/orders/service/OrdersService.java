@@ -17,19 +17,15 @@ import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class OrdersService {
 
     private final OrdersRepository ordersRepository;
-
-    @Autowired
-    public OrdersService(OrdersRepository ordersRepository) {
-        this.ordersRepository = ordersRepository;
-    }
 
     // 주문 상태 변경-minsu-23.08.18
     @Transactional
