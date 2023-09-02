@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.orders.controller;
 
+import com.zerobase.cafebom.orders.controller.form.OrdersElapsedFindForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
 import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.orders.service.dto.OrdersElapsedFindDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,9 +41,9 @@ public class OrdersController {
     // minsu-23.08.23
     @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다")
     @GetMapping("/auth/orders-elapsed-time/{ordersId}")
-    public ResponseEntity<OrdersElapsedFindDto> elapsedTimeGet(@PathVariable Long ordersId) {
+    public ResponseEntity<OrdersElapsedFindForm> elapsedTimeGet(@PathVariable Long ordersId) {
         Long elapsedTimeMinutes = ordersService.getElapsedTime(ordersId);
-        OrdersElapsedFindDto response = OrdersElapsedFindDto.builder()
+        OrdersElapsedFindForm response = OrdersElapsedFindForm.builder()
             .elapsedTimeMinutes(elapsedTimeMinutes)
             .build();
         return ResponseEntity.ok(response);

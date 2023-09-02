@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.orders.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,7 +45,7 @@ class OrdersServiceTest {
 
     // minsu-23.08.24
     @Test
-    @DisplayName("주문 상태 변경 실패 - 이미 조리 중인 주문 none으로 상태 변경 불가")
+    @DisplayName("주문 상태 변경 실패 - 다음 주문 상태 이외에는 주문 상태 변경 불가")
     void failUpdateOrdersStatusNotNone() {
         // given
         Long ordersId = 1L;
@@ -58,7 +58,7 @@ class OrdersServiceTest {
 
         // then
         CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
+        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_CORRECT);
     }
 
     // minsu-23.08.24

@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.orders.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
@@ -25,6 +25,19 @@ public class OrdersService {
         this.ordersRepository = ordersRepository;
     }
 
+    private OrdersCookingStatus getPreviousCookingStatus(OrdersCookingStatus currentStatus) {
+        switch (currentStatus) {
+            case NONE:
+                return OrdersCookingStatus.COOKING;
+            case COOKING:
+                return OrdersCookingStatus.PREPARED;
+            case PREPARED:
+                return OrdersCookingStatus.FINISHED;
+            default:
+                return null;
+        }
+    }
+
     // 주문 상태 변경-minsu-23.08.18
     @Transactional
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
@@ -32,10 +45,11 @@ public class OrdersService {
             .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
         OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
+        OrdersCookingStatus currentStatus = orders.getCookingStatus();
+        OrdersCookingStatus previousStatus = getPreviousCookingStatus(currentStatus);
 
-        if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
-            && newStatus == OrdersCookingStatus.NONE) {
-            throw new CustomException(ORDERS_ALREADY_COOKING_STATUS);
+        if (newStatus != previousStatus) {
+            throw new CustomException(ORDERS_NOT_CORRECT);
         }
 
         orders.modifyReceivedTime(newStatus);

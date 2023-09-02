@@ -15,8 +15,8 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
     // OrderService
     ORDERS_NOT_FOUND("해당 주문이 없습니다.", HttpStatus.NOT_FOUND),
-    ORDERS_ALREADY_COOKING_STATUS("이미 조리 중인 주문입니다.", HttpStatus.BAD_REQUEST),
-    ORDERS_NOT_COOKING_STATUS("조리 중인 주문이 아닙니다.", HttpStatus.BAD_REQUEST);
+    ORDERS_NOT_COOKING_STATUS("조리 중인 주문이 아닙니다.", HttpStatus.BAD_REQUEST),
+    ORDERS_NOT_CORRECT("올바른 주문 변경이 아닙니다.", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;
