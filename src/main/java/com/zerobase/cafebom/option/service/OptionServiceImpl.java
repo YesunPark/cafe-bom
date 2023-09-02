@@ -12,11 +12,30 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OptionServiceImpl implements OptionService {
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class OptionServiceImpl implements OptionService{
 
     private final OptionRepository optionRepository;
     private final OptionCategoryRepository optionCategoryRepository;
 
+    // 옵션 등록-jiyeon-23.08.30
+    @Override
+    public void addOption(OptionAddDto optionAddDto) {
+        Integer optionCategoryId = optionAddDto.getOptionCategoryId();
+        OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
+                    .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
+            Option option = Option.builder()
+                    .optionCategory(optionCategory)
+                    .name(optionAddDto.getName())
+                    .price(optionAddDto.getPrice())
+                    .build();
+            optionRepository.save(option);
+
+    }
+}
     // 옵션 수정-jiyeon-23.08.30
     @Override
     public void modifyOption(Integer id, OptionModifyDto.Request request) {

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cafe-Bom | 카카오페이 결제 테스트</title>
+</head>
+<body>
+<!--jQuery-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!--iamport.payment.js-->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script>
+
+    $(document).ready(
+        function(){
+            $("#iamportPayment").click(function(){
+              payment();
+            });
+        }
+    )
+
+    function payment(data){
+        var amount = [[${totalAmount}]];
+        IMP.init('imp52321346');
+        IMP.request_pay({
+            pg: "kakaopay.TC0ONETIME",
+            pay_method: "card",
+            merchant_uid: "merchant_bom_" + new Date().getTime(),
+            name: "총 주문 금액",
+            amount: amount,
+            buyer_email: "lynn08082@gmail.com",
+            buyer_name: "카페 봄",
+            buyer_ter: "01012341234"
+        }, function (rsp) {
+            if(rsp.success){
+              alert("감사합니다. 테스트 결제가 완료되었습니다.");
+            } else {
+              alert("테스트 결제가 완료되었거나 중단되거나 실패하였습니다. \n다시 시도해주십시오.");
+            }
+        });
+    }
+
+
+</script>
+<DIV>
+  <H2>카카오페이 결제하기</H2>
+  <div>테스트 결제입니다.</div>
+  </br>
+  <button id="iamportPayment">결제 테스트</button>
+</DIV>
+</body>
+</html>
