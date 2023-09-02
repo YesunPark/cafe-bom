@@ -25,7 +25,7 @@ public class ReviewService {
 
     private final TokenProvider tokenProvider;
 
-    // 리뷰 저장-yesun-23.09.01
+    // 리뷰 생성-yesun-23.09.01
     public void addReview(String token, ReviewAddDto.Request request) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)

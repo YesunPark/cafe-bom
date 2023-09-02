@@ -70,7 +70,7 @@ class ReviewServiceTest {
 
     // yesun-23.09.01
     @Test
-    @DisplayName("리뷰 저장 성공")
+    @DisplayName("리뷰 생성 성공")
     void successAddReview() {
         // given
         given(ordersProductRepository.findById(request.getOrdersProductId()))
@@ -85,7 +85,7 @@ class ReviewServiceTest {
 
     // yesun-23.09.01
     @Test
-    @DisplayName("리뷰 저장 실패 - 존재하지 않는 주문_상품 ID 요청")
+    @DisplayName("리뷰 생성 실패 - 존재하지 않는 주문_상품 ID 요청")
     void successAddReviewOrdersProductIdNotExits() {
         // given
         given(ordersProductRepository.findById(request.getOrdersProductId()))
