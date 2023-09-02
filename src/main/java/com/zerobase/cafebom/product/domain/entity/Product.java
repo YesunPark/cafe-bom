@@ -1,18 +1,24 @@
 package com.zerobase.cafebom.product.domain.entity;
 
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Builder(toBuilder = true)
+@Builder
 @Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
     @Id
@@ -60,4 +66,3 @@ public class Product extends BaseTimeEntity {
     }
 
 }
-

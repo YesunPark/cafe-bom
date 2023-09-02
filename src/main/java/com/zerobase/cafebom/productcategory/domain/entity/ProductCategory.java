@@ -22,4 +22,7 @@ public class ProductCategory {
     @NotNull
     private String name;
 
+    public void modifyProductCategory(String productCategoryName) {
+        this.name = productCategoryName;
+    }
 }
