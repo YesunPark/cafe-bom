@@ -102,7 +102,7 @@ class ReviewControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errorMessage")
-                .value("주문_상품 ID는 1부터 입력해야 합니다."))
+                .value("주문 상품 ID는 1부터 입력해야 합니다."))
             .andDo(print());
     }
 
