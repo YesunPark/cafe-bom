@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_PRODUCT;
 import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_PRODUCT_CATEGORY;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +53,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Transactional
     public void modifyProduct(MultipartFile image, Integer id, AdminProductDto adminProductDto) throws IOException {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
 
         ProductCategory productCategory = productCategoryRepository.findById(adminProductDto.getProductCategoryId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT_CATEGORY));
@@ -66,9 +66,8 @@ public class AdminProductServiceImpl implements AdminProductService {
                 s3UploaderService.deleteFile(oldPicture);
             }
             String newImageUrl = s3UploaderService.uploadFileToS3(image, "dirName");
-            product.toBuilder()
-                    .picture(newImageUrl)
-                    .build();
+            System.out.println("newImageUrl = " + newImageUrl);
+            product.modifyNewImageUrl(newImageUrl);
         }
     }
 
@@ -76,7 +75,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public void removeProduct(Integer id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
         productRepository.deleteById(product.getId());
     }
 
@@ -94,7 +93,7 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public AdminProductForm.Response findProductById(Integer id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT));
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
         AdminProductForm.Response productForm = AdminProductForm.Response.from(product);
         return productForm;
     }
