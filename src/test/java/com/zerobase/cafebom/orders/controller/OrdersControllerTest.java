@@ -70,7 +70,7 @@ class OrdersControllerTest {
             .andDo(print());
     }
 
-    // yesun-23.08.31큰
+    // yesun-23.08.31
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {

@@ -27,7 +27,7 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 작성", notes = "토큰, 주문상품 정보, 별점, 내용, 사진을 받아 리뷰 작성")
     @PostMapping
     public ResponseEntity<Void> reviewAdd(
-        @RequestHeader String token,
+        @RequestHeader(name = "Authorization") String token,
         @RequestBody @Valid ReviewAddForm.Request reviewAddForm) {
         reviewService.addReview(token, ReviewAddDto.Request.from(reviewAddForm));
         return ResponseEntity.status(HttpStatus.CREATED).build();
