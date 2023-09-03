@@ -5,8 +5,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(OrdersController.class)
-class OrdersControllerTest {
+class OrdersAddControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,6 +33,12 @@ class OrdersControllerTest {
     private OrdersService ordersService;
     @MockBean
     private TokenProvider tokenProvider;
+
+    @MockBean
+    private OrdersHistoryService ordersHistoryService;
+
+    @MockBean
+    private MemberRepository memberRepository;
 
     String token = "Bearer token";
 
@@ -70,7 +78,7 @@ class OrdersControllerTest {
             .andDo(print());
     }
 
-    // yesun-23.08.31큰
+    // yesun-23.08.31
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {

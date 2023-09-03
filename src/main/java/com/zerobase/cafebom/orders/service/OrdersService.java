@@ -3,6 +3,9 @@ package com.zerobase.cafebom.orders.service;
 import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 
 import com.zerobase.cafebom.cart.domain.entity.Cart;
 import com.zerobase.cafebom.cart.repository.CartRepository;
@@ -17,16 +20,19 @@ import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
 import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.repository.OrdersRepository;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
 import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
 import com.zerobase.cafebom.security.TokenProvider;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -44,6 +50,68 @@ public class OrdersService {
     private final OrdersProductOptionRepository ordersProductOptionRepository;
 
     private final TokenProvider tokenProvider;
+
+    // 다음 상태 이외엔 주문 상태 변경 불가-minsu-23.09.01
+    private OrdersCookingStatus getPreviousCookingStatus(OrdersCookingStatus currentStatus) {
+        switch (currentStatus) {
+            case NONE:
+                return OrdersCookingStatus.COOKING;
+            case COOKING:
+                return OrdersCookingStatus.PREPARED;
+            case PREPARED:
+                return OrdersCookingStatus.FINISHED;
+            default:
+                return null;
+        }
+    }
+
+    // 주문 상태 변경-minsu-23.08.18
+    @Transactional
+    public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
+        Orders orders = ordersRepository.findById(ordersId)
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+
+        OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
+        OrdersCookingStatus currentStatus = orders.getCookingStatus();
+        OrdersCookingStatus previousStatus = getPreviousCookingStatus(currentStatus);
+
+        if (newStatus != previousStatus) {
+            throw new CustomException(ORDERS_NOT_CORRECT);
+        }
+
+        orders.modifyReceivedTime(newStatus);
+
+        ordersRepository.save(orders);
+    }
+
+    // 주문 수락 시간 저장-minsu-23.08.20
+    public LocalDateTime getReceivedTime(Long ordersId) {
+        Orders orders = ordersRepository.findById(ordersId)
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+
+        if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
+            throw new CustomException(ORDERS_NOT_COOKING_STATUS);
+        }
+
+        return orders.getReceivedTime();
+    }
+
+    // 주문 경과 시간 계산-minsu-23.08.21
+    public Long getElapsedTime(Long ordersId) {
+
+        Orders orders = ordersRepository.findById(ordersId)
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+
+        if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
+            throw new CustomException(ORDERS_NOT_COOKING_STATUS);
+        }
+
+        LocalDateTime receivedTime = orders.getReceivedTime();
+        LocalDateTime currentTime = LocalDateTime.now();
+        Duration duration = Duration.between(receivedTime, currentTime);
+
+        return duration.toMinutes();
+    }
 
     // 주문 생성-yesun-23.08.31
     @Transactional
