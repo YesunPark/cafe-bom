@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrdersCookingTimeModifyForm {
 
     private OrdersCookingTime selectedCookingTime;

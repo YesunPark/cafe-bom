@@ -72,7 +72,7 @@ class OrdersStatusServiceTest {
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
     }
 
-    // minsu-23.08.24
+    // minsu-23.09.02
     @Test
     @DisplayName("주문 경과 시간 조회 실패 - 주문이 존재하지 않는 경우")
     void failGetElapsedTimeNotFound() {
@@ -83,10 +83,10 @@ class OrdersStatusServiceTest {
             .willThrow(new CustomException(ORDERS_NOT_FOUND));
 
         // then
-        assertThrows(CustomException.class, () -> ordersService.getElapsedTime(ordersId));
+        assertThrows(CustomException.class, () -> ordersService.findElapsedTime(ordersId));
     }
 
-    // minsu-23.08.24
+    // minsu-23.09.02
     @Test
     @DisplayName("주문 경과 시간 조회 실패 - 조리 중인 주문이 아닌 경우")
     public void failGetElapsedTimeNotCooking() {
@@ -100,7 +100,7 @@ class OrdersStatusServiceTest {
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> ordersService.getElapsedTime(ordersId));
+            () -> ordersService.findElapsedTime(ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_COOKING_STATUS);
     }
 
@@ -108,7 +108,7 @@ class OrdersStatusServiceTest {
     @Test
     @DisplayName("주문 수락/거절 실패 - 주문이 이미 취소된 경우")
     void failOrdersReceiptAlreadyCanceled() {
-        // Given
+        // given
         Long ordersId = 1L;
 
         given(ordersRepository.findById(ordersId))
@@ -119,11 +119,11 @@ class OrdersStatusServiceTest {
             .newReceiptStatus(OrdersReceiptStatus.RECEIVED)
             .build();
 
-        // When
+        // when
         CustomException exception = assertThrows(CustomException.class,
             () -> ordersService.modifyOrdersReceiptStatus(ordersId, modifyDto));
 
-        // Then
+        // then
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_CANCELED);
     }
 

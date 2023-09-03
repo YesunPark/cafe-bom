@@ -5,6 +5,7 @@ import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
@@ -75,7 +76,7 @@ public class OrdersService {
     }
 
     // 주문 수락 시간 저장-minsu-23.08.20
-    public LocalDateTime getReceivedTime(Long ordersId) {
+    public LocalDateTime addReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
@@ -86,8 +87,8 @@ public class OrdersService {
         return orders.getReceivedTime();
     }
 
-    // 주문 경과 시간 계산-minsu-23.08.21
-    public Long getElapsedTime(Long ordersId) {
+    // 주문 경과 시간 계산-minsu-23.09.02
+    public Long findElapsedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
@@ -102,7 +103,7 @@ public class OrdersService {
         return duration.toMinutes();
     }
 
-    // 주문 수락 또는 거절-minsu-23.08.25
+    // 주문 수락 또는 거절-minsu-23.09.02
     @Transactional
     public void modifyOrdersReceiptStatus(Long ordersId,
         OrdersReceiptModifyDto ordersReceiptModifyDto) {
@@ -146,20 +147,24 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-    // 조리 예정 시간 선택-minsu-23.08.28
+    // 조리 예정 시간 선택-minsu-23.09.02
     @Transactional
     public void modifyOrdersCookingTime(Long ordersId,
         OrdersCookingTimeModifyDto cookingTimeModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
 
-        OrdersCookingTime selectCookingTime = cookingTimeModifyDto.getSelectedCookingTime();
+        OrdersCookingTime selectedCookingTime = cookingTimeModifyDto.getSelectedCookingTime();
 
         if (orders.getReceiptStatus() != OrdersReceiptStatus.RECEIVED) {
             throw new CustomException(ORDERS_NOT_RECEIVED_STATUS);
         }
 
-        orders.modifyCookingTime(selectCookingTime);
+        if (orders.getCookingTime() != OrdersCookingTime.NONE && selectedCookingTime != orders.getCookingTime()) {
+            throw new CustomException(ORDERS_COOKING_TIME_ALREADY_SET);
+        }
+
+        orders.modifyCookingTime(selectedCookingTime);
 
         ordersRepository.save(orders);
     }

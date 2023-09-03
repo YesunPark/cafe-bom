@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(OrdersController.class)
@@ -46,7 +47,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.08.24
     @Test
     @DisplayName("주문 상태 변경 성공 - 정상적으로 주문 상태 변경")
-    // @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void successOrdersStatus() throws Exception {
         // given
         Long ordersId = 1L;
@@ -63,7 +64,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.08.24
     @Test
     @DisplayName("주문 상태 변경 실패 - 주문이 존재하지 않는 경우")
-    // @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
         Long ordersId = null;
@@ -81,13 +82,13 @@ public class OrdersStatusControllerTest {
     // minsu-23.08.24
     @Test
     @DisplayName("주문 경과 시간 조회 성공 - 주문에 대한 경과 시간 조회")
-    // @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "USER")
     void successGetElapsedTime() throws Exception {
         // given
         Long ordersId = 1L;
         Long elapsedTimeMinutes = 30L;
 
-        given(ordersService.getElapsedTime(ordersId)).willReturn(elapsedTimeMinutes);
+        given(ordersService.findElapsedTime(ordersId)).willReturn(elapsedTimeMinutes);
 
         // then
         mockMvc.perform(get("/auth/orders-elapsed-time/{ordersId}", ordersId))
@@ -99,7 +100,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.09.01
     @Test
     @DisplayName("주문 수락 성공 - 주문을 정상적으로 수락")
-    // @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void successOrdersReceiptAccept() throws Exception {
         // given
         Long ordersId = 1L;
@@ -118,7 +119,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.09.01
     @Test
     @DisplayName("주문 거절 성공 - 주문을 정상적으로 거절")
-    // @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void successOrdersReceiptReject() throws Exception {
         // given
         Long ordersId = 1L;
@@ -137,7 +138,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.09.01
     @Test
     @DisplayName("사용자 주문 취소 성공 - 주문을 정상적으로 취소")
-    // @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "USER")
     void successUserOrdersCancel() throws Exception {
         // given
         Long ordersId = 1L;
@@ -152,7 +153,7 @@ public class OrdersStatusControllerTest {
     // minsu-23.09.01
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 성공 - 주문의 조리 예정 시간을 정상적으로 선택")
-    // @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void successAdminOrdersCookingTimeModify() throws Exception {
         // given
         Long ordersId = 1L;
