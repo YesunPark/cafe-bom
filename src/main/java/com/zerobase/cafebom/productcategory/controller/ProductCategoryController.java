@@ -4,6 +4,7 @@ import com.zerobase.cafebom.productcategory.controller.form.ProductCategoryForm;
 import com.zerobase.cafebom.productcategory.service.ProductCategoryService;
 import com.zerobase.cafebom.productcategory.service.dto.ProductCategoryDto;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@Tag(name = "product-category-controller", description = "관리자 카테고리 CRUD API")
 @Controller
 @RequiredArgsConstructor
 //@PreAuthorize("hasRole('ADMIN')")
