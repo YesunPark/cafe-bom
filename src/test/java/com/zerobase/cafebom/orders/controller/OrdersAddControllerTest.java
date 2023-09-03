@@ -5,8 +5,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +33,12 @@ class OrdersAddControllerTest {
     private OrdersService ordersService;
     @MockBean
     private TokenProvider tokenProvider;
+
+    @MockBean
+    private OrdersHistoryService ordersHistoryService;
+
+    @MockBean
+    private MemberRepository memberRepository;
 
     String token = "Bearer token";
 
