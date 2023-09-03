@@ -19,6 +19,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Controller
 @RequiredArgsConstructor
+//@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin/category")
 public class ProductCategoryController {
 
