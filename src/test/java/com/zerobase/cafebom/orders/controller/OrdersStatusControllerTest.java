@@ -12,7 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.security.TokenProvider;
@@ -30,14 +32,19 @@ public class OrdersStatusControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
+    private OrdersService ordersService;
     @MockBean
     private TokenProvider tokenProvider;
 
     @MockBean
-    private OrdersService ordersService;
+    private OrdersHistoryService ordersHistoryService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @MockBean
+    private MemberRepository memberRepository;
 
     // minsu-23.08.24
     @Test
