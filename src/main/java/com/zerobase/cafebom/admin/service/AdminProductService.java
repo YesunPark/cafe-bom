@@ -2,6 +2,7 @@ package com.zerobase.cafebom.admin.service;
 
 import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
 import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,4 +26,7 @@ public interface AdminProductService {
 
     // 상품Id별 조회-jiyeon-23.08.31
     AdminProductForm.Response findProductById(Integer id);
+
+    // 상품 품절여부 수정-jiyeon-23.08.29
+    void modifyProductSoldOut(Integer id, SoldOutStatus soldOutStatus);
 }

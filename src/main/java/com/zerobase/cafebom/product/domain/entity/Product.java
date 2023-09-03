@@ -8,20 +8,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 
 @Builder(toBuilder = true)
 @Getter
-@RequiredArgsConstructor
 @AllArgsConstructor
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
 

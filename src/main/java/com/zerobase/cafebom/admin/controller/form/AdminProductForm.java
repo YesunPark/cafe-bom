@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class AdminProductForm {
 
+    @NotNull
     private Integer productCategoryId;
 
     @Schema(description = "상품명", example = "아메리카노")

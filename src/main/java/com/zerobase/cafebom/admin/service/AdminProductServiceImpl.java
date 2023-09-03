@@ -4,8 +4,8 @@ package com.zerobase.cafebom.admin.service;
 import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
 import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
 import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
@@ -36,7 +36,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
         Integer productCategoryId = adminProductDto.getProductCategoryId();
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PRODUCT_CATEGORY));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_PRODUCT_CATEGORY));
 
         productRepository.save(Product.builder()
                 .name(adminProductDto.getName())
@@ -96,6 +96,18 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
         AdminProductForm.Response productForm = AdminProductForm.Response.from(product);
         return productForm;
+    }
+
+    // 관리자 상품 품절여부 수정-jiyeon-23.08.29
+    @Override
+    @Transactional
+    public void modifyProductSoldOut(Integer productId, SoldOutStatus soldOutStatus) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
+        product.modifySoldOutStatus(soldOutStatus);
+        productRepository.save(product);
+
     }
 
 }

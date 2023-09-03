@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.controller.form;
+package com.zerobase.cafebom.admin.controller.form;
 
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
