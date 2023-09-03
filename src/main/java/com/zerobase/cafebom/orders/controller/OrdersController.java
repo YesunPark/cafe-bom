@@ -50,7 +50,7 @@ public class OrdersController {
     }
 
     // youngseon-23.08.28
-    @GetMapping("/pay-list")
+    @GetMapping("/list")
     public ResponseEntity<?> getOrderHistoryList(
         @RequestParam("memberId") Long memberId,
         @RequestParam(value = "viewType", required = false) String viewType,
