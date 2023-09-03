@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.cart.controller.form;
 
+import com.zerobase.cafebom.cart.service.dto.CartListDto;
 import com.zerobase.cafebom.option.domain.entity.Option;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +27,14 @@ public class CartListForm {
 
         private Integer productCount;
 
+        public static CartListForm.Response from(CartListDto cartListDto) {
+            return CartListForm.Response.builder()
+                .productId(cartListDto.getProductId())
+                .productName(cartListDto.getProductName())
+                .productPicture(cartListDto.getProductPicture())
+                .productOptions(cartListDto.getProductOptions())
+                .productCount(cartListDto.getProductCount())
+                .build();
+        }
     }
 }
