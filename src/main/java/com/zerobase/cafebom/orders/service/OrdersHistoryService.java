@@ -1,8 +1,9 @@
 package com.zerobase.cafebom.orders.service;
 
 
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
@@ -11,18 +12,13 @@ import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersProductDto;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
