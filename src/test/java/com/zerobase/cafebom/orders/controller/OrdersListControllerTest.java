@@ -75,7 +75,7 @@ public class OrdersListControllerTest {
         when(orderService.findAllOrderHistory(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/pay-list")
+        mockMvc.perform(get("/auth/pay/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "전체"))
             .andExpect(status().isOk())
@@ -99,7 +99,7 @@ public class OrdersListControllerTest {
         when(orderService.findOrderHistoryByPeriod(memberId, startDate, endDate)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/pay-list")
+        mockMvc.perform(get("/auth/pay/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01")
@@ -122,7 +122,7 @@ public class OrdersListControllerTest {
         when(orderService.findOrderHistoryFor3Months(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/pay-list")
+        mockMvc.perform(get("/auth/pay/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", ""))
             .andExpect(status().isOk())
@@ -137,7 +137,7 @@ public class OrdersListControllerTest {
         Long memberId = 1L;
 
         // when, then
-        mockMvc.perform(get("/auth/pay/pay-list")
+        mockMvc.perform(get("/auth/pay/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01"))
