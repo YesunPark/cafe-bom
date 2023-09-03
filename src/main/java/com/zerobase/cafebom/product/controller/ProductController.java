@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "product-controller", description = "관리자 메뉴 CRUD API")
+@Tag(name = "product-controller", description = "상품 관련 API")
 @Controller
-@RequestMapping("/admin/product")
+@RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
 
