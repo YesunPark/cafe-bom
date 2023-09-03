@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.cartoption.domain.entity;
 
+import com.zerobase.cafebom.cart.domain.entity.Cart;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.option.domain.entity.Option;
 import javax.persistence.Entity;
@@ -27,10 +28,10 @@ public class CartOption extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotNull
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "CART_ID")
-//    private Cart cart; => Cart 엔티티 머지되면 수정할 예정입니다.
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CART_ID")
+    private Cart cart;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

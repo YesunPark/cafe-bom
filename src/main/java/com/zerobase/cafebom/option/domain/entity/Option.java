@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Builder
+@Builder(toBuilder = true)
 public class Option extends BaseTimeEntity {
 
     @Id

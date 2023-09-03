@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.productcategory.domain.entity;
 
-import com.zerobase.cafebom.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 @Builder
-public class ProductCategory extends BaseTimeEntity {
+public class ProductCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +22,7 @@ public class ProductCategory extends BaseTimeEntity {
     @NotNull
     private String name;
 
+    public void modifyProductCategory(String productCategoryName) {
+        this.name = productCategoryName;
+    }
 }
