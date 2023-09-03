@@ -1,12 +1,16 @@
-package com.zerobase.cafebom.history.controller;
+package com.zerobase.cafebom.orders.controller;
+
 
 import com.zerobase.cafebom.member.repository.MemberRepository;
 
 import com.zerobase.cafebom.orders.controller.OrdersController;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
+import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
+import com.zerobase.cafebom.security.SecurityConfiguration;
 import com.zerobase.cafebom.security.TokenProvider;
+import org.apache.catalina.security.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,12 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 
+
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.Collections;
+
 
 
 import static org.hamcrest.Matchers.hasSize;
@@ -29,22 +39,28 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(OrdersController.class)
+
+
+@WebMvcTest(controllers = OrdersController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureWebMvc
-public class OrdersControllerTest {
+public class OrdersListControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     @MockBean
     private OrdersHistoryService orderService;
 
     @MockBean
     private MemberRepository memberRepository;
+
+    @MockBean
+    private OrdersService ordersService;
+
 
     //youngseon 23.08.28
     @Test
@@ -59,11 +75,11 @@ public class OrdersControllerTest {
         when(orderService.findAllOrderHistory(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay-list")
-                        .param("memberId", String.valueOf(memberId))
-                        .param("viewType", "전체"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
+        mockMvc.perform(get("/auth/pay/pay-list")
+                .param("memberId", String.valueOf(memberId))
+                .param("viewType", "전체"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
     //youngseon 23.08.28
@@ -83,13 +99,13 @@ public class OrdersControllerTest {
         when(orderService.findOrderHistoryByPeriod(memberId, startDate, endDate)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay-list")
-                        .param("memberId", String.valueOf(memberId))
-                        .param("viewType", "기간")
-                        .param("startDate", "2023-01-01")
-                        .param("endDate", "2023-03-31"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
+        mockMvc.perform(get("/auth/pay/pay-list")
+                .param("memberId", String.valueOf(memberId))
+                .param("viewType", "기간")
+                .param("startDate", "2023-01-01")
+                .param("endDate", "2023-03-31"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
     //youngseon 23.08.28
@@ -106,11 +122,11 @@ public class OrdersControllerTest {
         when(orderService.findOrderHistoryFor3Months(memberId)).thenReturn(Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay-list")
-                        .param("memberId", String.valueOf(memberId))
-                        .param("viewType", ""))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
+        mockMvc.perform(get("/auth/pay/pay-list")
+                .param("memberId", String.valueOf(memberId))
+                .param("viewType", ""))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
     }
 
     //youngseon 23.08.28
@@ -121,10 +137,10 @@ public class OrdersControllerTest {
         Long memberId = 1L;
 
         // when, then
-        mockMvc.perform(get("/auth/pay-list")
-                        .param("memberId", String.valueOf(memberId))
-                        .param("viewType", "기간")
-                        .param("startDate", "2023-01-01"))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/auth/pay/pay-list")
+                .param("memberId", String.valueOf(memberId))
+                .param("viewType", "기간")
+                .param("startDate", "2023-01-01"))
+            .andExpect(status().isBadRequest());
     }
 }

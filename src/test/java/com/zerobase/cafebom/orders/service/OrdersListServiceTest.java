@@ -1,4 +1,5 @@
-package com.zerobase.cafebom.history.service;
+package com.zerobase.cafebom.orders.service;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -27,7 +28,7 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class OrdersHistoryServiceTest {
+class OrdersListServiceTest {
 
     @InjectMocks
     private OrdersHistoryService ordersHistoryService;
