@@ -67,7 +67,7 @@ public class AdminProductController {
 
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<?> productRemove(@PathVariable Integer productId) {
         adminProductService.removeProduct(productId);
         return ResponseEntity.status(NO_CONTENT).build();
