@@ -2,16 +2,12 @@ package com.zerobase.cafebom.review.controller.form;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Min;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 public class ReviewAddForm {
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Builder
     @Getter
     public static class Request {
@@ -26,8 +22,5 @@ public class ReviewAddForm {
 
         @Schema(description = "내용", example = "역시 갈증날 땐 아아가 최고에요!!")
         private String content;
-
-        @Schema(description = "사진", example = "example.review.picture.sldfjs.sldfksj")
-        private String picture;
     }
 }

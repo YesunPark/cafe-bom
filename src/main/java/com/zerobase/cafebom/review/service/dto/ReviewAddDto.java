@@ -20,14 +20,11 @@ public class ReviewAddDto {
 
         private String content;
 
-        private String picture;
-
         public static ReviewAddDto.Request from(ReviewAddForm.Request request) {
             return Request.builder()
                 .ordersProductId(request.getOrdersProductId())
                 .rating(request.getRating())
                 .content(request.getContent())
-                .picture(request.getPicture())
                 .build();
         }
     }
