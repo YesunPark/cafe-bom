@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.product.domain.entity;
 
+import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
@@ -7,11 +8,20 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 
 @Builder(toBuilder = true)
 @Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Product extends BaseTimeEntity {
 
@@ -41,9 +51,29 @@ public class Product extends BaseTimeEntity {
     private String picture;
 
 
+    public void modifyProductForm(AdminProductDto productDto, ProductCategory productCategory) {
+        if (productDto.getName() != null) {
+            this.name = productDto.getName();
+        }
+        if (productDto.getProductCategoryId() != null) {
+            this.productCategory = productCategory;
+        }
+        if (productDto.getDescription() != null) {
+            this.description = productDto.getDescription();
+        }
+        if (productDto.getPrice() != null) {
+            this.price = productDto.getPrice();
+        }
+        if (productDto.getSoldOutStatus() != null) {
+            this.soldOutStatus = productDto.getSoldOutStatus();
+        }
+    }
+
+    public void modifyNewImageUrl(String newImageUrl) {
+        this.picture = newImageUrl;
+    }
     public void modifySoldOutStatus(SoldOutStatus soldOutStatus) {
         this.soldOutStatus = soldOutStatus;
     }
 
 }
-

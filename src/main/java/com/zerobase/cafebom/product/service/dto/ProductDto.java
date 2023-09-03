@@ -1,23 +1,21 @@
 package com.zerobase.cafebom.product.service.dto;
 
-
 import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
+@AllArgsConstructor
+@NotNull
 @Builder
+@Getter
 public class ProductDto {
 
-    private Integer id;
-
-    private ProductCategory productCategory;
+    private Integer productId;
 
     private String name;
-
-    private String description;
 
     private Integer price;
 
@@ -25,15 +23,13 @@ public class ProductDto {
 
     private String picture;
 
-    public static ProductDto from(Product product){
+    public static ProductDto from(Product product) {
         return ProductDto.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .soldOutStatus(product.getSoldOutStatus())
-                .picture(product.getPicture())
-                .build();
+            .productId(product.getId())
+            .name(product.getName())
+            .price(product.getPrice())
+            .soldOutStatus(product.getSoldOutStatus())
+            .picture(product.getPicture())
+            .build();
     }
-
 }
