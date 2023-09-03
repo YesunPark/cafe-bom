@@ -14,6 +14,9 @@ public enum ErrorCode {
     PHONE_ALREADY_EXISTS("이미 존재하는 휴대전화번호입니다.", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
 
+    // Member
+    MEMBER_NOT_PERMITTED("사용자 권한이 없는 요청입니다.", HttpStatus.FORBIDDEN),
+
     // Product
     PRODUCT_NOT_EXISTS("존재하지 않는 상품입니다.", HttpStatus.BAD_REQUEST),
     METHOD_ARGUMENT_TYPE_MISMATCH("메서드 매개변수 타입이 맞지 않습니다.", HttpStatus.BAD_REQUEST),
@@ -32,7 +35,11 @@ public enum ErrorCode {
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", HttpStatus.BAD_REQUEST),
     NOT_FOUND_OPTION("옵션을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
     NOT_FOUND_OPTION_CATEGORY("옵션 카테고리를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
-    NOT_FOUND_OPTION_ID("옵션을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+    NOT_FOUND_OPTION_ID("옵션을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+
+    // Review
+    REVIEW_NOT_EXISTS("존재하지 않는 리뷰입니다.", HttpStatus.BAD_REQUEST),
+    ;
 
     private final String message;
     private final HttpStatus httpStatus;
