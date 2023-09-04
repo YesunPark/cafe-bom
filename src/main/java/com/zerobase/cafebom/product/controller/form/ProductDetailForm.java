@@ -6,7 +6,6 @@ import com.zerobase.cafebom.product.service.dto.ProductDetailDto;
 import com.zerobase.cafebom.productoptioncategory.domain.entity.ProductOptionCategory;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import lombok.Getter;
 public class ProductDetailForm {
 
     @AllArgsConstructor
-    @NotNull
     @Builder
     @Getter
     public static class Response {

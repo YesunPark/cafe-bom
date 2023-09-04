@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.product.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
@@ -35,7 +35,7 @@ public class ProductService {
     public ProductDetailDto findProductDetails(Integer productId) {
 
         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
 
         List<ProductOptionCategory> allByProductId =
             productOptionCategoryRepository.findAllByProductId(productId);
