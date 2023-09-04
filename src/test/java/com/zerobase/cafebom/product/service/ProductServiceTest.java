@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_FOUND;
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -116,11 +116,11 @@ class ProductServiceTest {
     // wooyoung-23.08.26
     @Test
     @DisplayName("상품 상세 조회 실패 - 존재하지 않는 상품")
-    void failFindProductDetailsProductNotFound() {
+    void failFindProductDetailsProductNotExists() {
         // when
         assertThatThrownBy(() -> productService.findProductDetails(1))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(PRODUCT_NOT_FOUND.getMessage());
+            .hasMessage(PRODUCT_NOT_EXISTS.getMessage());
     }
 
     // wooyoung-23.08.29
