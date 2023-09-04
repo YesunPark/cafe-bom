@@ -12,7 +12,7 @@ import lombok.Getter;
 @Builder
 public class SignupAdminForm {
 
-    @Schema(description = "관리자 인증코드", example = "230904")
+    @Schema(description = "관리자 인증코드", example = "000000")
     @NotBlank(message = "관리자 인증코드는 필수로 입력해야 합니다.")
     @Size(min = 6, max = 6, message = "인증코드는 숫자 6자리입니다.")
     private String adminCode;
