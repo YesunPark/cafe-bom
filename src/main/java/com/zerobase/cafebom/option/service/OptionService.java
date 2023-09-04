@@ -8,12 +8,12 @@ import java.util.List;
 
 @Service
 public interface OptionService {
+
     // 옵션 등록-jiyeon-23.08.30
     void addOption(OptionDto.Request optionAddDto);
 
     // 옵션 수정-jiyeon-23.08.30
     void modifyOption(Integer id, OptionDto.Request request);
-
 
     // 옵션 삭제-jiyeon-23.08.30
     void removeOption(Integer id);

@@ -1,13 +1,16 @@
 package com.zerobase.cafebom.optioncategory.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,5 +25,4 @@ public class OptionCategory extends BaseTimeEntity {
 
     @NotNull
     private String name;
-
 }

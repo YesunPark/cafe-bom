@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.member.service.dto;
 
-import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.member.controller.form.SigninForm;
+import com.zerobase.cafebom.security.Role;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,10 +27,10 @@ public class SigninDto {
     @Builder
     public static class Response {
 
-      private Long memberId;
+        private Long memberId;
 
-      private String email;
+        private String email;
 
-      private Role role;
+        private Role role;
     }
 }

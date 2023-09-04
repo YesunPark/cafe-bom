@@ -1,35 +1,35 @@
 package com.zerobase.cafebom.orders.controller;
 
+import static com.zerobase.cafebom.exception.ErrorCode.INVALID_INPUT;
+
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
-import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersElapsedFindForm;
 import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
 import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDate;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import java.time.LocalDate;
-import java.util.List;
-
-import static com.zerobase.cafebom.exception.ErrorCode.INVALID_INPUT;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Tag(name = "orders-controller", description = "주문 관련 API")
@@ -86,27 +86,19 @@ public class OrdersController {
         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
-
             throw new CustomException(INVALID_INPUT);
         }
 
         List<OrdersHisDto> orderHisDtoList;
 
         if ("전체".equals(viewType)) {
-
             orderHisDtoList = orderService.findAllOrderHistory(memberId);
-
         } else if ("기간".equals(viewType) && startDate != null && endDate != null) {
-
             orderHisDtoList = orderService.findOrderHistoryByPeriod(memberId, startDate, endDate);
-
         } else {
-
             orderHisDtoList = orderService.findOrderHistoryFor3Months(memberId);
-
         }
 
         return ResponseEntity.ok(orderHisDtoList);
     }
-
 }

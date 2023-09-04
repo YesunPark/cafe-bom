@@ -31,7 +31,6 @@ public class AuthService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
-
     // 사용자 회원가입-yesun-23.08.21
     public void signup(SignupDto signupDto) {
         if (memberRepository.findByNickname(signupDto.getNickname()).isPresent()) {

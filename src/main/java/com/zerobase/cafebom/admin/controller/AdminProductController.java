@@ -48,9 +48,9 @@ public class AdminProductController {
     @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> productAdd(
-            HttpServletRequest request,
-            @RequestParam(value = "image") MultipartFile image,
-            AdminProductForm adminProductForm) throws IOException {
+        HttpServletRequest request,
+        @RequestParam(value = "image") MultipartFile image,
+        AdminProductForm adminProductForm) throws IOException {
         adminProductService.addProduct(image, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
@@ -59,9 +59,9 @@ public class AdminProductController {
     @ApiOperation(value = "상품 수정(관리자)", notes = "관리자가 상품Id 별로 수정합니다.")
     @PutMapping(value = "/{id}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> productModify(
-            @RequestParam(value = "image") MultipartFile image,
-            @PathVariable Integer id,
-            AdminProductForm adminProductForm) throws IOException {
+        @RequestParam(value = "image") MultipartFile image,
+        @PathVariable Integer id,
+        AdminProductForm adminProductForm) throws IOException {
         adminProductService.modifyProduct(image, id, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
