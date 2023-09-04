@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.productcategory.service;
 
-import com.zerobase.cafebom.productcategory.service.dto.ProductCategoryDto;
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import org.springframework.stereotype.Service;
 
 @Service

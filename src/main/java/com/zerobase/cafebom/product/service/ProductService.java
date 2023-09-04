@@ -2,10 +2,10 @@ package com.zerobase.cafebom.product.service;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.product.dto.ProductDto;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -5,12 +5,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.dto.OrdersAddForm;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

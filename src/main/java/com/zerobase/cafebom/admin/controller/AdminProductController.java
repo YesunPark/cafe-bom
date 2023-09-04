@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.admin.controller;
 
-import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.admin.service.AdminProductService;
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

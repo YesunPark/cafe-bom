@@ -3,9 +3,9 @@ package com.zerobase.cafebom.productcategory.service;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
-import com.zerobase.cafebom.productcategory.service.dto.ProductCategoryDto;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

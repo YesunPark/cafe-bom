@@ -2,9 +2,9 @@ package com.zerobase.cafebom.productcategory.controller;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import com.zerobase.cafebom.productcategory.controller.form.ProductCategoryForm;
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryForm;
 import com.zerobase.cafebom.productcategory.service.ProductCategoryService;
-import com.zerobase.cafebom.productcategory.service.dto.ProductCategoryDto;
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
