@@ -30,6 +30,9 @@ public enum ErrorCode {
 
     // ProductService -> ?
     INVALID_INPUT("잘못된 입력입니다", BAD_REQUEST), // 담당자분 누구신가여? 뭐가 잘못된 입력인지 알려줘야 할 듯 합니다!
+    // 보니까 기간으로 조회했는데 시작 날짜 또는 끝 날짜를 null 로 보낸 경우인 것 같아요
+    // 그러면 시작 날짜와 끝 날짜를 입력해야 합니다. 이런 식으로 에러메세지를 주는 게 좋지 않을까 싶네요!
+    // Ex) START_DATE_AND_END_DATE_ARE_ESSENTIAL("시작 날짜와 끝 날짜를 입력해야 합니다.", BAD_REQUEST),
 
     // Cart
     CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", BAD_REQUEST),
