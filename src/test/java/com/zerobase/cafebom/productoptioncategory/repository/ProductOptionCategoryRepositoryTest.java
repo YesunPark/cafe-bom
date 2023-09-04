@@ -31,7 +31,7 @@ class ProductOptionCategoryRepositoryTest {
     @Autowired
     private OptionCategoryRepository optionCategoryRepository;
 
-    // wooyoung-2023.09.04
+    // wooyoung-23.09.04
     @Test
     @DisplayName("상품 id로 ProductOptionCategory 목록 출력")
     void successFindAllByProductId() {

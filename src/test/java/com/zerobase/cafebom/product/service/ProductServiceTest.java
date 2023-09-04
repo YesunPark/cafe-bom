@@ -49,7 +49,7 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    // wooyoung-2023.08.26
+    // wooyoung-23.08.26
     @Test
     @DisplayName("상품 상세 조회 성공")
     void successFindProductDetails() {
@@ -113,7 +113,7 @@ class ProductServiceTest {
         assertThat(productDetails.getProductOptionList().get(espressoSize)).isEqualTo(optionList);
     }
 
-    // wooyoung-2023.08.26
+    // wooyoung-23.08.26
     @Test
     @DisplayName("상품 상세 조회 실패 - 존재하지 않는 상품")
     void failFindProductDetailsProductNotFound() {
