@@ -37,6 +37,6 @@ out/
 .vscode/
 
 application.yml
-application-deploy.yml
+application-prod.yml
 
 .DS_Store
