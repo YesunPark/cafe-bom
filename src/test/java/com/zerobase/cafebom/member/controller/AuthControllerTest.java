@@ -31,7 +31,7 @@ class AuthControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // yesun-23.08.22
+    // yesun-23.09.05
     @Test
     @DisplayName("회원가입 성공 - 이메일, 휴대폰번호, 닉네임, 비밀번호 입력")
     void successSignup() throws Exception {
@@ -47,7 +47,7 @@ class AuthControllerTest {
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isNoContent())
+            .andExpect(status().isCreated())
             .andDo(print());
     }
 
