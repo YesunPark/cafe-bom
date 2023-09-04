@@ -50,7 +50,15 @@ public class Orders extends BaseTimeEntity {
 
 
 
-    public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {
+    public void modifyReceivedTime(OrdersCookingStatus newStatus) {
+        if (this.cookingStatus == OrdersCookingStatus.NONE
+            && newStatus == OrdersCookingStatus.COOKING) {
+            this.receivedTime = LocalDateTime.now();
+        }
+        this.cookingStatus = newStatus;
+    }
+
+    public static Orders fromAddOrdersDto (OrdersAddDto.Request dto, Member member){
         return Orders.builder()
             .member(member)
             .payment(dto.getPayment())

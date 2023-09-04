@@ -1,43 +1,28 @@
 package com.zerobase.cafebom.orders.controller;
 
 
-import com.zerobase.cafebom.member.repository.MemberRepository;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.zerobase.cafebom.orders.controller.OrdersController;
+import com.zerobase.cafebom.member.repository.MemberRepository;
 import com.zerobase.cafebom.orders.domain.entity.Orders;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
-import com.zerobase.cafebom.security.SecurityConfiguration;
 import com.zerobase.cafebom.security.TokenProvider;
-import org.apache.catalina.security.SecurityConfig;
+import java.time.LocalDate;
+import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-
-
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDate;
-import java.util.Collections;
-
-
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 

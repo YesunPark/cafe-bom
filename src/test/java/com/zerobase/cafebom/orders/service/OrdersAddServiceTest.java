@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @ExtendWith(MockitoExtension.class)
-class OrdersServiceTest {
+class OrdersAddServiceTest {
 
     @Spy
     @InjectMocks
