@@ -1,16 +1,22 @@
-package com.zerobase.cafebom.member.controller;
+package com.zerobase.cafebom.auth.controller;
 
-import com.zerobase.cafebom.member.controller.form.SigninForm;
-import com.zerobase.cafebom.member.controller.form.SignupForm;
+import static com.zerobase.cafebom.exception.ErrorCode.ADMIN_CODE_NOT_MATCH;
+import static org.springframework.http.HttpStatus.CREATED;
+
+import com.zerobase.cafebom.auth.dto.SigninDto.Request;
+import com.zerobase.cafebom.auth.dto.SigninDto.Response;
+import com.zerobase.cafebom.auth.dto.SigninForm;
+import com.zerobase.cafebom.auth.dto.SignupAdminForm;
+import com.zerobase.cafebom.auth.dto.SignupDto;
+import com.zerobase.cafebom.auth.dto.SignupMemberForm;
+import com.zerobase.cafebom.auth.service.AuthService;
+import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.member.service.AuthService;
-import com.zerobase.cafebom.member.service.dto.SigninDto.Request;
-import com.zerobase.cafebom.member.service.dto.SigninDto.Response;
-import com.zerobase.cafebom.member.service.dto.SignupDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +31,30 @@ public class AuthController {
     private final AuthService authService;
     private final TokenProvider tokenProvider;
 
-    // yesun-23.08.21
+    @Value("${admin.code}")
+    private String ADMIN_CODE;
+
+    // yesun-23.09.05
     @ApiOperation(value = "사용자 회원가입", notes = "이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid SignupForm signupForm) {
-        authService.signup(SignupDto.from(signupForm));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Void> memberSignup(
+        @RequestBody @Valid SignupMemberForm signupMemberForm
+    ) {
+        authService.signup(SignupDto.from(signupMemberForm));
+        return ResponseEntity.status(CREATED).build();
+    }
+
+    // yesun-23.09.05
+    @ApiOperation(value = "관리자 회원가입", notes = "관리자 인증코드, 이메일, 비밀번호로 회원가입합니다.")
+    @PostMapping("/signup/admin")
+    public ResponseEntity<Void> adminSignup(
+        @RequestBody @Valid SignupAdminForm signupAdminForm
+    ) {
+        if (!ADMIN_CODE.equals(signupAdminForm.getAdminCode())) {
+            throw new CustomException(ADMIN_CODE_NOT_MATCH);
+        }
+        authService.signup(signupAdminForm);
+        return ResponseEntity.status(CREATED).build();
     }
 
     // yesun-23.08.22

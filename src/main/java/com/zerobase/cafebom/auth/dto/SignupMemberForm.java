@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.member.controller.form;
+package com.zerobase.cafebom.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Email;
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class SignupForm {
+public class SignupMemberForm {
 
     @Schema(description = "비밀번호", example = "test123!")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$])[A-Za-z\\d~!@#$]{8,11}$"

@@ -1,6 +1,5 @@
-package com.zerobase.cafebom.member.service.dto;
+package com.zerobase.cafebom.auth.dto;
 
-import com.zerobase.cafebom.member.controller.form.SigninForm;
 import com.zerobase.cafebom.security.Role;
 import lombok.Builder;
 import lombok.Getter;
