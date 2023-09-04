@@ -68,7 +68,7 @@ public class OrdersStatusControllerTest {
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
         Long ordersId = null;
-        doThrow(new CustomException(ErrorCode.ORDERS_NOT_FOUND))
+        doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
             .when(ordersService).modifyOrdersStatus(ordersId,
                 OrdersStatusModifyDto.builder().newStatus(COOKING).build()
             );

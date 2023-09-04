@@ -5,7 +5,7 @@ import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 
 import com.zerobase.cafebom.cart.domain.entity.Cart;
 import com.zerobase.cafebom.cart.repository.CartRepository;
@@ -69,7 +69,7 @@ public class OrdersService {
     @Transactional
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
         OrdersCookingStatus currentStatus = orders.getCookingStatus();
@@ -87,7 +87,7 @@ public class OrdersService {
     // 주문 수락 시간 저장-minsu-23.08.20
     public LocalDateTime getReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);
@@ -100,7 +100,7 @@ public class OrdersService {
     public Long getElapsedTime(Long ordersId) {
 
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);

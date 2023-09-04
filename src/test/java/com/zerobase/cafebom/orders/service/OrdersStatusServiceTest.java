@@ -2,7 +2,7 @@ package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +69,7 @@ class OrdersStatusServiceTest {
         Long ordersId = 1L;
 
         given(ordersRepository.findById(ordersId))
-            .willThrow(new CustomException(ORDERS_NOT_FOUND));
+            .willThrow(new CustomException(ORDERS_NOT_EXISTS));
 
         // then
         assertThrows(CustomException.class, () -> ordersService.getElapsedTime(ordersId));
