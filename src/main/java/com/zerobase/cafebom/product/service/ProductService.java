@@ -6,12 +6,11 @@ import com.zerobase.cafebom.product.domain.entity.Product;
 import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.product.service.dto.ProductDto;
 import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class ProductService {
     public List<ProductDto> findProductList(Integer productCategoryId) {
 
         if (!productCategoryRepository.existsById(productCategoryId)) {
-            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_FOUND);
+            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_EXISTS);
         }
 
         List<Product> productList = productRepository.findAllByProductCategoryId(productCategoryId);
@@ -38,5 +37,4 @@ public class ProductService {
 
         return productDtoList;
     }
-
 }

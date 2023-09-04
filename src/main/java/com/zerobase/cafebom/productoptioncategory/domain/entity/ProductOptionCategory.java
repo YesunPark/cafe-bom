@@ -37,5 +37,4 @@ public class ProductOptionCategory extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OPTION_CATEGORY_ID")
     private OptionCategory optionCategory;
-
 }

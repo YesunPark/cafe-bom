@@ -9,11 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface OrdersRepository extends JpaRepository<Orders,Long> {
+public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     List<Orders> findByMemberAndCreatedDateAfter(Member member, LocalDateTime createdDate);
 
     List<Orders> findByMember(Member member);
 
-    List<Orders> findByMemberAndCreatedDateBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
+    List<Orders> findByMemberAndCreatedDateBetween(Member member, LocalDateTime startDate,
+        LocalDateTime endDate);
 }

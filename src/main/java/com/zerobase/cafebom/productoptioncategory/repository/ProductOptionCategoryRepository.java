@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductOptionCategoryRepository extends JpaRepository<ProductOptionCategory, Integer> {
+public interface ProductOptionCategoryRepository extends
+    JpaRepository<ProductOptionCategory, Integer> {
 
 }

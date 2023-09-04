@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.common;
 
 import java.time.LocalDateTime;
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Getter;

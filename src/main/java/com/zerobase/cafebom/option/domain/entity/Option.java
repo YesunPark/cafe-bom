@@ -2,10 +2,20 @@ package com.zerobase.cafebom.option.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,5 +39,4 @@ public class Option extends BaseTimeEntity {
 
     @NotNull
     private Integer price;
-
 }

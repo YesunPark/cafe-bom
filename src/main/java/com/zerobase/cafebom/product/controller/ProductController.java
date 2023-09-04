@@ -26,7 +26,8 @@ public class ProductController {
     // wooyoung-23.08.22
     @ApiOperation(value = "상품 카테고리 별 상품 목록 조회", notes = "상품 카테고리 별로 상품을 조회합니다.")
     @GetMapping("/list/{productCategoryId}")
-    public ResponseEntity<List<ProductListForm.Response>> productList(@PathVariable Integer productCategoryId) {
+    public ResponseEntity<List<ProductListForm.Response>> productList(
+        @PathVariable Integer productCategoryId) {
 
         List<ProductDto> productDtoList = productService.findProductList(productCategoryId);
 
@@ -37,6 +38,6 @@ public class ProductController {
         }
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(productListForm);
+            .body(productListForm);
     }
 }

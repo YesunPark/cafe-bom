@@ -44,7 +44,7 @@ public class AdminProductForm {
 
     @Getter
     @Builder
-    public static class Response{
+    public static class Response {
 
         private Integer id;
 
@@ -62,17 +62,13 @@ public class AdminProductForm {
 
         public static Response from(Product product) {
             return Response.builder()
-                    .id(product.getId())
-                    .productCategoryId(product.getProductCategory().getId())
-                    .name(product.getName())
-                    .description(product.getDescription())
-                    .soldOutStatus(product.getSoldOutStatus())
-                    .picture(product.getPicture())
-                    .build();
+                .id(product.getId())
+                .productCategoryId(product.getProductCategory().getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .soldOutStatus(product.getSoldOutStatus())
+                .picture(product.getPicture())
+                .build();
         }
-
-
-
     }
-
 }

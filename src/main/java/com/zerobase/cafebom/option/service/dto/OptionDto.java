@@ -18,10 +18,10 @@ public class OptionDto {
 
         public static OptionDto.Request from(OptionForm.Request form) {
             return OptionDto.Request.builder()
-                    .optionCategoryId(form.getOptionCategoryId())
-                    .name(form.getName())
-                    .price(form.getPrice())
-                    .build();
+                .optionCategoryId(form.getOptionCategoryId())
+                .name(form.getName())
+                .price(form.getPrice())
+                .build();
         }
     }
 }

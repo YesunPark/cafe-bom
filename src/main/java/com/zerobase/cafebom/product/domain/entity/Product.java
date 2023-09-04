@@ -4,13 +4,20 @@ import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
 import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
@@ -18,6 +25,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Entity
 public class Product extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -42,7 +50,6 @@ public class Product extends BaseTimeEntity {
 
     @NotNull
     private String picture;
-
 
     public void modifyProductForm(AdminProductDto productDto, ProductCategory productCategory) {
         if (productDto.getName() != null) {
