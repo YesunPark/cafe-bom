@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.controller;
 
-import static com.zerobase.cafebom.exception.ErrorCode.INVALID_INPUT;
+import static com.zerobase.cafebom.exception.ErrorCode.START_DATE_AND_END_DATE_ARE_ESSENTIAL;
+import static org.springframework.http.HttpStatus.CREATED;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.repository.MemberRepository;
@@ -67,26 +68,26 @@ public class OrdersController {
         return ResponseEntity.ok(response);
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.04
     @ApiOperation(value = "주문 내역 저장",
         notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
     @PostMapping("/auth/pay")
-    public ResponseEntity<?> ordersAdd(@RequestHeader(name = "Authorization") String token,
+    public ResponseEntity<Void> ordersAdd(@RequestHeader(name = "Authorization") String token,
         @Valid @RequestBody OrdersAddForm.Request ordersAddForm) {
         ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
-    // youngseon-23.08.28
+    // youngseon-23.09.04
     @GetMapping("/auth/pay/list")
-    public ResponseEntity<?> getOrderHistoryList(
+    public ResponseEntity<List<OrdersHisDto>> getOrderHistoryList(
         @RequestParam("memberId") Long memberId,
         @RequestParam(value = "viewType", required = false) String viewType,
         @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
-            throw new CustomException(INVALID_INPUT);
+            throw new CustomException(START_DATE_AND_END_DATE_ARE_ESSENTIAL);
         }
 
         List<OrdersHisDto> orderHisDtoList;
