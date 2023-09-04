@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.option.service;
 
-import com.zerobase.cafebom.option.controller.form.OptionForm;
-import com.zerobase.cafebom.option.service.dto.OptionDto;
+import com.zerobase.cafebom.option.dto.OptionForm;
+import com.zerobase.cafebom.option.dto.OptionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

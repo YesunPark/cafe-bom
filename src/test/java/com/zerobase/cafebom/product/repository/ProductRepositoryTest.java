@@ -1,12 +1,13 @@
 package com.zerobase.cafebom.product.repository;
 
-import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
-import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.SOLD_OUT;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.type.SoldOutStatus.SOLD_OUT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,11 +29,11 @@ class ProductRepositoryTest {
     void successFindAllByProductCategoryId() {
         // given
         ProductCategory coffee = ProductCategory.builder()
-                .name("커피")
-                .build();
+            .name("커피")
+            .build();
         ProductCategory latte = ProductCategory.builder()
-                .name("라떼")
-                .build();
+            .name("라떼")
+            .build();
 
         productCategoryRepository.save(coffee);
         productCategoryRepository.save(latte);
@@ -68,17 +69,17 @@ class ProductRepositoryTest {
 
         // when
         List<Product> productList =
-                productRepository.findAllByProductCategoryId(1);
+            productRepository.findAllByProductCategoryId(1);
 
         // then
         assertThat(productList.size()).isEqualTo(2);
 
-        assertThat(productList.get(0).getProductCategory()).isEqualTo(espresso.getProductCategory());
+        assertThat(productList.get(0).getProductCategory()).isEqualTo(
+            espresso.getProductCategory());
         assertThat(productList.get(0).getName()).isEqualTo(espresso.getName());
         assertThat(productList.get(0).getDescription()).isEqualTo(espresso.getDescription());
         assertThat(productList.get(0).getPrice()).isEqualTo(espresso.getPrice());
         assertThat(productList.get(0).getSoldOutStatus()).isEqualTo(espresso.getSoldOutStatus());
         assertThat(productList.get(0).getPicture()).isEqualTo(espresso.getPicture());
-
     }
 }

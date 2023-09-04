@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.admin.service;
 
-import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

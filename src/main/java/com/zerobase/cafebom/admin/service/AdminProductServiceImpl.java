@@ -1,25 +1,24 @@
 package com.zerobase.cafebom.admin.service;
 
 
-import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor

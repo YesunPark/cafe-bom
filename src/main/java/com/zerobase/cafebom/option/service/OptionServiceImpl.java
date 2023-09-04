@@ -4,12 +4,12 @@ import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION_CATEGORY
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.option.controller.form.OptionForm;
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.option.service.dto.OptionDto;
-import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
-import com.zerobase.cafebom.optioncategory.repository.OptionCategoryRepository;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.option.dto.OptionDto;
+import com.zerobase.cafebom.option.dto.OptionForm;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

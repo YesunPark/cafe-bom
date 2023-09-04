@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.product.controller;
 
-import com.zerobase.cafebom.product.controller.form.ProductListForm;
+import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
+import com.zerobase.cafebom.product.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
