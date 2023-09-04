@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
+import com.zerobase.cafebom.admin.service.S3UploaderService;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.member.repository.MemberRepository;
@@ -16,6 +17,7 @@ import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto.Request;
 import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.security.TokenProvider;
+import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceTest {
@@ -33,6 +36,8 @@ class ReviewServiceTest {
     @InjectMocks
     private ReviewService reviewService;
 
+    @Mock
+    private S3UploaderService s3UploaderService;
     @Mock
     private MemberRepository memberRepository;
     @Mock
@@ -56,8 +61,8 @@ class ReviewServiceTest {
         .ordersProductId(1L)
         .rating(3)
         .content("test content")
-        .picture("test picture")
         .build();
+    MultipartFile multipartFile;
     OrdersProduct ordersProduct = OrdersProduct.builder().build();
 
     // yesun-23.09.01
@@ -68,33 +73,33 @@ class ReviewServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
     }
 
-    // yesun-23.09.01
+    // yesun-23.09.04
     @Test
     @DisplayName("리뷰 생성 성공")
-    void successAddReview() {
+    void successAddReview() throws IOException {
         // given
         given(ordersProductRepository.findById(request.getOrdersProductId()))
             .willReturn(Optional.of(ordersProduct));
 
         // when
-        reviewService.addReview(token, request);
+        reviewService.addReview(token, multipartFile, request);
 
         // then
-        then(reviewService).should(times(1)).addReview(token, request);
+        then(reviewService).should(times(1)).addReview(token, multipartFile, request);
     }
 
-    // yesun-23.09.01
+    // yesun-23.09.04
     @Test
     @DisplayName("리뷰 생성 실패 - 존재하지 않는 주문_상품 ID 요청")
-    void successAddReviewOrdersProductIdNotExits() {
+    void successAddReviewOrdersProductIdNotExits() throws IOException {
         // given
         given(ordersProductRepository.findById(request.getOrdersProductId()))
             .willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> reviewService.addReview(token, request))
+        assertThatThrownBy(() -> reviewService.addReview(token, multipartFile, request))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(ORDERS_PRODUCT_NOT_EXISTS.getMessage());
-        then(reviewService).should(times(1)).addReview(token, request);
+        then(reviewService).should(times(1)).addReview(token, multipartFile, request);
     }
 }
