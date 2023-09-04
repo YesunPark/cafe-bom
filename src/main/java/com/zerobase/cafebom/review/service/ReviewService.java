@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.review.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.REVIEW_ALREADY_WRITTEN;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
 
@@ -37,17 +38,15 @@ public class ReviewService {
         Member memberByToken = memberRepository.findById(memberIdByToken)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        String s3UploadedUrl = s3UploaderService.uploadFileToS3(image, "dirName");
-
         OrdersProduct ordersProduct = ordersProductRepository.findById(request.getOrdersProductId())
             .orElseThrow(() -> new CustomException(ORDERS_PRODUCT_NOT_EXISTS));
 
-        reviewRepository.save(Review.builder()
-            .memberId(memberByToken.getId())
-            .ordersProduct(ordersProduct)
-            .rating(request.getRating())
-            .content(request.getContent())
-            .picture(s3UploadedUrl)
-            .build());
+        reviewRepository.findByOrdersProduct(ordersProduct)
+            .ifPresent(review -> {
+                throw new CustomException(REVIEW_ALREADY_WRITTEN);
+            });
+
+        String s3UploadedUrl = s3UploaderService.uploadFileToS3(image, "dirName");
+        reviewRepository.save(Review.from(memberByToken, ordersProduct, request, s3UploadedUrl));
     }
 }

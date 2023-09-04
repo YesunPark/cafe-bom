@@ -1,7 +1,9 @@
 package com.zerobase.cafebom.review.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
+import com.zerobase.cafebom.member.domain.entity.Member;
 import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
+import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,4 +45,15 @@ public class Review extends BaseTimeEntity {
     private String content;
 
     private String picture;
+
+    public static Review from(Member memberByToken, OrdersProduct ordersProduct,
+        ReviewAddDto.Request request, String s3UploadedUrl) {
+        return Review.builder()
+            .memberId(memberByToken.getId())
+            .ordersProduct(ordersProduct)
+            .rating(request.getRating())
+            .content(request.getContent())
+            .picture(s3UploadedUrl)
+            .build();
+    }
 }
