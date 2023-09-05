@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.review.domain.entity;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

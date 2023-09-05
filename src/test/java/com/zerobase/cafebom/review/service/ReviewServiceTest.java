@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.review.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -8,10 +9,10 @@ import static org.mockito.Mockito.times;
 
 import com.zerobase.cafebom.admin.service.S3UploaderService;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
-import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import com.zerobase.cafebom.review.repository.ReviewRepository;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto.Request;
@@ -55,7 +56,7 @@ class ReviewServiceTest {
         .nickname("testNickname")
         .phone("01022223333")
         .email("test@naber.com")
-        .role(Role.ROLE_USER)
+        .role(ROLE_USER)
         .build();
     ReviewAddDto.Request request = Request.builder()
         .ordersProductId(1L)

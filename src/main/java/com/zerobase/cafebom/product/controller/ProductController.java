@@ -1,8 +1,10 @@
 package com.zerobase.cafebom.product.controller;
 
-import com.zerobase.cafebom.product.controller.form.ProductListForm;
+import com.zerobase.cafebom.product.dto.ProductDetailDto;
+import com.zerobase.cafebom.product.dto.ProductDetailForm;
+import com.zerobase.cafebom.product.dto.ProductDto;
+import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
@@ -38,5 +40,15 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(productListForm);
+    }
+
+    // wooyoung-23.08.28
+    @ApiOperation(value = "상품 상세보기", notes = "상품의 상세 정보를 확인합니다.")
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductDetailForm.Response> productDetails(@PathVariable Integer productId) {
+        ProductDetailDto productDetails = productService.findProductDetails(productId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ProductDetailForm.Response.from(productDetails));
     }
 }

@@ -5,9 +5,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.controller.form.SignupForm;
+import com.zerobase.cafebom.auth.controller.AuthController;
+import com.zerobase.cafebom.auth.dto.SignupMemberForm;
+import com.zerobase.cafebom.auth.service.AuthService;
 import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.member.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,12 @@ class AuthControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // yesun-23.08.22
+    // yesun-23.09.05
     @Test
     @DisplayName("회원가입 성공 - 이메일, 휴대폰번호, 닉네임, 비밀번호 입력")
     void successSignup() throws Exception {
         // given
-        SignupForm form = SignupForm.builder()
+        SignupMemberForm form = SignupMemberForm.builder()
             .email("test@test.com")
             .phone("01011112222")
             .nickname("테스트닉넴")
@@ -46,7 +47,7 @@ class AuthControllerTest {
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isNoContent())
+            .andExpect(status().isCreated())
             .andDo(print());
     }
 
@@ -55,7 +56,7 @@ class AuthControllerTest {
     @DisplayName("회원가입 실패 - 요청형식 오류(이메일 누락)")
     void failSignupEmailNotBlank() throws Exception {
         // given
-        SignupForm form = SignupForm.builder()
+        SignupMemberForm form = SignupMemberForm.builder()
             .phone("01011112222")
             .nickname("테스트닉넴")
             .password("test12345@")
@@ -74,7 +75,7 @@ class AuthControllerTest {
     @DisplayName("회원가입 실패 - 이메일 형식 오류")
     void failSignupEmailInvalid() throws Exception {
         // given
-        SignupForm form = SignupForm.builder()
+        SignupMemberForm form = SignupMemberForm.builder()
             .email("test@")
             .phone("01011112222")
             .nickname("테스트닉넴")
@@ -96,7 +97,7 @@ class AuthControllerTest {
     @DisplayName("회원가입 실패 - 비밀번호 형식 오류")
     void failSignupPasswordInvalid() throws Exception {
         // given
-        SignupForm form = SignupForm.builder()
+        SignupMemberForm form = SignupMemberForm.builder()
             .email("test@test.com")
             .phone("01011112222")
             .nickname("테스트닉넴")
