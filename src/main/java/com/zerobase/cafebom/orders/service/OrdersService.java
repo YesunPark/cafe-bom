@@ -5,27 +5,27 @@ import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 
-import com.zerobase.cafebom.cart.domain.entity.Cart;
-import com.zerobase.cafebom.cart.repository.CartRepository;
-import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
-import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
-import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
-import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
-import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
-import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.orders.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
+import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOption;
+import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOptionRepository;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.OrdersCookingStatus;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,7 +69,7 @@ public class OrdersService {
     @Transactional
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
         OrdersCookingStatus currentStatus = orders.getCookingStatus();
@@ -87,7 +87,7 @@ public class OrdersService {
     // 주문 수락 시간 저장-minsu-23.08.20
     public LocalDateTime getReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);
@@ -100,7 +100,7 @@ public class OrdersService {
     public Long getElapsedTime(Long ordersId) {
 
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);

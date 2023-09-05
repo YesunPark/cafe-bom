@@ -2,18 +2,18 @@ package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.OrdersCookingStatus;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,14 +50,16 @@ class OrdersStatusServiceTest {
         // given
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
+            .willReturn(
+                Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
 
         OrdersStatusModifyDto modifyDto = OrdersStatusModifyDto.builder()
             .newStatus(OrdersCookingStatus.NONE)
             .build();
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_CORRECT);
     }
 
@@ -69,7 +71,7 @@ class OrdersStatusServiceTest {
         Long ordersId = 1L;
 
         given(ordersRepository.findById(ordersId))
-            .willThrow(new CustomException(ORDERS_NOT_FOUND));
+            .willThrow(new CustomException(ORDERS_NOT_EXISTS));
 
         // then
         assertThrows(CustomException.class, () -> ordersService.getElapsedTime(ordersId));
@@ -88,7 +90,8 @@ class OrdersStatusServiceTest {
                 .build()));
 
         // then
-        CustomException exception = assertThrows(CustomException.class, () -> ordersService.getElapsedTime(ordersId));
+        CustomException exception = assertThrows(CustomException.class,
+            () -> ordersService.getElapsedTime(ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_COOKING_STATUS);
     }
 }

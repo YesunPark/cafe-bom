@@ -1,14 +1,15 @@
 package com.zerobase.cafebom.cart.service;
 
-import static com.zerobase.cafebom.cart.domain.entity.type.CartOrderStatus.BEFORE_ORDER;
 
-import com.zerobase.cafebom.cart.domain.entity.Cart;
-import com.zerobase.cafebom.cart.repository.CartRepository;
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
+
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
 import com.zerobase.cafebom.cart.service.dto.CartListDto;
-import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
-import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.List;

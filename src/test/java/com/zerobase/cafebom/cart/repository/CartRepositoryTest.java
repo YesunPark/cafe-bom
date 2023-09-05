@@ -1,8 +1,9 @@
 package com.zerobase.cafebom.cart.repository;
 
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 

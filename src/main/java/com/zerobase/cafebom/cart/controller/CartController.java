@@ -1,5 +1,7 @@
 package com.zerobase.cafebom.cart.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+
 import com.zerobase.cafebom.cart.controller.form.CartListForm;
 import com.zerobase.cafebom.cart.controller.form.CartListForm.Response;
 import com.zerobase.cafebom.cart.service.CartService;
@@ -9,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,6 +39,6 @@ public class CartController {
             responses.add(CartListForm.Response.from(cartListDto));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(responses);
+        return ResponseEntity.status(OK).body(responses);
     }
 }
