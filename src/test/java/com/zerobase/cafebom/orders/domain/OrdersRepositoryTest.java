@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.orders.repository;
+package com.zerobase.cafebom.orders.domain;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

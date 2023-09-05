@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.repository;
+package com.zerobase.cafebom.product.domain;
 
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static com.zerobase.cafebom.type.SoldOutStatus.SOLD_OUT;
