@@ -2,6 +2,8 @@ package com.zerobase.cafebom.review.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
+import static com.zerobase.cafebom.type.OrdersCookingStatus.COOKING;
+import static com.zerobase.cafebom.type.Payment.KAKAO_PAY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -11,6 +13,8 @@ import com.zerobase.cafebom.admin.service.S3UploaderService;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
 import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import com.zerobase.cafebom.review.repository.ReviewRepository;
@@ -18,6 +22,8 @@ import com.zerobase.cafebom.review.service.dto.ReviewAddDto;
 import com.zerobase.cafebom.review.service.dto.ReviewAddDto.Request;
 import com.zerobase.cafebom.security.Role;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.OrdersCookingStatus;
+import com.zerobase.cafebom.type.Payment;
 import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +50,8 @@ class ReviewServiceTest {
     @Mock
     private OrdersProductRepository ordersProductRepository;
     @Mock
+    private OrdersRepository ordersRepository;
+    @Mock
     private ReviewRepository reviewRepository;
 
     @Mock
@@ -64,7 +72,14 @@ class ReviewServiceTest {
         .content("test content")
         .build();
     MultipartFile multipartFile;
-    OrdersProduct ordersProduct = OrdersProduct.builder().build();
+    OrdersProduct ordersProduct = OrdersProduct.builder()
+        .ordersId(1L)
+        .build();
+    Orders orders = Orders.builder()
+        .member(member)
+        .payment(KAKAO_PAY)
+        .cookingStatus(COOKING)
+        .build();
 
     // yesun-23.09.01
     @BeforeEach
@@ -74,13 +89,15 @@ class ReviewServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
     }
 
-    // yesun-23.09.04
+    // yesun-23.09.06
     @Test
     @DisplayName("리뷰 생성 성공")
     void successAddReview() throws IOException {
         // given
         given(ordersProductRepository.findById(request.getOrdersProductId()))
             .willReturn(Optional.of(ordersProduct));
+        given(ordersRepository.findById(ordersProduct.getOrdersId()))
+            .willReturn(Optional.of(orders));
 
         // when
         reviewService.addReview(token, multipartFile, request);
