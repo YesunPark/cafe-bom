@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.product.controller;
 
 import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
-import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,15 +10,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.service.AuthService;
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
-import com.zerobase.cafebom.product.domain.entity.Product;
+import com.zerobase.cafebom.auth.service.AuthService;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.dto.ProductDetailDto;
+import com.zerobase.cafebom.product.dto.ProductDto;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.ProductDetailDto;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productoptioncategory.domain.entity.ProductOptionCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.HashMap;

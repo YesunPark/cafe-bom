@@ -4,9 +4,9 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
-import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.admin.service.AdminProductService;
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -53,9 +53,9 @@ public class AdminProductController {
     @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> productAdd(
-            HttpServletRequest request,
-            @RequestParam(value = "image") MultipartFile image,
-            AdminProductForm adminProductForm) throws IOException {
+        HttpServletRequest request,
+        @RequestParam(value = "image") MultipartFile image,
+        AdminProductForm adminProductForm) throws IOException {
         adminProductService.addProduct(image, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
@@ -64,9 +64,9 @@ public class AdminProductController {
     @ApiOperation(value = "상품 수정(관리자)", notes = "관리자가 상품Id 별로 수정합니다.")
     @PutMapping(value = "/{id}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> productModify(
-            @RequestParam(value = "image") MultipartFile image,
-            @PathVariable Integer id,
-            AdminProductForm adminProductForm) throws IOException {
+        @RequestParam(value = "image") MultipartFile image,
+        @PathVariable Integer id,
+        AdminProductForm adminProductForm) throws IOException {
         adminProductService.modifyProduct(image, id, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }

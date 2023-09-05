@@ -4,15 +4,15 @@ import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.product.service.dto.ProductDetailDto;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
-import com.zerobase.cafebom.productoptioncategory.domain.entity.ProductOptionCategory;
-import com.zerobase.cafebom.productoptioncategory.repository.ProductOptionCategoryRepository;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.product.dto.ProductDetailDto;
+import com.zerobase.cafebom.product.dto.ProductDto;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
+import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +59,7 @@ public class ProductService {
     public List<ProductDto> findProductList(Integer productCategoryId) {
 
         if (!productCategoryRepository.existsById(productCategoryId)) {
-            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_FOUND);
+            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_EXISTS);
         }
 
         List<Product> productList = productRepository.findAllByProductCategoryId(productCategoryId);
@@ -71,5 +71,4 @@ public class ProductService {
 
         return productDtoList;
     }
-
 }

@@ -1,15 +1,16 @@
 package com.zerobase.cafebom.productoptioncategory.repository;
 
-import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.zerobase.cafebom.optioncategory.domain.entity.OptionCategory;
-import com.zerobase.cafebom.optioncategory.repository.OptionCategoryRepository;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
-import com.zerobase.cafebom.productoptioncategory.domain.entity.ProductOptionCategory;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
+import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

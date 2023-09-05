@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.security;
 
-import com.zerobase.cafebom.member.service.AuthService;
+import com.zerobase.cafebom.auth.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

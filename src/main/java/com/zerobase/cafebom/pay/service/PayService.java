@@ -1,11 +1,11 @@
 package com.zerobase.cafebom.pay.service;
 
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
-import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
-import com.zerobase.cafebom.product.repository.ProductRepository;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
+import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOptionRepository;
+import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ public class PayService {
     private final OrdersProductRepository ordersProductRepository;
     private final OrdersProductOptionRepository ordersProductOptionRepository;
     private final OptionRepository optionRepository;
-
 
     private final TokenProvider tokenProvider;
 

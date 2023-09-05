@@ -1,6 +1,17 @@
 package com.zerobase.cafebom.product.repository;
 
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.type.SoldOutStatus.SOLD_OUT;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
