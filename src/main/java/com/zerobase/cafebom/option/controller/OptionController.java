@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "product-controller", description = "관리자 옵션 CRUD API")
+@Tag(name = "option-controller", description = "관리자 옵션 CRUD API")
 @Controller
 @RequestMapping("/admin/option")
 @RequiredArgsConstructor
