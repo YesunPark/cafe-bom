@@ -69,7 +69,7 @@ public class AdminProductServiceImpl implements AdminProductService {
                 s3UploaderService.deleteFile(oldPicture);
             }
             String newImageUrl = s3UploaderService.uploadFileToS3(image, "product");
-            System.out.println("newImageUrl = " + newImageUrl);
+
             product.modifyNewImageUrl(newImageUrl);
         }
     }
@@ -79,7 +79,9 @@ public class AdminProductServiceImpl implements AdminProductService {
     public void removeProduct(Integer id) throws IOException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
         s3UploaderService.deleteFile(product.getPicture());
+
         productRepository.deleteById(product.getId());
     }
 
@@ -87,9 +89,11 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public List<AdminProductForm.Response> findProductList() {
         List<Product> productList = productRepository.findAll();
+
         List<AdminProductForm.Response> productFormList = productList.stream()
                 .map(AdminProductForm.Response::from)
                 .collect(Collectors.toList());
+
         return productFormList;
     }
 
@@ -98,7 +102,9 @@ public class AdminProductServiceImpl implements AdminProductService {
     public AdminProductForm.Response findProductById(Integer id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
         AdminProductForm.Response productForm = AdminProductForm.Response.from(product);
+
         return productForm;
     }
 
@@ -110,8 +116,8 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
 
         product.modifySoldOutStatus(soldOutStatus);
-        productRepository.save(product);
 
+        productRepository.save(product);
     }
 
 }

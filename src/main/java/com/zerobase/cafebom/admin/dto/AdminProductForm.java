@@ -3,12 +3,13 @@ package com.zerobase.cafebom.admin.dto;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.type.SoldOutStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+import lombok.Getter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
 @Builder
@@ -62,13 +63,13 @@ public class AdminProductForm {
 
         public static Response from(Product product) {
             return Response.builder()
-                .id(product.getId())
-                .productCategoryId(product.getProductCategory().getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .soldOutStatus(product.getSoldOutStatus())
-                .picture(product.getPicture())
-                .build();
+                    .id(product.getId())
+                    .productCategoryId(product.getProductCategory().getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .soldOutStatus(product.getSoldOutStatus())
+                    .picture(product.getPicture())
+                    .build();
         }
     }
 }
