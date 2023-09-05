@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.member.domain;
 
-import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.auth.dto.SignupDto;
+import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.security.Role;
 import java.util.Collection;
 import java.util.List;
@@ -54,13 +54,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Role role;
 
 
-    public static Member from(SignupDto signupDto, String encoredPassword) {
+    public static Member from(SignupDto signupDto, String encoredPassword, Role role) {
         return Member.builder()
             .password(encoredPassword)
             .nickname(signupDto.getNickname())
             .phone(signupDto.getPhone())
             .email(signupDto.getEmail())
-            .role(Role.ROLE_USER)
+            .role(role)
             .build();
     }
 
