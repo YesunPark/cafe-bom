@@ -6,17 +6,24 @@ import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDto;
+import com.zerobase.cafebom.product.service.dto.BestProductDto;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +37,10 @@ public class ProductService {
     private final ProductOptionCategoryRepository productOptionCategoryRepository;
 
     private final OptionRepository optionRepository;
+
+    private final OrdersProductRepository ordersProductRepository;
+
+    private final OrdersRepository ordersRepository;
 
     // 상품 상세 정보 조회-wooyoung-23.08.28
     public ProductDetailDto findProductDetails(Integer productId) {
@@ -52,6 +63,7 @@ public class ProductService {
 
         return ProductDetailDto.from(product, productOptionList);
     }
+
     private final ProductCategoryRepository productCategoryRepository;
 
     // 상품 목록 조회-wooyoung-23.08.22
@@ -70,5 +82,46 @@ public class ProductService {
         }
 
         return productDtoList;
+    }
+
+    // 베스트 상품 조회-minsu-23.09.05
+    @Transactional
+    public List<BestProductDto> findBestProductList() {
+
+        List<Orders> receivedOrders = ordersRepository.findByReceiptStatus(
+            OrdersReceiptStatus.RECEIVED);
+
+        Map<Product, Integer> productCountMap = new HashMap<>();
+
+        for (Orders orders : receivedOrders) {
+            List<OrdersProduct> ordersProducts = ordersProductRepository.findByOrdersId(
+                orders.getId());
+            for (OrdersProduct ordersProduct : ordersProducts) {
+                Product product = ordersProduct.getProduct();
+                int count = ordersProduct.getCount();
+
+                if (productCountMap.containsKey(product)) {
+                    count += productCountMap.get(product);
+                }
+
+                productCountMap.put(product, count);
+            }
+        }
+
+        List<Product> bestProduct = productCountMap.entrySet().stream()
+            .sorted((entry1, entry2) -> Integer.compare(entry2.getValue(), entry1.getValue()))
+            .limit(5)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toList());
+
+        return bestProduct.stream()
+            .map(product -> BestProductDto.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .soldOutStatus(product.getSoldOutStatus())
+                .picture(product.getPicture())
+                .build())
+            .collect(Collectors.toList());
     }
 }
