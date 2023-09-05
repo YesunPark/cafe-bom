@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/**/signup", "/**/signin", "/product/**").permitAll();
+            .antMatchers("/**/signup/**", "/**/signin", "/product/**").permitAll();
 //        나중에 DB 연결해서 관리자 생성되면 주석해제하기
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/auth/**").hasRole("USER");
