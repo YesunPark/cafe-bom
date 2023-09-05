@@ -31,11 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**/signup", "/**/signin", "/product/**").permitAll();
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            .antMatchers("/**/signup", "/**/signin", "/product/**").permitAll();
 //        나중에 DB 연결해서 관리자 생성되면 주석해제하기
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/auth/**").hasRole("USER");
@@ -46,6 +46,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/h2-console/**");
+            .antMatchers("/h2-console/**");
     }
 }

@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.orders.controller;
 
-import static com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus.COOKING;
+import static com.zerobase.cafebom.type.OrdersCookingStatus.COOKING;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -12,13 +12,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.orders.controller.form.OrdersCookingTimeModifyForm;
-import com.zerobase.cafebom.orders.controller.form.OrdersReceiptModifyForm;
-import com.zerobase.cafebom.orders.controller.form.OrdersStatusModifyForm;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyForm;
+import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyForm;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.type.OrdersCookingTime;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,14 +37,20 @@ public class OrdersStatusControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private TokenProvider tokenProvider;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private OrdersService ordersService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @MockBean
+    private TokenProvider tokenProvider;
+
+    @MockBean
+    private OrdersHistoryService ordersHistoryService;
+
+    @MockBean
+    private MemberRepository memberRepository;
 
     // minsu-23.08.24
     @Test
@@ -68,7 +76,7 @@ public class OrdersStatusControllerTest {
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
         Long ordersId = null;
-        doThrow(new CustomException(ErrorCode.ORDERS_NOT_FOUND))
+        doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
             .when(ordersService).modifyOrdersStatus(ordersId,
                 OrdersStatusModifyDto.builder().newStatus(COOKING).build()
             );

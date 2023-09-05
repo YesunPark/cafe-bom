@@ -7,31 +7,32 @@ import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
 
-import com.zerobase.cafebom.cart.domain.entity.Cart;
-import com.zerobase.cafebom.cart.repository.CartRepository;
-import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
-import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersAddDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.ordersproduct.domain.entity.OrdersProduct;
-import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
-import com.zerobase.cafebom.ordersproductoption.domain.entity.OrdersProductOption;
-import com.zerobase.cafebom.ordersproductoption.repository.OrdersProductOptionRepository;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.orders.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
+import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
+import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOption;
+import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOptionRepository;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.OrdersCookingStatus;
+import com.zerobase.cafebom.type.OrdersCookingTime;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,17 +58,32 @@ public class OrdersService {
 
     private final TokenProvider tokenProvider;
 
+    // 다음 상태 이외엔 주문 상태 변경 불가-minsu-23.09.01
+    private OrdersCookingStatus getPreviousCookingStatus(OrdersCookingStatus currentStatus) {
+        switch (currentStatus) {
+            case NONE:
+                return OrdersCookingStatus.COOKING;
+            case COOKING:
+                return OrdersCookingStatus.PREPARED;
+            case PREPARED:
+                return OrdersCookingStatus.FINISHED;
+            default:
+                return null;
+        }
+    }
+
     // 주문 상태 변경-minsu-23.08.18
     @Transactional
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
+        OrdersCookingStatus currentStatus = orders.getCookingStatus();
+        OrdersCookingStatus previousStatus = getPreviousCookingStatus(currentStatus);
 
-        if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
-            && newStatus == OrdersCookingStatus.NONE) {
-            throw new CustomException(ORDERS_ALREADY_COOKING_STATUS);
+        if (newStatus != previousStatus) {
+            throw new CustomException(ORDERS_NOT_CORRECT);
         }
 
         orders.modifyReceivedTime(newStatus);
@@ -76,9 +92,9 @@ public class OrdersService {
     }
 
     // 주문 수락 시간 저장-minsu-23.08.20
-    public LocalDateTime addReceivedTime(Long ordersId) {
+    public LocalDateTime getReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);
@@ -89,8 +105,9 @@ public class OrdersService {
 
     // 주문 경과 시간 계산-minsu-23.09.02
     public Long findElapsedTime(Long ordersId) {
+
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);
@@ -108,7 +125,7 @@ public class OrdersService {
     public void modifyOrdersReceiptStatus(Long ordersId,
         OrdersReceiptModifyDto ordersReceiptModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         OrdersReceiptStatus newReceiptStatus = ordersReceiptModifyDto.getNewReceiptStatus();
 
@@ -130,7 +147,7 @@ public class OrdersService {
     @Transactional
     public void modifyOrdersCancel(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
             || orders.getReceiptStatus() == OrdersReceiptStatus.RECEIVED) {
@@ -152,7 +169,7 @@ public class OrdersService {
     public void modifyOrdersCookingTime(Long ordersId,
         OrdersCookingTimeModifyDto cookingTimeModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
-            .orElseThrow(() -> new CustomException(ORDERS_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
         OrdersCookingTime selectedCookingTime = cookingTimeModifyDto.getSelectedCookingTime();
 
@@ -160,7 +177,8 @@ public class OrdersService {
             throw new CustomException(ORDERS_NOT_RECEIVED_STATUS);
         }
 
-        if (orders.getCookingTime() != OrdersCookingTime.NONE && selectedCookingTime != orders.getCookingTime()) {
+        if (orders.getCookingTime() != OrdersCookingTime.NONE
+            && selectedCookingTime != orders.getCookingTime()) {
             throw new CustomException(ORDERS_COOKING_TIME_ALREADY_SET);
         }
 

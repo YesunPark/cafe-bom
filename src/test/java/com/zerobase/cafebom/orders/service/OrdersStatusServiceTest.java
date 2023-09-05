@@ -4,7 +4,8 @@ import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_FOUND;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,15 +13,15 @@ import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingStatus;
-import com.zerobase.cafebom.orders.domain.type.OrdersCookingTime;
-import com.zerobase.cafebom.orders.domain.type.OrdersReceiptStatus;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.orders.service.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
+import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.OrdersCookingStatus;
+import com.zerobase.cafebom.type.OrdersCookingTime;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -51,10 +52,9 @@ class OrdersStatusServiceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
-    // minsu-23.08.24
+    // minsu-23.09.02
     @Test
-    @DisplayName("주문 상태 변경 실패 - 이미 조리 중인 주문 none으로 상태 변경 불가")
+    @DisplayName("주문 상태 변경 실패 - 다음 상태 이외의 주문으로는 변경 불가")
     void failUpdateOrdersStatusNotNone() {
         // given
         Long ordersId = 1L;
@@ -69,7 +69,7 @@ class OrdersStatusServiceTest {
         // then
         CustomException exception = assertThrows(CustomException.class,
             () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
+        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_CORRECT);
     }
 
     // minsu-23.09.02
@@ -80,13 +80,13 @@ class OrdersStatusServiceTest {
         Long ordersId = 1L;
 
         given(ordersRepository.findById(ordersId))
-            .willThrow(new CustomException(ORDERS_NOT_FOUND));
+            .willThrow(new CustomException(ORDERS_NOT_EXISTS));
 
         // then
         assertThrows(CustomException.class, () -> ordersService.findElapsedTime(ordersId));
     }
 
-    // minsu-23.09.02
+    // minsu-23.08.24
     @Test
     @DisplayName("주문 경과 시간 조회 실패 - 조리 중인 주문이 아닌 경우")
     public void failGetElapsedTimeNotCooking() {
