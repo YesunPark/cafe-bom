@@ -1,11 +1,10 @@
-package com.zerobase.cafebom.member.controller;
+package com.zerobase.cafebom.auth.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.auth.controller.AuthController;
 import com.zerobase.cafebom.auth.dto.SignupForm;
 import com.zerobase.cafebom.auth.service.AuthService;
 import com.zerobase.cafebom.security.TokenProvider;

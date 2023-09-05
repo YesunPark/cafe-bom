@@ -5,8 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.zerobase.cafebom.member.domain.Member;
-import com.zerobase.cafebom.orders.domain.Orders;
-import com.zerobase.cafebom.orders.domain.OrdersRepository;
 import com.zerobase.cafebom.security.Role;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,10 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class OrdersRepositoryTest {
 
-
     @MockBean
     private OrdersRepository ordersRepository;
-
 
     // youngseon-23.08.28
     @Test
