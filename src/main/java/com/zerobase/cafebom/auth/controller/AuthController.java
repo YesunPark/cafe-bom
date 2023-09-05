@@ -35,7 +35,7 @@ public class AuthController {
     private String ADMIN_CODE;
 
     // yesun-23.09.05
-    @ApiOperation(value = "사용자 회원가입", notes = "이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")
+    @ApiOperation(value = "사용자 회원가입", notes = "일반 사용자는 이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup")
     public ResponseEntity<Void> memberSignup(
         @RequestBody @Valid SignupMemberForm signupMemberForm
@@ -45,7 +45,7 @@ public class AuthController {
     }
 
     // yesun-23.09.05
-    @ApiOperation(value = "관리자 회원가입", notes = "관리자 인증코드, 이메일, 비밀번호로 회원가입합니다.")
+    @ApiOperation(value = "관리자 회원가입", notes = "관리자는 관리자 인증코드, 이메일, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup/admin")
     public ResponseEntity<Void> adminSignup(
         @RequestBody @Valid SignupAdminForm signupAdminForm
@@ -57,8 +57,8 @@ public class AuthController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    // yesun-23.08.22
-    @ApiOperation(value = "사용자, 관리자 공통 로그인", notes = "사용자, 관리자 공통으로 이메일, 비밀번호로 로그인합니다.")
+    // yesun-23.09.05
+    @ApiOperation(value = "사용자, 관리자 공통 로그인", notes = "사용자와 관리자 모두 이메일, 비밀번호로 로그인합니다.")
     @PostMapping("/signin")
     public ResponseEntity<SigninForm.Response> signin(
         @RequestBody @Valid SigninForm.Request signinForm
