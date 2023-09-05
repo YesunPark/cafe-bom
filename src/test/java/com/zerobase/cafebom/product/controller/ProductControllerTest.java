@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.auth.service.AuthService;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
@@ -37,9 +36,6 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private ProductService productService;
 
@@ -49,7 +45,7 @@ class ProductControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // wooyoung-23.08.26
+    // wooyoung-23.09.05
     @Test
     @DisplayName("상품 상세 조회 성공")
     void successProductDetails() throws Exception {
@@ -113,8 +109,8 @@ class ProductControllerTest {
             .andExpect(jsonPath("$.description").value("씁쓸한 에스프레소"))
             .andExpect(jsonPath("$.price").value(1500))
             .andExpect(jsonPath("$.soldOutStatus").value("IN_STOCK"))
-            .andExpect(jsonPath("$.picture").value("picture"));
-//            .andExpect(jsonPath("$.productOptionList").value(productOptionList)) // objectMapper 공부 후 추가
+            .andExpect(jsonPath("$.picture").value("picture"))
+            .andExpect(jsonPath("$.productOptionList").isMap());
     }
 
     // wooyoung-23.08.29
