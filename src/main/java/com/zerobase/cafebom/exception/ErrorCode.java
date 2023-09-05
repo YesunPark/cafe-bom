@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    // 컨트롤러 @PathVariable TypeMismatch
+    METHOD_ARGUMENT_TYPE_MISMATCH("메서드 매개변수의 타입이 맞지 않습니다.", BAD_REQUEST),
+
     // Auth
     MEMBER_NOT_EXISTS("존재하지 않는 회원입니다.", BAD_REQUEST),
     EMAIL_ALREADY_EXISTS("이미 존재하는 이메일입니다.", BAD_REQUEST),
@@ -21,15 +24,10 @@ public enum ErrorCode {
     ORDERS_NOT_EXISTS("존재하지 않는 주문입니다.", NOT_FOUND),
     ORDERS_NOT_COOKING_STATUS("조리 중인 주문이 아닙니다.", BAD_REQUEST),
     ORDERS_NOT_CORRECT("주문 상태는 이전 상태로 변경이 불가능합니다.", BAD_REQUEST),
+    START_DATE_AND_END_DATE_ARE_ESSENTIAL("시작 날짜와 끝 날짜를 입력해야 합니다.", BAD_REQUEST),
 
     // Product
     PRODUCT_NOT_EXISTS("존재하지 않는 상품입니다.", BAD_REQUEST),
-
-    // 컨트롤러 @PathVariable TypeMismatch
-    METHOD_ARGUMENT_TYPE_MISMATCH("메서드 매개변수의 타입이 맞지 않습니다.", BAD_REQUEST),
-
-    // ProductService -> ?
-    START_DATE_AND_END_DATE_ARE_ESSENTIAL("시작 날짜와 끝 날짜를 입력해야 합니다.", BAD_REQUEST),
 
     // Cart
     CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", BAD_REQUEST),
