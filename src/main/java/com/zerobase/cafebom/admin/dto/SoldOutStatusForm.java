@@ -1,6 +1,6 @@
-package com.zerobase.cafebom.admin.controller.form;
+package com.zerobase.cafebom.admin.dto;
 
-import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
+import com.zerobase.cafebom.type.SoldOutStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;

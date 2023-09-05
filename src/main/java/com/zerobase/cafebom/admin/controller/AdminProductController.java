@@ -1,8 +1,9 @@
 package com.zerobase.cafebom.admin.controller;
 
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.admin.service.AdminProductService;
-import com.zerobase.cafebom.admin.dto.AdminProductDto;
+import com.zerobase.cafebom.type.SoldOutStatus;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,17 +62,13 @@ public class AdminProductController {
             @PathVariable Integer productId,
             AdminProductForm adminProductForm) throws IOException {
         adminProductService.modifyProduct(image, productId, AdminProductDto.from(adminProductForm));
-        @RequestParam(value = "image") MultipartFile image,
-        @PathVariable Integer id,
-        AdminProductForm adminProductForm) throws IOException {
-        adminProductService.modifyProduct(image, id, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> productRemove(@PathVariable Integer productId) {
+    public ResponseEntity<?> productRemove(@PathVariable Integer productId) throws IOException {
         adminProductService.removeProduct(productId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
@@ -81,9 +77,9 @@ public class AdminProductController {
     @ApiOperation(value = "상품 품절여부 수정(관리자)", notes = "관리자가 상품의 품절여부를 수정합니다.")
     @PatchMapping
     public ResponseEntity<?> productSoldOutModify(
-            @RequestParam(name="productId") Integer productId,
-            @RequestParam(name="soldOutStatus")SoldOutStatus soldOutStatus){
-        adminProductService.modifyProductSoldOut(productId,soldOutStatus);
+            @RequestParam(name = "productId") Integer productId,
+            @RequestParam(name = "soldOutStatus") SoldOutStatus soldOutStatus) {
+        adminProductService.modifyProductSoldOut(productId, soldOutStatus);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 }
