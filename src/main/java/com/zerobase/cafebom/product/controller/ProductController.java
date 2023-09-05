@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.product.controller;
 
-import com.zerobase.cafebom.product.controller.form.ProductListForm;
+import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
+import com.zerobase.cafebom.product.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,8 @@ public class ProductController {
     // wooyoung-23.08.22
     @ApiOperation(value = "상품 카테고리 별 상품 목록 조회", notes = "상품 카테고리 별로 상품을 조회합니다.")
     @GetMapping("/list/{productCategoryId}")
-    public ResponseEntity<List<ProductListForm.Response>> productList(@PathVariable Integer productCategoryId) {
+    public ResponseEntity<List<ProductListForm.Response>> productList(
+        @PathVariable Integer productCategoryId) {
 
         List<ProductDto> productDtoList = productService.findProductList(productCategoryId);
 
@@ -38,6 +39,6 @@ public class ProductController {
         }
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(productListForm);
+            .body(productListForm);
     }
 }

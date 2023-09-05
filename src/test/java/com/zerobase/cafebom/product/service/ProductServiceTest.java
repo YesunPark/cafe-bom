@@ -1,17 +1,17 @@
 package com.zerobase.cafebom.product.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_FOUND;
-import static com.zerobase.cafebom.product.domain.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
-import com.zerobase.cafebom.product.service.dto.ProductDto;
-import com.zerobase.cafebom.productcategory.domain.entity.ProductCategory;
-import com.zerobase.cafebom.productcategory.repository.ProductCategoryRepository;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.product.dto.ProductDto;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
+import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -76,7 +76,6 @@ class ProductServiceTest {
         // when
         assertThatThrownBy(() -> productService.findProductList(1))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(PRODUCTCATEGORY_NOT_FOUND.getMessage());
-
+            .hasMessage(PRODUCTCATEGORY_NOT_EXISTS.getMessage());
     }
 }

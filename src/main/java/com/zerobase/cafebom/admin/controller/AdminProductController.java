@@ -1,9 +1,8 @@
 package com.zerobase.cafebom.admin.controller;
 
-import com.zerobase.cafebom.admin.controller.form.AdminProductForm;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.admin.service.AdminProductService;
-import com.zerobase.cafebom.admin.service.dto.AdminProductDto;
-import com.zerobase.cafebom.product.domain.type.SoldOutStatus;
+import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,6 +62,10 @@ public class AdminProductController {
             @PathVariable Integer productId,
             AdminProductForm adminProductForm) throws IOException {
         adminProductService.modifyProduct(image, productId, AdminProductDto.from(adminProductForm));
+        @RequestParam(value = "image") MultipartFile image,
+        @PathVariable Integer id,
+        AdminProductForm adminProductForm) throws IOException {
+        adminProductService.modifyProduct(image, id, AdminProductDto.from(adminProductForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
