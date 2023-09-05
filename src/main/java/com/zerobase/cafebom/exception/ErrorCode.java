@@ -2,6 +2,7 @@ package com.zerobase.cafebom.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import lombok.AllArgsConstructor;
@@ -49,7 +50,8 @@ public enum ErrorCode {
     NOT_FOUND_OPTION_CATEGORY("옵션 카테고리를 찾을 수 없습니다.", BAD_REQUEST),
 
     // Review
-    REVIEW_ALREADY_WRITTEN("이미 리뷰가 작성된 주문 상품입니다.", CONFLICT);
+    REVIEW_ALREADY_WRITTEN("이미 리뷰가 작성된 주문 상품입니다.", CONFLICT),
+    ORDERS_PRODUCT_NOT_MATCH_MEMBER("주문하지 않은 주문 상품에 대한 리뷰 요청입니다.", FORBIDDEN);
 
     private final String message;
     private final HttpStatus httpStatus;
