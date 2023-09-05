@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
-@Tag(name = "product-controller", description = "관리자 상품 CRUD API")
+@Tag(name = "admin-product-controller", description = "관리자 상품 관리 API")
 @Controller
 @RequestMapping("/admin/product")
 @RequiredArgsConstructor

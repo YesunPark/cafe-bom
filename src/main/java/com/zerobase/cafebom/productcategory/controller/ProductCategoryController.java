@@ -1,20 +1,18 @@
 package com.zerobase.cafebom.productcategory.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import com.zerobase.cafebom.productcategory.dto.ProductCategoryForm;
 import com.zerobase.cafebom.productcategory.service.ProductCategoryService;
-import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
+@Tag(name = "product-category-controller", description = "관리자 상품 카테고리 관리 API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/category")
