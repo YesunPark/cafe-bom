@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -31,7 +32,7 @@ public class AdminProductController {
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 전체 조회(관리자)", notes = "관리자가 상품 전체 리스트를 조회합니다")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> productList() {
+    public ResponseEntity<List<AdminProductForm.Response>> productList() {
         List<AdminProductForm.Response> productList = adminProductService.findProductList();
         return ResponseEntity.ok().body(productList);
     }
@@ -39,7 +40,7 @@ public class AdminProductController {
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 Id별 조회(관리자)", notes = "관리자가 상품 Id 별로 조회합니다.")
     @GetMapping("/{id}")
-    public ResponseEntity<?> productIdGet(@PathVariable Integer productId) {
+    public ResponseEntity<AdminProductForm.Response> productIdGet(@PathVariable Integer productId) {
         AdminProductForm.Response response = adminProductService.findProductById(productId);
         return ResponseEntity.ok().body(response);
     }
@@ -47,17 +48,17 @@ public class AdminProductController {
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 등록(관리자)", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> productAdd(
+    public ResponseEntity<Void> productAdd(
             @RequestParam(value = "image") MultipartFile image,
             AdminProductForm adminProductForm) throws IOException {
         adminProductService.addProduct(image, AdminProductDto.from(adminProductForm));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 수정(관리자)", notes = "관리자가 상품Id 별로 수정합니다.")
     @PutMapping(value = "/{productId}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> productModify(
+    public ResponseEntity<Void> productModify(
             @RequestParam(value = "image") MultipartFile image,
             @PathVariable Integer productId,
             AdminProductForm adminProductForm) throws IOException {
@@ -68,7 +69,7 @@ public class AdminProductController {
     // jiyeon-23.08.25
     @ApiOperation(value = "상품 삭제(관리자)", notes = "관리자가 상품Id 별로 삭제합니다.")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> productRemove(@PathVariable Integer productId) throws IOException {
+    public ResponseEntity<Void> productRemove(@PathVariable Integer productId) throws IOException {
         adminProductService.removeProduct(productId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
@@ -76,7 +77,7 @@ public class AdminProductController {
     // jiyeon-23.08.29
     @ApiOperation(value = "상품 품절여부 수정(관리자)", notes = "관리자가 상품의 품절여부를 수정합니다.")
     @PatchMapping
-    public ResponseEntity<?> productSoldOutModify(
+    public ResponseEntity<Void> productSoldOutModify(
             @RequestParam(name = "productId") Integer productId,
             @RequestParam(name = "soldOutStatus") SoldOutStatus soldOutStatus) {
         adminProductService.modifyProductSoldOut(productId, soldOutStatus);
