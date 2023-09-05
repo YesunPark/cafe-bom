@@ -1,21 +1,19 @@
 package com.zerobase.cafebom.orders.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.domain.Orders;
+import com.zerobase.cafebom.orders.domain.OrdersRepository;
+import com.zerobase.cafebom.orders.dto.OrdersHisDto;
+import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.orders.domain.entity.Orders;
-import com.zerobase.cafebom.orders.repository.OrdersRepository;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
-import com.zerobase.cafebom.orders.service.dto.OrdersHisDto;
-import com.zerobase.cafebom.ordersproduct.repository.OrdersProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -42,7 +39,7 @@ class OrdersListServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    //youngseon-23.08.28
+    // youngseon-23.08.28
     @Test
     @DisplayName("3개월 주문 내역 조회 - 성공")
     public void successGetOrderHistoryFor3Months() {
@@ -52,7 +49,8 @@ class OrdersListServiceTest {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
         List<Orders> testOrders = new ArrayList<>();
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
-        when(ordersRepository.findByMemberAndCreatedDateAfter(testMember, threeMonthsAgo)).thenReturn(testOrders);
+        when(ordersRepository.findByMemberAndCreatedDateAfter(testMember,
+            threeMonthsAgo)).thenReturn(testOrders);
 
         // when
         List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryFor3Months(memberId);
@@ -61,7 +59,7 @@ class OrdersListServiceTest {
         assertThat(result).isEmpty();
     }
 
-    //youngseon-23.08.28
+    // youngseon-23.08.28
     @Test
     @DisplayName("전체 주문 내역 조회 - 성공")
     public void successGetAllOrderHistory() {
@@ -79,7 +77,7 @@ class OrdersListServiceTest {
         assertThat(result).isEmpty();
     }
 
-    //youngseon-23.08.28
+    // youngseon-23.08.28
     @Test
     @DisplayName("기간별 주문 내역 조회 - 성공")
     public void successGetOrderHistoryByPeriod() {
@@ -90,10 +88,12 @@ class OrdersListServiceTest {
         LocalDateTime endDate = LocalDate.now().atTime(23, 59, 59);
         List<Orders> testOrders = new ArrayList<>(); // 테스트용 Orders 리스트 생성
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
-        when(ordersRepository.findByMemberAndCreatedDateBetween(testMember, startDate, endDate)).thenReturn(testOrders);
+        when(ordersRepository.findByMemberAndCreatedDateBetween(testMember, startDate,
+            endDate)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryByPeriod(memberId, LocalDate.now().minusMonths(2), LocalDate.now());
+        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryByPeriod(memberId,
+            LocalDate.now().minusMonths(2), LocalDate.now());
 
         // then
         assertThat(result).isEmpty();

@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.auth.controller.AuthController;
 import com.zerobase.cafebom.auth.dto.SignupMemberForm;
-import com.zerobase.cafebom.security.TokenProvider;
 import com.zerobase.cafebom.auth.service.AuthService;
+import com.zerobase.cafebom.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

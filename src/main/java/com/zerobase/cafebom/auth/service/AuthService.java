@@ -11,8 +11,8 @@ import com.zerobase.cafebom.auth.dto.SigninDto;
 import com.zerobase.cafebom.auth.dto.SignupAdminForm;
 import com.zerobase.cafebom.auth.dto.SignupDto;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.security.Role;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +81,8 @@ public class AuthService implements UserDetailsService {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        if (member.getRole().equals(Role.ROLE_ADMIN)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(Role.ROLE_ADMIN.toString()));
+        if (member.getRole().equals(ROLE_ADMIN)) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN.toString()));
         } else {
             grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_USER.toString()));
         }
