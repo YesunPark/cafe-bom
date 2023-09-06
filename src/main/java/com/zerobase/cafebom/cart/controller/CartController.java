@@ -26,7 +26,7 @@ public class CartController {
     private final CartService cartService;
 
     // wooyoung-23.08.31
-    @ApiOperation(value = "사용자의 장바구니 목록 조회", notes = "사용자의 토큰을 받아 장바구니 목록을 조회합니다.")
+    @ApiOperation(value = "사용자의 장바구니 목록 조회", notes = "사용자가 장바구니 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<Response>> cartList(
         @RequestHeader(name = "Authorization") String token) {
