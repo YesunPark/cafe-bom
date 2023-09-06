@@ -3,7 +3,6 @@ package com.zerobase.cafebom.cart.controller;
 import static org.springframework.http.HttpStatus.OK;
 
 import com.zerobase.cafebom.cart.controller.form.CartListForm;
-import com.zerobase.cafebom.cart.controller.form.CartListForm.Response;
 import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.cart.service.dto.CartListDto;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +27,7 @@ public class CartController {
     // wooyoung-23.08.31
     @ApiOperation(value = "사용자의 장바구니 목록 조회", notes = "사용자가 장바구니 목록을 조회합니다.")
     @GetMapping
-    public ResponseEntity<List<Response>> cartList(
+    public ResponseEntity<List<CartListForm.Response>> cartList(
         @RequestHeader(name = "Authorization") String token) {
 
         List<CartListDto> cartListDtos = cartService.findCartList(token);
