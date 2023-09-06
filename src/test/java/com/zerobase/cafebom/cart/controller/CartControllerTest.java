@@ -46,7 +46,7 @@ class CartControllerTest {
 
     // wooyoung-23.09.05
     @Test
-    @DisplayName("장바구니 조회 성공")
+    @DisplayName("장바구니 목록 조회 성공")
     void successCartList() throws Exception {
         // given
         Member member = Member.builder()
