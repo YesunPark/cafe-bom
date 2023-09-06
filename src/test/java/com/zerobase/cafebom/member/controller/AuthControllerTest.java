@@ -1,9 +1,5 @@
 package com.zerobase.cafebom.member.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.auth.controller.AuthController;
 import com.zerobase.cafebom.auth.dto.SignupForm;
@@ -16,6 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
@@ -37,18 +37,18 @@ class AuthControllerTest {
     void successSignup() throws Exception {
         // given
         SignupForm form = SignupForm.builder()
-            .email("test@test.com")
-            .phone("01011112222")
-            .nickname("테스트닉넴")
-            .password("test12345@")
-            .build();
+                .email("test@test.com")
+                .phone("01011112222")
+                .nickname("테스트닉넴")
+                .password("test12345@")
+                .build();
 
         // when
         mockMvc.perform(post("/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isNoContent())
-            .andDo(print());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(form)))
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 
     // yesun-23.08.22
@@ -57,17 +57,17 @@ class AuthControllerTest {
     void failSignupEmailNotBlank() throws Exception {
         // given
         SignupForm form = SignupForm.builder()
-            .phone("01011112222")
-            .nickname("테스트닉넴")
-            .password("test12345@")
-            .build();
+                .phone("01011112222")
+                .nickname("테스트닉넴")
+                .password("test12345@")
+                .build();
 
         // when
         mockMvc.perform(post("/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isBadRequest())
-            .andDo(print());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(form)))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 
     // yesun-23.08.22
@@ -76,20 +76,20 @@ class AuthControllerTest {
     void failSignupEmailInvalid() throws Exception {
         // given
         SignupForm form = SignupForm.builder()
-            .email("test@")
-            .phone("01011112222")
-            .nickname("테스트닉넴")
-            .password("test12345@")
-            .build();
+                .email("test@")
+                .phone("01011112222")
+                .nickname("테스트닉넴")
+                .password("test12345@")
+                .build();
 
         // when
         mockMvc.perform(post("/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isBadRequest())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(form)))
+                .andExpect(status().isBadRequest())
 //            .andExpect(jsonPath("$.errorM").value(1))
 //            .andExpect(jsonPath("$.accountNumber").value("89300000000")) // exception 머지되면 추가
-            .andDo(print());
+                .andDo(print());
     }
 
     // yesun-23.08.22
@@ -98,19 +98,19 @@ class AuthControllerTest {
     void failSignupPasswordInvalid() throws Exception {
         // given
         SignupForm form = SignupForm.builder()
-            .email("test@test.com")
-            .phone("01011112222")
-            .nickname("테스트닉넴")
-            .password("test12345@!!!!!!!!!")
-            .build();
+                .email("test@test.com")
+                .phone("01011112222")
+                .nickname("테스트닉넴")
+                .password("test12345@!!!!!!!!!")
+                .build();
 
         // when
         mockMvc.perform(post("/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
-            .andExpect(status().isBadRequest())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(form)))
+                .andExpect(status().isBadRequest())
 //            .andExpect(jsonPath("$.errorM").value(1))
 //            .andExpect(jsonPath("$.accountNumber").value("89300000000")) // exception 머지되면 추가
-            .andDo(print());
+                .andDo(print());
     }
 }
