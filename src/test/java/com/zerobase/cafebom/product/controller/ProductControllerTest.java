@@ -154,7 +154,7 @@ class ProductControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.06
     @Test
     @DisplayName("베스트 상품 조회 성공")
     void successBestProductList() throws Exception {

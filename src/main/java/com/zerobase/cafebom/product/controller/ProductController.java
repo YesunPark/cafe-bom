@@ -58,7 +58,7 @@ public class ProductController {
     // minsu-23.09.05
     @ApiOperation(value = "베스트 상품 조회", notes = "주문 상품 수량을 기준으로 베스트 상품을 조회합니다.")
     @GetMapping("/best-list")
-    public ResponseEntity<List<BestProductForm.Response>> BestProductList() {
+    public ResponseEntity<List<BestProductForm.Response>> bestProductList() {
 
         List<BestProductDto> bestProduct = productService.findBestProductList();
 

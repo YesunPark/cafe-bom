@@ -233,9 +233,10 @@ class ProductServiceTest {
         assertThat(bestProductList.get(1).getPicture()).isEqualTo("picture2");
     }
 
+    // minsu-23.09.06
     @Test
     @DisplayName("베스트 상품 조회 실패 - 상품이 존재하지 않는 경우")
-    void failFindBestProductListNoOrders() {
+    void failFindBestProductListNoBestProduct() {
         // given
         given(ordersRepository.findByReceiptStatus(OrdersReceiptStatus.RECEIVED)).willReturn(new ArrayList<>());
 
