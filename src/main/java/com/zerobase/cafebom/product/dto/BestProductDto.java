@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.service.dto;
+package com.zerobase.cafebom.product.dto;
 
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.type.SoldOutStatus;

@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.orders.controller;
 
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.type.OrdersCookingStatus.COOKING;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -11,17 +12,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyForm;
 import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyForm;
+import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.orders.service.OrdersHistoryService;
+import com.zerobase.cafebom.orders.service.OrdersService;
+import com.zerobase.cafebom.security.TokenProvider;
 import com.zerobase.cafebom.type.OrdersCookingTime;
 import com.zerobase.cafebom.type.OrdersReceiptStatus;
-import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.member.domain.MemberRepository;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
-import com.zerobase.cafebom.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,15 +75,15 @@ public class OrdersStatusControllerTest {
     @WithMockUser(roles = "ADMIN")
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
-        Long ordersId = null;
-        doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
+        Long ordersId = 1L;
+        doThrow(new CustomException(ORDERS_NOT_EXISTS))
             .when(ordersService).modifyOrdersStatus(ordersId,
                 OrdersStatusModifyDto.builder().newStatus(COOKING).build()
             );
 
         // then
         mockMvc.perform(patch("/admin/orders-status/{ordersId}", ordersId))
-            .andExpect(status().isNotFound())
+            .andExpect(status().isBadRequest())
             .andDo(print());
     }
 

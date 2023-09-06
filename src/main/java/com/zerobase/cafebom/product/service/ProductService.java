@@ -14,7 +14,7 @@ import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDto;
-import com.zerobase.cafebom.product.service.dto.BestProductDto;
+import com.zerobase.cafebom.product.dto.BestProductDto;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
@@ -113,6 +113,10 @@ public class ProductService {
             .limit(5)
             .map(Map.Entry::getKey)
             .collect(Collectors.toList());
+
+        if (bestProduct.isEmpty()) {
+            throw new CustomException(ErrorCode.BEST_PRODUCT_NOT_EXISTS);
+        }
 
         return bestProduct.stream()
             .map(product -> BestProductDto.builder()

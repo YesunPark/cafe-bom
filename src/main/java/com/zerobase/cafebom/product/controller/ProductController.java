@@ -2,13 +2,13 @@ package com.zerobase.cafebom.product.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
-import com.zerobase.cafebom.product.controller.form.BestProductForm;
+import com.zerobase.cafebom.product.dto.BestProductForm;
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDetailForm;
 import com.zerobase.cafebom.product.dto.ProductDto;
 import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.service.dto.BestProductDto;
+import com.zerobase.cafebom.product.dto.BestProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;

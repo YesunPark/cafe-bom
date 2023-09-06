@@ -1,7 +1,6 @@
-package com.zerobase.cafebom.product.controller.form;
+package com.zerobase.cafebom.product.dto;
 
 import com.zerobase.cafebom.type.SoldOutStatus;
-import com.zerobase.cafebom.product.service.dto.BestProductDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
