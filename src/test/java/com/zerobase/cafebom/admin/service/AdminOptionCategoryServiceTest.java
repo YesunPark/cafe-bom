@@ -1,9 +1,9 @@
-package com.zerobase.cafebom.optioncategory.service;
+package com.zerobase.cafebom.admin.service;
 
+import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
-import com.zerobase.cafebom.optioncategory.dto.OptionCategoryForm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +21,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
-class OptionCategoryServiceTest {
+class AdminOptionCategoryServiceTest {
 
     @Mock
     private OptionCategoryRepository optionCategoryRepository;
 
     @InjectMocks
-    private OptionCategoryServiceImpl optionCategoryService;
+    private AdminOptionCategoryServiceImpl optionCategoryService;
 
     // jiyeon-23.09.05
     @Test
@@ -39,7 +39,7 @@ class OptionCategoryServiceTest {
                 .name("얼음")
                 .build();
 
-        OptionCategoryForm.Request optionCategoryForm = OptionCategoryForm.Request.builder()
+        AdminOptionCategoryForm.Request optionCategoryForm = AdminOptionCategoryForm.Request.builder()
                 .name("사이즈")
                 .build();
 
@@ -66,7 +66,7 @@ class OptionCategoryServiceTest {
                 .name("얼음")
                 .build();
 
-        OptionCategoryForm.Request optionCategoryForm = OptionCategoryForm.Request.builder()
+        AdminOptionCategoryForm.Request optionCategoryForm = AdminOptionCategoryForm.Request.builder()
                 .name("사이즈")
                 .build();
 

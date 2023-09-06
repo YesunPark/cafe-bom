@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.admin.controller;
 
-import com.zerobase.cafebom.optioncategory.service.OptionCategoryService;
+import com.zerobase.cafebom.admin.service.AdminOptionCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,6 +13,6 @@ class AdminOptionCategoryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private OptionCategoryService optionCategoryService;
+    private AdminOptionCategoryService adminOptionCategoryService;
 
 }

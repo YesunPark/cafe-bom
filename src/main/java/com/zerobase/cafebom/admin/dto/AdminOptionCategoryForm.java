@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.optioncategory.dto;
+package com.zerobase.cafebom.admin.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class OptionCategoryForm {
+public class AdminOptionCategoryForm {
 
     @Getter
     @Builder
