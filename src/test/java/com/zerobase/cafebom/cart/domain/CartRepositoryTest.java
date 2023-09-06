@@ -1,6 +1,5 @@
-package com.zerobase.cafebom.cart.repository;
+package com.zerobase.cafebom.cart.domain;
 
-import com.zerobase.cafebom.cart.domain.CartRepository;
 import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
