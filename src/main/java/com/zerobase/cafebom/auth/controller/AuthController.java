@@ -57,7 +57,7 @@ public class AuthController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.06
     @ApiOperation(value = "사용자, 관리자 공통 로그인", notes = "사용자와 관리자 모두 이메일, 비밀번호로 로그인합니다.")
     @PostMapping("/signin")
     public ResponseEntity<SigninForm.Response> signin(
@@ -67,10 +67,6 @@ public class AuthController {
         String accessToken = tokenProvider.generateToken(
             signinDto.getMemberId(), signinDto.getEmail(), signinDto.getRole()
         );
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(
-                SigninForm.Response.builder()
-                    .token(accessToken).build()
-            );
+        return ResponseEntity.ok(SigninForm.Response.builder().token(accessToken).build());
     }
 }
