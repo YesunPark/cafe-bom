@@ -1,6 +1,5 @@
-package com.zerobase.cafebom.cartoption.repository;
+package com.zerobase.cafebom.cartoption.domain;
 
-import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
