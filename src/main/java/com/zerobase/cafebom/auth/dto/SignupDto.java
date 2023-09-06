@@ -15,12 +15,21 @@ public class SignupDto {
 
     private String email;
 
-    public static SignupDto from(SignupForm signupForm) {
+    public static SignupDto from(SignupMemberForm signupMemberForm) {
         return SignupDto.builder()
-            .password(signupForm.getPassword())
-            .nickname(signupForm.getNickname())
-            .phone(signupForm.getPhone())
-            .email(signupForm.getEmail())
+            .password(signupMemberForm.getPassword())
+            .nickname(signupMemberForm.getNickname())
+            .phone(signupMemberForm.getPhone())
+            .email(signupMemberForm.getEmail())
+            .build();
+    }
+
+    public static SignupDto from(SignupAdminForm signupAdminForm) {
+        return SignupDto.builder()
+            .password(signupAdminForm.getPassword())
+            .nickname(signupAdminForm.getAdminName())
+            .phone(signupAdminForm.getPhone())
+            .email(signupAdminForm.getEmail())
             .build();
     }
 }
