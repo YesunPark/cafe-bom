@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.productoptioncategory.repository;
+package com.zerobase.cafebom.productoptioncategory.domain;
 
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
