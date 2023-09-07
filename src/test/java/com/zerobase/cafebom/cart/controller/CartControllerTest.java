@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.zerobase.cafebom.cart.service.CartService;
-import com.zerobase.cafebom.cart.service.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListDto;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;

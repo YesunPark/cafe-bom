@@ -1,9 +1,7 @@
-package com.zerobase.cafebom.cart.controller.form;
+package com.zerobase.cafebom.cart.dto;
 
-import com.zerobase.cafebom.cart.service.dto.CartListDto;
 import com.zerobase.cafebom.option.domain.Option;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,6 @@ import lombok.Getter;
 public class CartListForm {
 
     @AllArgsConstructor
-    @NotNull
     @Builder
     @Getter
     public static class Response {

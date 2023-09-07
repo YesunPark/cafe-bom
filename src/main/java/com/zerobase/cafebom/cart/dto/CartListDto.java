@@ -1,14 +1,12 @@
-package com.zerobase.cafebom.cart.service.dto;
+package com.zerobase.cafebom.cart.dto;
 
 import com.zerobase.cafebom.option.domain.Option;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor
-@NotNull
 @Builder
 @Getter
 public class CartListDto {

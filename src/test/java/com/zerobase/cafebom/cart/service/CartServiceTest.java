@@ -9,7 +9,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.domain.CartRepository;
-import com.zerobase.cafebom.cart.service.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListDto;
 import com.zerobase.cafebom.cartoption.domain.CartOption;
 import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.member.domain.Member;

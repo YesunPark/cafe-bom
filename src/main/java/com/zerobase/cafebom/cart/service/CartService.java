@@ -5,7 +5,7 @@ import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 
 import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.domain.CartRepository;
-import com.zerobase.cafebom.cart.service.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListDto;
 import com.zerobase.cafebom.cartoption.domain.CartOption;
 import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.option.domain.Option;
