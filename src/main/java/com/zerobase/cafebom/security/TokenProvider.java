@@ -1,5 +1,7 @@
 package com.zerobase.cafebom.security;
 
+import static com.zerobase.cafebom.security.JwtAuthenticationFilter.TOKEN_PREFIX;
+
 import com.zerobase.cafebom.auth.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -7,6 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,12 +17,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
 
     private static final String KEY_ROLE = "role";
-    private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 1시간
+    private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24; // 1일 (24시간)
 
     private final AuthService authService;
 
@@ -74,15 +78,19 @@ public class TokenProvider {
     // 토큰에서 클레임 정보 추출-yesun-23.08.21
     private Claims parseClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+            log.warn("===================" + token);
+            log.info("parseClaims: " + Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody());
+            return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
+            log.warn("!!!!!!!!!!!!!!!" + token);
             return e.getClaims();
         }
     }
 
     // 토큰 인증 타입 제거-yesun-23.08.25
     private String removeBearerFromToken(String token) {
-        String TOKEN_PREFIX = "Bearer ";
         return token.substring(TOKEN_PREFIX.length());
     }
 }

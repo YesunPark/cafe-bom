@@ -1,13 +1,18 @@
 package com.zerobase.cafebom.admin.controller;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import com.zerobase.cafebom.option.dto.OptionForm;
 import com.zerobase.cafebom.option.service.OptionService;
 import com.zerobase.cafebom.option.dto.OptionDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/option")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ROLE_ADMIN')")
+@Slf4j
 public class AdminOptionController {
 
     private final OptionService optionService;
@@ -25,7 +31,10 @@ public class AdminOptionController {
     // jiyeon-23.09.05
     @ApiOperation(value = "옵션 등록", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
-    public ResponseEntity<?> optionAdd(@RequestBody OptionForm.Request optionFormRequest) {
+    public ResponseEntity<?> optionAdd(
+        @RequestHeader(AUTHORIZATION) String token,
+        @RequestBody OptionForm.Request optionFormRequest) {
+        log.info("controller============" + token);
         optionService.addOption(OptionDto.Request.from(optionFormRequest));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

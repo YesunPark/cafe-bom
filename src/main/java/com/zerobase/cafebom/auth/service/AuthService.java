@@ -13,13 +13,13 @@ import com.zerobase.cafebom.auth.dto.SignupDto;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.member.domain.MemberRepository;
-import com.zerobase.cafebom.security.Role;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -81,13 +81,19 @@ public class AuthService implements UserDetailsService {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        if (member.getRole().equals(ROLE_ADMIN)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_ADMIN.toString()));
-        } else {
-            grantedAuthorities.add(new SimpleGrantedAuthority(ROLE_USER.toString()));
+        if (member.getRole().toString().equals(ROLE_ADMIN.toString())) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+        } else if (member.getRole().toString().equals(ROLE_USER.toString())) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         }
 
-        return new Member(member.getId().toString(), member.getPassword(),
-            grantedAuthorities);
+        return User.builder()
+            .username(member.getEmail())
+            .password(member.getPassword())
+            .authorities(grantedAuthorities)
+            .build();
+
+//        return new Member(member.getId().toString(), member.getPassword(),
+//            grantedAuthorities);
     }
 }

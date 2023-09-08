@@ -1,20 +1,25 @@
 package com.zerobase.cafebom.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
-@RequiredArgsConstructor
-@EnableWebSecurity
 @Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+@RequiredArgsConstructor
+//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@Slf4j
+public class SecurityConfiguration {
 
     @Bean
     PasswordEncoder getPasswordEncoder() {
@@ -22,30 +27,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    UserAuthenticationFailureHandler getFailureHandler() {
-        return new UserAuthenticationFailureHandler();
-    }
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+            .cors(Customizer.withDefaults()) // CORS 설정 허용
+            .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
+            .authorizeHttpRequests(auth -> auth
+                .antMatchers("/**/signup/**", "/**/signin", "/product/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/auth/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN"));
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-
-        http.httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers("/**/signup/**", "/**/signin", "/product/**").permitAll();
-//        나중에 DB 연결해서 관리자 생성되면 주석해제하기
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/auth/**").hasRole("USER");
-//        .anyRequest().permitAll()
-
-    }
-
-    @Override
-    public void configure(final WebSecurity web) throws Exception {
-        web.ignoring()
-            .antMatchers("/h2-console/**");
+        return http.build();
     }
 }
