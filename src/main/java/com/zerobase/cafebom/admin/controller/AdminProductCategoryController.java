@@ -1,4 +1,7 @@
-package com.zerobase.cafebom.productcategory.controller;
+package com.zerobase.cafebom.admin.controller;
+
+import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import com.zerobase.cafebom.productcategory.dto.ProductCategoryForm;
@@ -10,30 +13,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
-@Tag(name = "product-category-controller", description = "관리자 상품 카테고리 관리 API")
+@Tag(name = "admin-product-category-controller", description = "관리자 상품 카테고리 CRUD API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/category")
 //@PreAuthorize(("hasRole('ADMIN')"))
-public class ProductCategoryController {
+public class AdminProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
 
-    @ApiOperation(value = "상품 카테고리 등록(관리자)", notes = "관리자가 상품 카테고리를 등록합니다.")
+    @ApiOperation(value = "상품 카테고리 등록", notes = "관리자가 상품 카테고리를 등록합니다.")
     @PostMapping
     public ResponseEntity<?> productCategoryAdd(@RequestBody ProductCategoryForm.Request form) {
         productCategoryService.addProductCategory(ProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    @ApiOperation(value = "상품 카테고리 수정(관리자)", notes = "관리자가 상품 카테고리를 수정합니다.")
-    @PutMapping("/{id}")
+    @ApiOperation(value = "상품 카테고리 수정", notes = "관리자가 상품 카테고리의 이름을 수정합니다.")
+    @PutMapping("/{productCategoryId}")
     public ResponseEntity<?> productCategoryModify(
-        @PathVariable Integer id,
+        @PathVariable Integer productCategoryId,
         @RequestBody ProductCategoryForm.Request form) {
-        productCategoryService.modifyProductCategory(id, ProductCategoryDto.Request.from(form));
+        productCategoryService.modifyProductCategory(productCategoryId,
+            ProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 }

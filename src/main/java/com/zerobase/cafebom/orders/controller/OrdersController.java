@@ -2,17 +2,15 @@ package com.zerobase.cafebom.orders.controller;
 
 import static com.zerobase.cafebom.exception.ErrorCode.START_DATE_AND_END_DATE_ARE_ESSENTIAL;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.dto.OrdersAddDto;
 import com.zerobase.cafebom.orders.dto.OrdersAddForm;
 import com.zerobase.cafebom.orders.dto.OrdersElapsedFindForm;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.orders.dto.OrdersHisDto;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.orders.dto.OrdersAddDto;
-import com.zerobase.cafebom.orders.dto.OrdersHisDto;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
@@ -20,8 +18,8 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,57 +27,56 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-@Tag(name = "orders-controller", description = "주문 관련 API")
+@Tag(name = "orders-controller", description = "사용자 주문 관련 API")
 @RestController
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/auth/orders")
 public class OrdersController {
 
     private final OrdersHistoryService orderService;
 
-    private final MemberRepository memberRepository;
-
     private final OrdersService ordersService;
 
-    // minsu-23.08.23
-    @ApiOperation(value = "주문 상태 변경", notes = "관리자가 주문 상태를 변경합니다.")
-    @PatchMapping("/admin/orders-status/{ordersId}")
-    public ResponseEntity<String> ordersStatusModify(
-        @PathVariable Long ordersId,
-        @RequestBody OrdersStatusModifyForm ordersStatusModifyForm) {
-
-        ordersService.modifyOrdersStatus(ordersId,
-            OrdersStatusModifyDto.from(ordersStatusModifyForm));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    // minsu-23.08.23
-    @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다")
-    @GetMapping("/auth/orders-elapsed-time/{ordersId}")
+    // minsu-23.09.05
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다.")
+    @GetMapping("/elapsed-time/{ordersId}")
     public ResponseEntity<OrdersElapsedFindForm> elapsedTimeGet(@PathVariable Long ordersId) {
-        Long elapsedTimeMinutes = ordersService.getElapsedTime(ordersId);
+        Long elapsedTimeMinutes = ordersService.findElapsedTime(ordersId);
         OrdersElapsedFindForm response = OrdersElapsedFindForm.builder()
             .elapsedTimeMinutes(elapsedTimeMinutes)
             .build();
         return ResponseEntity.ok(response);
     }
 
-    // yesun-23.09.04
+    // minsu-23.09.05
+    @PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "주문 취소", notes = "관리자가 주문을 수락하기 전에 사용자가 주문을 취소합니다.")
+    @PatchMapping("/cancel/{ordersId}")
+    public ResponseEntity<Void> ordersCancelModify(@PathVariable Long ordersId) {
+        ordersService.modifyOrdersCancel(ordersId);
+        return ResponseEntity.status(NO_CONTENT).build();
+    }
+
+    // yesun-23.09.05
     @ApiOperation(value = "주문 내역 저장",
         notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
-    @PostMapping("/auth/pay")
+    @PostMapping
     public ResponseEntity<Void> ordersAdd(@RequestHeader(name = "Authorization") String token,
         @Valid @RequestBody OrdersAddForm.Request ordersAddForm) {
         ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
         return ResponseEntity.status(CREATED).build();
     }
 
-    // youngseon-23.09.04
-    @GetMapping("/auth/pay/list")
+    // youngseon-23.09.05
+    @ApiOperation(value = "주문 내역 조회",
+        notes = "기본적으로 3개월간의 내역이 조회되고, 기간 별 필터링을 해서 조회할 수 있습니다.")
+    @GetMapping("/list")
     public ResponseEntity<List<OrdersHisDto>> getOrderHistoryList(
         @RequestParam("memberId") Long memberId,
         @RequestParam(value = "viewType", required = false) String viewType,
