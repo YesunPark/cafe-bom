@@ -26,7 +26,7 @@ public class CartService {
 
     private final TokenProvider tokenProvider;
 
-    // 멤버 id를 통해 주문 전의 장바구니 목록을 추출-wooyoung-23.09.03
+    // 장바구니 목록 조회-wooyoung-23.09.03
     public List<CartListDto> findCartList(String token) {
         Long memberId = tokenProvider.getId(token);
 
