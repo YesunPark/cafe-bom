@@ -1,6 +1,8 @@
 package com.zerobase.cafebom.product.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.type.OrdersReceiptStatus.RECEIVED;
 
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
@@ -12,13 +14,12 @@ import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
+import com.zerobase.cafebom.product.dto.BestProductDto;
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDto;
-import com.zerobase.cafebom.product.dto.BestProductDto;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
-import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,12 +85,11 @@ public class ProductService {
         return productDtoList;
     }
 
-    // 베스트 상품 조회-minsu-23.09.05
+    // 베스트 상품 목록 조회-minsu-23.09.08
     @Transactional
     public List<BestProductDto> findBestProductList() {
 
-        List<Orders> receivedOrders = ordersRepository.findByReceiptStatus(
-            OrdersReceiptStatus.RECEIVED);
+        List<Orders> receivedOrders = ordersRepository.findByReceiptStatus(RECEIVED);
 
         Map<Product, Integer> productCountMap = new HashMap<>();
 
@@ -108,17 +108,17 @@ public class ProductService {
             }
         }
 
-        List<Product> bestProduct = productCountMap.entrySet().stream()
+        List<Product> bestProductList = productCountMap.entrySet().stream()
             .sorted((entry1, entry2) -> Integer.compare(entry2.getValue(), entry1.getValue()))
             .limit(5)
             .map(Map.Entry::getKey)
             .collect(Collectors.toList());
 
-        if (bestProduct.isEmpty()) {
-            throw new CustomException(ErrorCode.BEST_PRODUCT_NOT_EXISTS);
+        if (bestProductList.isEmpty()) {
+            throw new CustomException(BEST_PRODUCT_NOT_EXISTS);
         }
 
-        return bestProduct.stream()
+        return bestProductList.stream()
             .map(product -> BestProductDto.builder()
                 .productId(product.getId())
                 .name(product.getName())

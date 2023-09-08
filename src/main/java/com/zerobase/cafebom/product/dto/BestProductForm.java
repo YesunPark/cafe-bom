@@ -3,18 +3,14 @@ package com.zerobase.cafebom.product.dto;
 import com.zerobase.cafebom.type.SoldOutStatus;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 public class BestProductForm {
 
-    @AllArgsConstructor
-    @NotNull
     @Builder
     @Getter
-    public static class Response {
+    public static class BestProductResponse {
 
         private Integer productId;
 
@@ -26,9 +22,9 @@ public class BestProductForm {
 
         private String picture;
 
-        public static List<BestProductForm.Response> from(List<BestProductDto> bestProductDto) {
+        public static List<BestProductForm.BestProductResponse> from(List<BestProductDto> bestProductDto) {
             return bestProductDto.stream()
-                .map(productDto -> BestProductForm.Response.builder()
+                .map(productDto -> BestProductForm.BestProductResponse.builder()
                     .productId(productDto.getProductId())
                     .name(productDto.getName())
                     .price(productDto.getPrice())

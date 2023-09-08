@@ -3,6 +3,7 @@ package com.zerobase.cafebom.product.service;
 import static com.zerobase.cafebom.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.type.OrdersReceiptStatus.RECEIVED;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +26,6 @@ import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategoryRepository;
-import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -185,7 +185,7 @@ class ProductServiceTest {
 
     // minsu-23.09.06
     @Test
-    @DisplayName("베스트 상품 조회 성공")
+    @DisplayName("베스트 상품 목록 조회 성공")
     void successFindBestProductList() {
         // given
         Product bestProduct1 = Product.builder()
@@ -205,8 +205,8 @@ class ProductServiceTest {
             .build();
 
         List<Orders> receivedOrders = new ArrayList<>();
-        receivedOrders.add(Orders.builder().id(1L).receiptStatus(OrdersReceiptStatus.RECEIVED).build());
-        receivedOrders.add(Orders.builder().id(2L).receiptStatus(OrdersReceiptStatus.RECEIVED).build());
+        receivedOrders.add(Orders.builder().id(1L).receiptStatus(RECEIVED).build());
+        receivedOrders.add(Orders.builder().id(2L).receiptStatus(RECEIVED).build());
 
         List<OrdersProduct> ordersProducts1 = new ArrayList<>();
         ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).count(5).build());
@@ -214,7 +214,7 @@ class ProductServiceTest {
         List<OrdersProduct> ordersProducts2 = new ArrayList<>();
         ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).count(3).build());
 
-        given(ordersRepository.findByReceiptStatus(OrdersReceiptStatus.RECEIVED)).willReturn(receivedOrders);
+        given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(receivedOrders);
         given(ordersProductRepository.findByOrdersId(1L)).willReturn(ordersProducts1);
         given(ordersProductRepository.findByOrdersId(2L)).willReturn(ordersProducts2);
 
@@ -238,7 +238,7 @@ class ProductServiceTest {
     @DisplayName("베스트 상품 조회 실패 - 상품이 존재하지 않는 경우")
     void failFindBestProductListNoBestProduct() {
         // given
-        given(ordersRepository.findByReceiptStatus(OrdersReceiptStatus.RECEIVED)).willReturn(new ArrayList<>());
+        given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(new ArrayList<>());
 
         // when
         assertThatThrownBy(() -> productService.findBestProductList())
