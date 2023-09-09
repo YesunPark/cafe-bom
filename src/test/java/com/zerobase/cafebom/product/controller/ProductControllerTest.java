@@ -110,7 +110,8 @@ class ProductControllerTest {
             .andExpect(jsonPath("$.price").value(1500))
             .andExpect(jsonPath("$.soldOutStatus").value("IN_STOCK"))
             .andExpect(jsonPath("$.picture").value("picture"))
-            .andExpect(jsonPath("$.productOptionList").isMap());
+            .andExpect(jsonPath("$.productOptionList").isMap())
+            .andExpect(status().isOk());
     }
 
     // wooyoung-23.08.29

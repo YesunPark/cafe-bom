@@ -1,17 +1,17 @@
 package com.zerobase.cafebom.product.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDetailForm;
 import com.zerobase.cafebom.product.dto.ProductDto;
 import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.product.dto.ProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +39,7 @@ public class ProductController {
             productListForm.add(ProductListForm.Response.from(productDto));
         }
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(OK)
                 .body(productListForm);
     }
 
@@ -49,7 +49,7 @@ public class ProductController {
     public ResponseEntity<ProductDetailForm.Response> productDetails(@PathVariable Integer productId) {
         ProductDetailDto productDetails = productService.findProductDetails(productId);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(OK)
             .body(ProductDetailForm.Response.from(productDetails));
     }
 }
