@@ -25,12 +25,12 @@ public class AdminProductDto {
 
     public static AdminProductDto from(AdminProductForm productForm) {
         return AdminProductDto.builder()
-            .name(productForm.getName())
-            .productCategoryId(productForm.getProductCategoryId())
-            .description(productForm.getDescription())
-            .price(productForm.getPrice())
-            .soldOutStatus(productForm.getSoldOutStatus())
-            .picture(productForm.getPicture())
-            .build();
+                .name(productForm.getName())
+                .productCategoryId(productForm.getProductCategoryId())
+                .description(productForm.getDescription())
+                .price(productForm.getPrice())
+                .soldOutStatus(productForm.getSoldOutStatus())
+                .picture(productForm.getPicture())
+                .build();
     }
 }

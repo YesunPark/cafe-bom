@@ -51,6 +51,7 @@ public class S3UploaderService {
     }
 
     // 이미지 파일 삭제 jiyeon-23.08.25
+    // 메서드는 구현했지만 S3확인했을때 이미지가 삭제되고있진 않습니다(추후 다시 구현예정)
     public void deleteFile(String picture) throws IOException {
         try {
             // picture 값에서 파일의 경로와 이름 부분을 추출하여 키로 사용
