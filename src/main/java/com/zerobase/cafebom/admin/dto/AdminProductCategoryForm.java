@@ -13,13 +13,13 @@ public class AdminProductCategoryForm {
     @Builder
     public static class Response {
 
-        private Integer id;
+        private Integer productCategoryId;
 
         private String name;
 
         public static AdminProductCategoryForm.Response from(AdminProductCategoryDto.Response productCategoryDto) {
             return Response.builder()
-                    .id(productCategoryDto.getId())
+                    .productCategoryId(productCategoryDto.getProductCategoryId())
                     .name(productCategoryDto.getName())
                     .build();
         }

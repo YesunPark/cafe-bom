@@ -10,13 +10,13 @@ public class AdminProductCategoryDto {
     @Builder
     public static class Response {
 
-        private Integer id;
+        private Integer productCategoryId;
 
         private String name;
 
         public static AdminProductCategoryDto.Response from(ProductCategory productCategory) {
             return Response.builder()
-                    .id(productCategory.getId())
+                    .productCategoryId(productCategory.getId())
                     .name(productCategory.getName())
                     .build();
         }

@@ -26,14 +26,14 @@ public class AdminProductCategoryController {
 
     @ApiOperation(value = "상품 카테고리 등록", notes = "관리자가 상품 카테고리를 등록합니다.")
     @PostMapping
-    public ResponseEntity<?> productCategoryAdd(@RequestBody AdminProductCategoryForm.Request form) {
+    public ResponseEntity<Void> productCategoryAdd(@RequestBody AdminProductCategoryForm.Request form) {
         adminProductCategoryService.addProductCategory(AdminProductCategoryDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
     @ApiOperation(value = "상품 카테고리 수정", notes = "관리자가 상품 카테고리의 이름을 수정합니다.")
     @PutMapping("/{productCategoryId}")
-    public ResponseEntity<?> productCategoryModify(
+    public ResponseEntity<Void> productCategoryModify(
             @PathVariable Integer productCategoryId,
             @RequestBody AdminProductCategoryForm.Request form) {
         adminProductCategoryService.modifyProductCategory(productCategoryId,
@@ -42,9 +42,9 @@ public class AdminProductCategoryController {
     }
 
     @ApiOperation(value = "상품 카테고리 삭제", notes = "관리자가 상품 카테고리를 삭제합니다.")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> productCategoryRemove(@PathVariable Integer id) {
-        adminProductCategoryService.removeProductCategory(id);
+    @DeleteMapping("/{productCategoryId}")
+    public ResponseEntity<Void> productCategoryRemove(@PathVariable Integer productCategoryId) {
+        adminProductCategoryService.removeProductCategory(productCategoryId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
@@ -59,9 +59,9 @@ public class AdminProductCategoryController {
     }
 
     @ApiOperation(value = "상품 카테고리Id별 조회", notes = "관리자가 상품 카테고리Id별 전체조회합니다.")
-    @GetMapping("/{id}")
-    public ResponseEntity<AdminProductCategoryForm.Response> productCategoryById(@PathVariable Integer id) {
-        AdminProductCategoryDto.Response byIdProductCategoryDto = adminProductCategoryService.findByIdProductCategory(id);
+    @GetMapping("/{productCategoryId}")
+    public ResponseEntity<AdminProductCategoryForm.Response> productCategoryById(@PathVariable Integer productCategoryId) {
+        AdminProductCategoryDto.Response byIdProductCategoryDto = adminProductCategoryService.findByIdProductCategory(productCategoryId);
         AdminProductCategoryForm.Response byIdProductCategoryForm
                 = AdminProductCategoryForm.Response.from(byIdProductCategoryDto);
         return ResponseEntity.ok().body(byIdProductCategoryForm);

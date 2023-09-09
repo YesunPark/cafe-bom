@@ -32,16 +32,16 @@ public class AdminProductCategoryServiceImpl implements AdminProductCategoryServ
     // 상품 카테고리 수정-jiyeon-23.08.31
     @Transactional
     @Override
-    public void modifyProductCategory(Integer id, AdminProductCategoryDto.Request productCategoryDto) {
-        ProductCategory productCategory = productCategoryRepository.findById(id)
+    public void modifyProductCategory(Integer productCategoryId, AdminProductCategoryDto.Request productCategoryDto) {
+        ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new CustomException(PRODUCTCATEGORY_NOT_EXISTS));
         productCategory.modifyProductCategory(productCategoryDto.getName());
     }
 
     // 상품 카테고리 삭제-jiyeon-23.08.31
     @Override
-    public void removeProductCategory(Integer id) {
-        ProductCategory productCategory = productCategoryRepository.findById(id)
+    public void removeProductCategory(Integer productCategoryId) {
+        ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
         productCategoryRepository.deleteById(productCategory.getId());
     }
@@ -58,10 +58,10 @@ public class AdminProductCategoryServiceImpl implements AdminProductCategoryServ
 
     // 상품 카테고리Id 별 조회-jiyeon-23.08.31
     @Override
-    public AdminProductCategoryDto.Response findByIdProductCategory(Integer id) {
-        ProductCategory productCategoryId = productCategoryRepository.findById(id)
+    public AdminProductCategoryDto.Response findByIdProductCategory(Integer productCategoryId) {
+        ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
                 .orElseThrow(() -> new CustomException(PRODUCTCATEGORY_NOT_EXISTS));
-        AdminProductCategoryDto.Response dtoResponse = AdminProductCategoryDto.Response.from(productCategoryId);
+        AdminProductCategoryDto.Response dtoResponse = AdminProductCategoryDto.Response.from(productCategory);
         return dtoResponse;
     }
 }
