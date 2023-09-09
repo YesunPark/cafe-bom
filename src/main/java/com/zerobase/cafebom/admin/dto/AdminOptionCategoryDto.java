@@ -1,9 +1,9 @@
-package com.zerobase.cafebom.optioncategory.dto;
+package com.zerobase.cafebom.admin.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
-public class OptionCategoryDto {
+public class AdminOptionCategoryDto {
 
     @Getter
     @Builder
@@ -11,7 +11,7 @@ public class OptionCategoryDto {
 
         String name;
 
-        public static OptionCategoryDto.Request from(OptionCategoryForm.Request request) {
+        public static AdminOptionCategoryDto.Request from(AdminOptionCategoryForm.Request request) {
             return Request.builder()
                     .name(request.getName())
                     .build();

@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.admin.service;
 
-import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.admin.dto.AdminProductDto;
+import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,7 @@ public interface AdminProductService {
 
     // 상품 수정-jiyeon-23.08.25
     void modifyProduct(MultipartFile image, Integer id, AdminProductDto adminProductDto)
-        throws IOException;
+            throws IOException;
 
     // 상품 삭제-jiyeon-23.08.25
     void removeProduct(Integer id);

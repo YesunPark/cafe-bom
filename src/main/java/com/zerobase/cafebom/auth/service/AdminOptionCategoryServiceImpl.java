@@ -1,26 +1,25 @@
-package com.zerobase.cafebom.optioncategory.service;
+package com.zerobase.cafebom.auth.service;
 
+import com.zerobase.cafebom.admin.dto.AdminOptionCategoryDto;
+import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
-import com.zerobase.cafebom.optioncategory.dto.OptionCategoryDto;
-import com.zerobase.cafebom.optioncategory.dto.OptionCategoryForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OptionCategoryServiceImpl implements OptionCategoryService {
+public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryService {
 
     private final OptionCategoryRepository optionCategoryRepository;
 
     // 관리자 옵션 카테고리 등록 -jiyeon-23.09.05
     @Override
-    public void addOptionCategory(OptionCategoryForm.Request optionCategoryFormRequest) {
-        OptionCategoryDto.Request optionCategoryDto = OptionCategoryDto.Request.from(optionCategoryFormRequest);
+    public void addOptionCategory(AdminOptionCategoryForm.Request optionCategoryFormRequest) {
+        AdminOptionCategoryDto.Request optionCategoryDto = AdminOptionCategoryDto.Request.from(optionCategoryFormRequest);
 
         optionCategoryRepository.save(OptionCategory.builder()
                 .name(optionCategoryDto.getName())
                 .build());
     }
-
 }
