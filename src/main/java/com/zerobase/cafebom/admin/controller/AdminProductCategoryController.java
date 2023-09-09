@@ -41,14 +41,14 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    @ApiOperation(value = "상품 카테고리 삭제(관리자)", notes = "관리자가 상품 카테고리를 삭제합니다.")
+    @ApiOperation(value = "상품 카테고리 삭제", notes = "관리자가 상품 카테고리를 삭제합니다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> productCategoryRemove(@PathVariable Integer id) {
         adminProductCategoryService.removeProductCategory(id);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    @ApiOperation(value = "상품 카테고리 전체조회(관리자)", notes = "관리자가 상품 카테고리를 전체조회합니다.")
+    @ApiOperation(value = "상품 카테고리 전체조회", notes = "관리자가 상품 카테고리를 전체조회합니다.")
     @GetMapping
     public ResponseEntity<List<AdminProductCategoryForm.Response>> productCategoryList1() {
         List<AdminProductCategoryDto.Response> productCategoryList = adminProductCategoryService.findAllProductCategory();
@@ -58,13 +58,12 @@ public class AdminProductCategoryController {
         return ResponseEntity.ok().body(productCategoryFormList);
     }
 
-    @ApiOperation(value = "상품 카테고리Id별 조회(관리자)", notes = "관리자가 상품 카테고리Id별 전체조회합니다.")
+    @ApiOperation(value = "상품 카테고리Id별 조회", notes = "관리자가 상품 카테고리Id별 전체조회합니다.")
     @GetMapping("/{id}")
     public ResponseEntity<AdminProductCategoryForm.Response> productCategoryById(@PathVariable Integer id) {
         AdminProductCategoryDto.Response byIdProductCategoryDto = adminProductCategoryService.findByIdProductCategory(id);
         AdminProductCategoryForm.Response byIdProductCategoryForm
                 = AdminProductCategoryForm.Response.from(byIdProductCategoryDto);
         return ResponseEntity.ok().body(byIdProductCategoryForm);
-
     }
 }
