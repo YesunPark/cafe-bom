@@ -2,8 +2,8 @@ package com.zerobase.cafebom.product.dto;
 
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.product.domain.Product;
-import com.zerobase.cafebom.type.SoldOutStatus;
 import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
+import com.zerobase.cafebom.type.SoldOutStatus;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -30,8 +30,8 @@ public class ProductDetailDto {
     private Map<ProductOptionCategory, List<Option>> productOptionList;
 
 
-
-    public static ProductDetailDto from(Product product, Map<ProductOptionCategory, List<Option>> productOptionList) {
+    public static ProductDetailDto from(Product product,
+        Map<ProductOptionCategory, List<Option>> productOptionList) {
         return ProductDetailDto.builder()
             .productId(product.getId())
             .name(product.getName())
