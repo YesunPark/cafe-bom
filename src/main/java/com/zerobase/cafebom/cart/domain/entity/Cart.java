@@ -41,4 +41,6 @@ public class Cart extends BaseTimeEntity {
 
     @NotNull
     private CartOrderStatus status;
+
+    public void setQuantity(Integer count){this.count = count; }
 }
