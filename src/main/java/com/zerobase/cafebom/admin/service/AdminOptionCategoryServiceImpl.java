@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION_CATEGORY;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_CATEGORY_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
     @Override
     public void removeOptionCategory(Integer optionCategoryId) {
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
+                .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
         optionCategoryRepository.deleteById(optionCategoryId);
     }
 
@@ -41,7 +41,7 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
     @Override
     public AdminOptionCategoryDto.Response findOptionCategoryListById(Integer optionCategoryId) {
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
+                .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
         AdminOptionCategoryDto.Response optionCategoryDto = AdminOptionCategoryDto.Response.from(optionCategory);
         return optionCategoryDto;
     }
