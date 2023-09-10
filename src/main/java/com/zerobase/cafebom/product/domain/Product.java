@@ -4,20 +4,13 @@ import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.type.SoldOutStatus;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
@@ -72,4 +65,9 @@ public class Product extends BaseTimeEntity {
     public void modifyNewImageUrl(String newImageUrl) {
         this.picture = newImageUrl;
     }
+
+    public void modifySoldOutStatus(SoldOutStatus soldOutStatus) {
+        this.soldOutStatus = soldOutStatus;
+    }
+
 }

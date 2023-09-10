@@ -46,6 +46,7 @@ public class Orders extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrdersCookingStatus cookingStatus;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private OrdersCookingTime cookingTime;
 
@@ -61,6 +62,14 @@ public class Orders extends BaseTimeEntity {
             this.receivedTime = LocalDateTime.now();
         }
         this.cookingStatus = newStatus;
+    }
+
+    public void modifyReceiptStatus(OrdersReceiptStatus newReceiptStatus) {
+        this.receiptStatus = newReceiptStatus;
+    }
+
+    public void modifyCookingTime(OrdersCookingTime selectedCookingTime) {
+        this.cookingTime = selectedCookingTime;
     }
 
     public static Orders fromAddOrdersDto(OrdersAddDto.Request dto, Member member) {

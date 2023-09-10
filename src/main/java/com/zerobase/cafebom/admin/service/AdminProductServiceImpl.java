@@ -4,11 +4,11 @@ package com.zerobase.cafebom.admin.service;
 import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import com.zerobase.cafebom.admin.dto.AdminProductForm;
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.productcategory.domain.ProductCategoryRepository;
+import com.zerobase.cafebom.type.SoldOutStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +33,11 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public void addProduct(MultipartFile image, AdminProductDto adminProductDto)
             throws IOException {
-        String pictureUrl = s3UploaderService.uploadFileToS3(image, "dirName");
+        String pictureUrl = s3UploaderService.uploadFileToS3(image, "product");
 
         Integer productCategoryId = adminProductDto.getProductCategoryId();
         ProductCategory productCategory = productCategoryRepository.findById(productCategoryId)
-                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(PRODUCTCATEGORY_NOT_EXISTS));
 
         productRepository.save(Product.builder()
                 .name(adminProductDto.getName())
@@ -68,17 +68,20 @@ public class AdminProductServiceImpl implements AdminProductService {
             if (oldPicture != null) {
                 s3UploaderService.deleteFile(oldPicture);
             }
-            String newImageUrl = s3UploaderService.uploadFileToS3(image, "dirName");
-            System.out.println("newImageUrl = " + newImageUrl);
+            String newImageUrl = s3UploaderService.uploadFileToS3(image, "product");
+
             product.modifyNewImageUrl(newImageUrl);
         }
     }
 
     // 관리자 상품 삭제-jiyeon-23.08.25
     @Override
-    public void removeProduct(Integer id) {
+    public void removeProduct(Integer id) throws IOException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
+        s3UploaderService.deleteFile(product.getPicture());
+
         productRepository.deleteById(product.getId());
     }
 
@@ -86,9 +89,11 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public List<AdminProductForm.Response> findProductList() {
         List<Product> productList = productRepository.findAll();
+
         List<AdminProductForm.Response> productFormList = productList.stream()
                 .map(AdminProductForm.Response::from)
                 .collect(Collectors.toList());
+
         return productFormList;
     }
 
@@ -97,7 +102,22 @@ public class AdminProductServiceImpl implements AdminProductService {
     public AdminProductForm.Response findProductById(Integer id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
         AdminProductForm.Response productForm = AdminProductForm.Response.from(product);
+
         return productForm;
     }
+
+    // 관리자 상품 품절여부 수정-jiyeon-23.08.29
+    @Override
+    @Transactional
+    public void modifyProductSoldOut(Integer productId, SoldOutStatus soldOutStatus) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
+        product.modifySoldOutStatus(soldOutStatus);
+
+        productRepository.save(product);
+    }
+
 }
