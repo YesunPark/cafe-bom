@@ -9,6 +9,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 @Builder(toBuilder = true)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -62,4 +65,9 @@ public class Product extends BaseTimeEntity {
     public void modifyNewImageUrl(String newImageUrl) {
         this.picture = newImageUrl;
     }
+
+    public void modifySoldOutStatus(SoldOutStatus soldOutStatus) {
+        this.soldOutStatus = soldOutStatus;
+    }
+
 }

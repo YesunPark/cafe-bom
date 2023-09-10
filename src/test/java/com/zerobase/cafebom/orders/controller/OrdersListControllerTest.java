@@ -43,8 +43,7 @@ public class OrdersListControllerTest {
     @MockBean
     private OrdersService ordersService;
 
-
-    // youngseon-23.08.28
+    // youngseon-23.09.05
     @Test
     @DisplayName("모든 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetAllOrderHistory() throws Exception {
@@ -57,14 +56,14 @@ public class OrdersListControllerTest {
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/list")
+        mockMvc.perform(get("/auth/orders/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "전체"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
-    // youngseon-23.08.28
+    // youngseon-23.09.05
     @Test
     @DisplayName("주어진 기간 내 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetOrderHistoryByPeriod() throws Exception {
@@ -82,7 +81,7 @@ public class OrdersListControllerTest {
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/list")
+        mockMvc.perform(get("/auth/orders/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01")
@@ -91,7 +90,7 @@ public class OrdersListControllerTest {
             .andExpect(jsonPath("$", hasSize(1))); // 반환된 결과는 1개여야 함
     }
 
-    // youngseon-23.08.28
+    // youngseon-23.09.05
     @Test
     @DisplayName("최근 3개월간 주문 내역을 성공적으로 조회하는 테스트")
     public void successGetOrderHistoryFor3Months() throws Exception {
@@ -104,14 +103,14 @@ public class OrdersListControllerTest {
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/pay/list")
+        mockMvc.perform(get("/auth/orders/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", ""))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    // youngseon-23.08.28
+    // youngseon-23.09.05
     @Test
     @DisplayName(" 종료 날짜 누락으로 주문 내역 조회 실패하는 테스트")
     public void failGetOrderHistoryByPeriodMissingDate() throws Exception {
@@ -119,7 +118,7 @@ public class OrdersListControllerTest {
         Long memberId = 1L;
 
         // when, then
-        mockMvc.perform(get("/auth/pay/list")
+        mockMvc.perform(get("/auth/orders/list")
                 .param("memberId", String.valueOf(memberId))
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01"))

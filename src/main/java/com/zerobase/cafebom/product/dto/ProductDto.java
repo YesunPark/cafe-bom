@@ -2,13 +2,11 @@ package com.zerobase.cafebom.product.dto;
 
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.type.SoldOutStatus;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor
-@NotNull
 @Builder
 @Getter
 public class ProductDto {
