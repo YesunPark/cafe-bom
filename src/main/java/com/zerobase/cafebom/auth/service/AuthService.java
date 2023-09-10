@@ -82,9 +82,9 @@ public class AuthService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         if (member.getRole().toString().equals(ROLE_ADMIN.toString())) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else if (member.getRole().toString().equals(ROLE_USER.toString())) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
         return User.builder()
@@ -92,8 +92,5 @@ public class AuthService implements UserDetailsService {
             .password(member.getPassword())
             .authorities(grantedAuthorities)
             .build();
-
-//        return new Member(member.getId().toString(), member.getPassword(),
-//            grantedAuthorities);
     }
 }

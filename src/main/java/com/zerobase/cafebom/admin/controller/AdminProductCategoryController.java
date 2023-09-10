@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.admin.controller;
 
-import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import com.zerobase.cafebom.productcategory.dto.ProductCategoryDto;
@@ -10,15 +9,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "admin-product-category-controller", description = "관리자 상품 카테고리 CRUD API")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/category")
-@PreAuthorize(("hasRole('ADMIN')"))
 public class AdminProductCategoryController {
 
     private final ProductCategoryService productCategoryService;

@@ -31,7 +31,6 @@ public class AdminOrdersController {
     private final OrdersService ordersService;
 
     // minsu-23.09.05
-    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "주문 상태 변경", notes = "관리자가 주문 상태를 변경합니다.")
     @PatchMapping("/status/{ordersId}")
     public ResponseEntity<Void> ordersStatusModify(
@@ -44,7 +43,6 @@ public class AdminOrdersController {
     }
 
     // minsu-23.09.05
-    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "주문 수락 또는 거절", notes = "관리자가 주문을 수락 또는 거절합니다.")
     @PatchMapping("/receipt-status/{ordersId}")
     public ResponseEntity<Void> ordersReceiptModify(
@@ -57,7 +55,6 @@ public class AdminOrdersController {
     }
 
     // minsu-23.09.05
-    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "주문 조리 예정 시간 선택", notes = "관리자가 수락된 주문 조리 예정 시간을 선택합니다.")
     @PatchMapping("/cooking-time/{ordersId}")
     public ResponseEntity<Void> ordersCookingTimeModify(
