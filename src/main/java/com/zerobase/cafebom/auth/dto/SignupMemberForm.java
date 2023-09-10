@@ -1,12 +1,13 @@
 package com.zerobase.cafebom.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+import lombok.Getter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
 @Builder

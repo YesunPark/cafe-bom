@@ -5,6 +5,8 @@ import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.type.CartOrderStatus;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +39,9 @@ public class Cart extends BaseTimeEntity {
     private Product product;
 
     @NotNull
-    private Integer count;
+    private Integer productCount;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CartOrderStatus status;
 }
