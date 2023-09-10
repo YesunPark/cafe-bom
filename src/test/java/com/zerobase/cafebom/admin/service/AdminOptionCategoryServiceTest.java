@@ -57,6 +57,7 @@ class AdminOptionCategoryServiceTest {
 
     }
 
+    // jiyeon-23.09.05
     @Test
     @DisplayName("관리자 옵션 카테고리 수정 실패 - 존재하지 않는 옵션 카테고리")
     public void failOptionCategoryModify(){

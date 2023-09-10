@@ -1,16 +1,15 @@
 package com.zerobase.cafebom.admin.service;
 
-import com.zerobase.cafebom.admin.service.AdminOptionCategoryService;
+import com.zerobase.cafebom.admin.dto.AdminOptionCategoryDto;
+import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
-import com.zerobase.cafebom.admin.dto.AdminOptionCategoryDto;
-import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION_CATEGORY;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_CATEGORY_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
     @Override
     public void modifyOptionCategory(Integer optionCategoryId, AdminOptionCategoryForm.Request optionCategoryForm) {
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
+                .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
 
         AdminOptionCategoryDto.Request optionCategoryDto = AdminOptionCategoryDto.Request.from(optionCategoryForm);
 

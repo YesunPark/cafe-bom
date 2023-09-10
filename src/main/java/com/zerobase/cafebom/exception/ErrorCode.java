@@ -42,7 +42,7 @@ public enum ErrorCode {
 
     // Option
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", BAD_REQUEST),
-    NOT_FOUND_OPTION_CATEGORY("옵션 카테고리를 찾을 수 없습니다.", BAD_REQUEST);
+    OPTION_CATEGORY_NOT_EXISTS("옵션 카테고리를 찾을 수 없습니다.", BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;
