@@ -42,6 +42,8 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
         optionCategory.modifyOptionCategoryDto(optionCategoryDto.getName());
 
         optionCategoryRepository.save(optionCategory);
+    }
+
     // jiyeon-23.09.09
     @Override
     public void removeOptionCategory(Integer optionCategoryId) {

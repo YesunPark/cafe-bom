@@ -18,6 +18,9 @@ public class AdminOptionCategoryDto {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
     public static class Response {
 
         private Integer optionCategoryId;
