@@ -81,7 +81,7 @@ public class CartController {
 
     //youngseon-23.09.11
     @ApiOperation(value = "장바구니 조회")
-    @GetMapping("{cartId}")
+    @GetMapping("/{cartId}")
     public ResponseEntity<List<CartProductDto>> cartList(
         @PathVariable Long cartId,
         @RequestBody @Valid CartAddForm cartAddForm,
