@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.auth.service;
+package com.zerobase.cafebom.admin.service;
 
 import com.zerobase.cafebom.admin.dto.AdminOptionCategoryDto;
 import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
@@ -13,7 +13,7 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
 
     private final OptionCategoryRepository optionCategoryRepository;
 
-    // 관리자 옵션 카테고리 등록 -jiyeon-23.09.05
+    // 관리자 옵션 카테고리 등록-jiyeon-23.09.05
     @Override
     public void addOptionCategory(AdminOptionCategoryForm.Request optionCategoryFormRequest) {
         AdminOptionCategoryDto.Request optionCategoryDto = AdminOptionCategoryDto.Request.from(optionCategoryFormRequest);

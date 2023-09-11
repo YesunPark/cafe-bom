@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.auth.service;
+package com.zerobase.cafebom.admin.service;
 
 import com.zerobase.cafebom.admin.dto.AdminOptionCategoryForm;
 import org.springframework.stereotype.Service;
