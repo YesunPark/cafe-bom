@@ -17,9 +17,7 @@ public interface CartOptionRepository extends JpaRepository<CartOption, Long> {
 
     CartOption findByCartAndOption(Cart cart, Option option);
 
-    List<Integer> findOptionIdsByCart(Cart cart); // 추가 2023-09-08 10:13
-
-
+    List<Integer> findOptionIdsByCart(Cart cart);
 
     List<CartOption> findAllByCart(Long cartId);
 }
