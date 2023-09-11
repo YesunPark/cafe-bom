@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +23,6 @@ public class AdminOptionCategoryController {
     private final AdminOptionCategoryService adminOptionCategoryService;
 
     // jiyeon-23.09.05
-    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "옵션 카테고리 수정", notes = "관리자가 옵션 카테고리를 수정합니다.")
     @PatchMapping("/{optionCategoryId}")
     public ResponseEntity<Void> optionCategoryModify(
