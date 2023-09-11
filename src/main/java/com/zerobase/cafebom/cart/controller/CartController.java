@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,14 +59,35 @@ public class CartController {
         return ResponseEntity.status(OK).body(responses);
     }
 
-    @ApiOperation(value = "상품 수량 변경,상품 삭제,장바구니 조회")
-    @PostMapping("/cart")
-    public ResponseEntity<List<CartProductDto>> cartSave(
+    // youngseon-23.09.11
+    @ApiOperation(value = "상품 수량 변경")
+    @PostMapping
+    public ResponseEntity<List<CartProductDto>> cartModify(
         @RequestBody @Valid CartAddForm cartAddForm,
-        @RequestHeader(name = "Authorization") String token,
-        @RequestParam(value = "Type" ,required = true) String type
+        @RequestHeader(name = "Authorization") String token
     ) {
-        return ResponseEntity.ok(cartService.findType(token, cartAddForm, type));
+        return ResponseEntity.ok(cartService.modifyCart(token, cartAddForm));
+    }
+
+    //youngseon-23.09.11
+    @ApiOperation(value = "상품 삭제")
+    @DeleteMapping
+    public ResponseEntity<List<CartProductDto>> cartRemove(
+        @RequestBody @Valid CartAddForm cartAddForm,
+        @RequestHeader(name = "Authorization") String token
+    ) {
+        return ResponseEntity.ok(cartService.removeCart(token, cartAddForm));
+    }
+
+    //youngseon-23.09.11
+    @ApiOperation(value = "장바구니 조회")
+    @GetMapping("{cartId}")
+    public ResponseEntity<List<CartProductDto>> cartList(
+        @PathVariable Long cartId,
+        @RequestBody @Valid CartAddForm cartAddForm,
+        @RequestHeader(name = "Authorization") String token
+    ) {
+        return ResponseEntity.ok(cartService.findCart(token,cartId));
     }
 }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
 import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
-//public class CartControllerTest {
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.BDDMockito.given;
@@ -66,23 +66,82 @@ class CartControllerTest {
         objectMapper = new ObjectMapper();
     }
 
+    //youngseon-23.09.11
     @Test
-    @DisplayName("장바구니 수량변경,상품 삭제,장바구니 조회 성공")
-    public void successCartSave() throws Exception {
+    @DisplayName("상품 수량 변경 성공")
+    public void successCartModify() throws Exception {
         // given
         CartAddForm cartAddForm = CartAddForm.builder()
+            .optionIdList(Collections.singletonList(1))
+            .count(5)
             .productId(1)
-            .count(2)
+            .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
-        Mockito.when(cartService.findType(Mockito.anyString(), Mockito.any(), Mockito.anyString()))
+
+        Mockito.when(cartService.modifyCart(Mockito.anyString(), Mockito.any()))
             .thenReturn(Collections.emptyList());
 
         // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
-            .post("/auth/cart/cart")
+            .post("/auth/cart")
             .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
-            .param("Type", "장바구니조회")
+            .content(objectMapper.writeValueAsString(cartAddForm))
+        );
+
+        // then
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    //youngseon-23.09.11
+    @Test
+    @DisplayName("상품 삭제 성공")
+    public void successCartRemove() throws Exception {
+        // given
+        CartAddForm cartAddForm = CartAddForm.builder()
+            .optionIdList(Collections.singletonList(1))
+            .count(5)
+            .productId(1)
+            .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
+            .build();
+
+        Mockito.when(cartService.removeCart(Mockito.anyString(), Mockito.any()))
+            .thenReturn(Collections.emptyList());
+
+        // when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+            .delete("/auth/cart")
+            .header("Authorization", token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cartAddForm))
+        );
+
+        // then
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    //youngseon-23.09.11
+    @Test
+    @DisplayName("장바구니 조회 성공")
+    public void successCartIdList() throws Exception {
+        // given
+        CartAddForm cartAddForm = CartAddForm.builder()
+            .optionIdList(Collections.singletonList(1))
+            .count(5)
+            .productId(1)
+            .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
+            .build();
+
+        Mockito.when(cartService.findCart(Mockito.anyString(), Mockito.anyLong()))
+            .thenReturn(Collections.emptyList());
+
+        // when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+            .get("/auth/cart/{cartId}", 1L)
+            .header("Authorization", token)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(cartAddForm))
         );
 

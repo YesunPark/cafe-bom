@@ -29,6 +29,5 @@ public class CartProductDto {
             .count(cart.getProductCount())
             .optionIdList(new ArrayList<>())
             .build();
-
     }
 }

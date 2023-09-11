@@ -32,6 +32,7 @@ import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -222,7 +223,7 @@ class CartServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
     }
 
-    // youngseon-23-09-11
+    // youngseon-23.09.11
     @Test
     @DisplayName("카트 수정 실패 - 존재하지 않는 회원")
     public void failModifyCartMemberNotExists() {
@@ -235,7 +236,7 @@ class CartServiceTest {
             .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카트 수정 실패 - 상품이 존재하지 않음")
     public void failModifyCartProductNotExists() {
@@ -248,7 +249,7 @@ class CartServiceTest {
             .hasMessage(ErrorCode.PRODUCT_NOT_EXISTS.getMessage());
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카트 수정 성공")
     public void successModifyCart() {
@@ -265,7 +266,7 @@ class CartServiceTest {
         assertThat(result).isNotNull();
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카트 삭제 성공")
     public void successRemoveCart() {
@@ -282,9 +283,9 @@ class CartServiceTest {
         assertThat(result).isNotNull();
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
-    @DisplayName("카트 삭제 실패 - 멤바가 존재하지 않음")
+    @DisplayName("카트 삭제 실패 - 멤버가 존재하지 않음")
     public void failRemoveCartMemberNotExists() {
         // given
         given(memberRepository.findById(member.getId())).willReturn(Optional.empty());
@@ -296,7 +297,7 @@ class CartServiceTest {
         verify(cartRepository, times(0)).deleteById(cart.getId());
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카트 삭제 실패 - 상품이 존재하지 않음")
     public void failRemoveCartProductNotExists() {
@@ -310,32 +311,37 @@ class CartServiceTest {
         verify(cartRepository, times(0)).deleteById(cart.getId());
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카트 조회 성공")
     public void successFindCart() {
         //given
-        given(cartRepository.findByMember(member)).willReturn(List.of(cart));
+        given(tokenProvider.getId(TOKEN)).willReturn(1L);
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+        given(cartRepository.findById(cart.getId())).willReturn(Optional.of(cart));
 
         // when
-        List<CartProductDto> result = cartService.findCart(TOKEN);
+        List<CartProductDto> result = cartService.findCart(TOKEN, cart.getId());
 
-        // then
+        //then
         assertThat(result).isNotNull();
     }
 
-    //youngseon-23-09-11
+    //youngseon-23.09.11
     @Test
     @DisplayName("카드 조회 실패 - 장바구니가 비어있음")
     public void failFindCartEmptyCart() {
+        Long cartId = 1L;
+
         //given
-        given(cartRepository.findByMember(member)).willReturn(List.of());
+        given(tokenProvider.getId(TOKEN)).willReturn(1L);
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+        given(cartRepository.findById(cartId)).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> cartService.findCart(TOKEN))
+        assertThatThrownBy(() -> cartService.findCart(TOKEN, cartId))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(CART_IS_EMPTY.getMessage());
     }
-
 
 }
