@@ -43,7 +43,7 @@ public enum ErrorCode {
     PRODUCTCATEGORY_NOT_EXISTS("존재하지 않는 상품 카테고리입니다.", BAD_REQUEST),
 
     // OrdersProduct
-    ORDERS_PRODUCT_NOT_EXISTS("존재하지 않는 주문상품입니다.", HttpStatus.BAD_REQUEST),
+    ORDERS_PRODUCT_NOT_EXISTS("존재하지 않는 주문 상품입니다.", BAD_REQUEST),
 
     // Option
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", BAD_REQUEST),
