@@ -52,7 +52,7 @@ class CartServiceTest {
 
     // wooyoung-23.09.04
     @Test
-    @DisplayName("멤버 id로 장바구니 목록 조회 성공")
+    @DisplayName("장바구니 목록 조회 성공")
     void successFindCartList() {
         // given
         Member member = Member.builder()

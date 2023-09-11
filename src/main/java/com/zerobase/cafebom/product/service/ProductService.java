@@ -1,9 +1,9 @@
 package com.zerobase.cafebom.product.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 
 import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.product.domain.Product;
@@ -21,9 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -33,6 +30,24 @@ public class ProductService {
     private final ProductOptionCategoryRepository productOptionCategoryRepository;
 
     private final OptionRepository optionRepository;
+
+    // 상품 목록 조회-wooyoung-23.08.22
+    @Transactional
+    public List<ProductDto> findProductList(Integer productCategoryId) {
+
+        if (!productCategoryRepository.existsById(productCategoryId)) {
+            throw new CustomException(PRODUCTCATEGORY_NOT_EXISTS);
+        }
+
+        List<Product> productList = productRepository.findAllByProductCategoryId(productCategoryId);
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        for (Product product : productList) {
+            productDtoList.add(ProductDto.from(product));
+        }
+
+        return productDtoList;
+    }
 
     // 상품 상세 정보 조회-wooyoung-23.08.28
     public ProductDetailDto findProductDetails(Integer productId) {
@@ -55,24 +70,7 @@ public class ProductService {
 
         return ProductDetailDto.from(product, productOptionList);
     }
+
     private final ProductCategoryRepository productCategoryRepository;
-
-    // 상품 목록 조회-wooyoung-23.08.22
-    @Transactional
-    public List<ProductDto> findProductList(Integer productCategoryId) {
-
-        if (!productCategoryRepository.existsById(productCategoryId)) {
-            throw new CustomException(ErrorCode.PRODUCTCATEGORY_NOT_EXISTS);
-        }
-
-        List<Product> productList = productRepository.findAllByProductCategoryId(productCategoryId);
-        List<ProductDto> productDtoList = new ArrayList<>();
-
-        for (Product product : productList) {
-            productDtoList.add(ProductDto.from(product));
-        }
-
-        return productDtoList;
-    }
 
 }
