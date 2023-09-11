@@ -1,8 +1,5 @@
 package com.zerobase.cafebom.option.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.NOT_FOUND_OPTION_CATEGORY;
-import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
-
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.option.domain.OptionRepository;
@@ -10,10 +7,14 @@ import com.zerobase.cafebom.option.dto.OptionDto;
 import com.zerobase.cafebom.option.dto.OptionForm;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_CATEGORY_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class OptionServiceImpl implements OptionService {
     public void modifyOption(Integer id, OptionDto.Request request) {
         Integer optionCategoryId = request.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-            .orElseThrow(() -> new CustomException(NOT_FOUND_OPTION_CATEGORY));
+            .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
 
         Option optionId = optionRepository.findById(id)
             .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
