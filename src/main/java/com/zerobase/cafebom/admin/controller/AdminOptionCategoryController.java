@@ -27,7 +27,8 @@ public class AdminOptionCategoryController {
     // jiyeon-23.09.05
     @ApiOperation(value = "옵션 카테고리 등록", notes = "관리자가 옵션 카테고리를 등록합니다.")
     @PostMapping
-    public ResponseEntity<Void> OptionCategoryAdd(AdminOptionCategoryForm.Request optionCategoryFormRequest) {
+    public ResponseEntity<Void> OptionCategoryAdd(
+            @RequestBody AdminOptionCategoryForm.Request optionCategoryFormRequest) {
         adminOptionCategoryService.addOptionCategory(optionCategoryFormRequest);
         return ResponseEntity.status(CREATED).build();
     }
@@ -45,7 +46,7 @@ public class AdminOptionCategoryController {
     // jiyeon-23.09.09
     @ApiOperation(value = "옵션 카테고리 삭제", notes = "관리자가 옵션 카테고리를 삭제합니다.")
     @DeleteMapping("/{optionCategoryId}")
-    public ResponseEntity<Void> OptionCategoryRemove(Integer optionCategoryId) {
+    public ResponseEntity<Void> OptionCategoryRemove(@PathVariable Integer optionCategoryId) {
         adminOptionCategoryService.removeOptionCategory(optionCategoryId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
