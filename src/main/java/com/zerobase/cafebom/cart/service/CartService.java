@@ -1,20 +1,23 @@
 package com.zerobase.cafebom.cart.service;
 
-
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
-import com.zerobase.cafebom.cart.domain.entity.Cart;
-import com.zerobase.cafebom.cart.repository.CartRepository;
+//import com.zerobase.cafebom.cart.domain.entity.Cart;
+//import com.zerobase.cafebom.cart.repository.CartRepository;
 import com.zerobase.cafebom.cart.service.dto.CartProductDto;
-import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
-import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
+//import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
+//import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.member.domain.entity.Member;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.option.domain.entity.Option;
-import com.zerobase.cafebom.option.repository.OptionRepository;
-import com.zerobase.cafebom.product.domain.entity.Product;
-import com.zerobase.cafebom.product.repository.ProductRepository;
+//import com.zerobase.cafebom.member.domain.entity.Member;
+//import com.zerobase.cafebom.member.repository.MemberRepository;
+//import com.zerobase.cafebom.option.domain.entity.Option;
+//import com.zerobase.cafebom.option.repository.OptionRepository;
+
+//import com.zerobase.cafebom.product.repository.ProductRepository;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,18 +33,82 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
+
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.security.TokenProvider;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CartService {
 
-    private final ProductRepository productRepository;
-    private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
+
     private final CartOptionRepository cartOptionRepository;
-    private final OptionRepository optionRepository;
 
     private final TokenProvider tokenProvider;
+
+    private final ProductRepository productRepository;
+
+    private final MemberRepository memberRepository;
+
+    private final OptionRepository optionRepository;
+
+    // 장바구니 목록 조회-wooyoung-23.09.03
+    public List<CartListDto> findCartList(String token) {
+        Long memberId = tokenProvider.getId(token);
+
+        List<Cart> cartList = cartRepository.findAllByMemberAndStatus(memberId, BEFORE_ORDER);
+
+        List<CartListDto> cartListDtoList = new ArrayList<>();
+
+        for (Cart cart : cartList) {
+            List<CartOption> allByCart = cartOptionRepository.findAllByCart(cart);
+
+            List<Option> optionList = new ArrayList<>();
+
+            for (CartOption cartOption : allByCart) {
+                optionList.add(cartOption.getOption());
+            }
+
+            Product product = cart.getProduct();
+
+            CartListDto cartListDto = CartListDto.builder()
+                .productId(product.getId())
+                .productName(product.getName())
+                .productPicture(product.getPicture())
+                .productOptions(optionList)
+                .productCount(cart.getProductCount())
+                .build();
+
+            cartListDtoList.add(cartListDto);
+        }
+
+        return cartListDtoList;
+    }
+
+
+//public class CartService {
+
+    //private final ProductRepository productRepository;
+    //private final MemberRepository memberRepository;
+    //private final CartRepository cartRepository;
+    //private final CartOptionRepository cartOptionRepository;
+    //private final OptionRepository optionRepository;
+
+    //private final TokenProvider tokenProvider;
 
     //사용자가 선택한 type에 맞는 메소드 실행-youngseon-2023-09-10
     public List<CartProductDto> findType(String token, CartAddForm cartAddForm, String type) {

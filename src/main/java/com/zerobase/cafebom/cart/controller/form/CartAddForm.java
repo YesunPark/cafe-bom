@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.cart.controller.form;
 
-import com.zerobase.cafebom.cart.domain.entity.type.CartOrderStatus;
+import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

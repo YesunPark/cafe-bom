@@ -5,12 +5,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.repository.MemberRepository;
-import com.zerobase.cafebom.orders.controller.form.OrdersAddForm;
-import com.zerobase.cafebom.orders.domain.type.Payment;
+import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.orders.dto.OrdersAddForm;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,12 +53,12 @@ class OrdersAddControllerTest {
             .build();
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.05
     @Test
     @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
     void successOrdersAdd() throws Exception {
         // when
-        mockMvc.perform(post("/auth/pay")
+        mockMvc.perform(post("/auth/orders")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
@@ -66,19 +66,19 @@ class OrdersAddControllerTest {
             .andDo(print());
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.05
     @Test
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
     void failOrdersAddAuthorizationNotPresent() throws Exception {
         // when
-        mockMvc.perform(post("/auth/pay")
+        mockMvc.perform(post("/auth/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form)))
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.05
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {
@@ -87,7 +87,7 @@ class OrdersAddControllerTest {
             .build();
 
         // when
-        mockMvc.perform(post("/auth/pay")
+        mockMvc.perform(post("/auth/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token)
                 .content(objectMapper.writeValueAsString(form)))
