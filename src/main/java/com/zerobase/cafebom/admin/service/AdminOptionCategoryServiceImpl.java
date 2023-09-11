@@ -25,6 +25,7 @@ public class AdminOptionCategoryServiceImpl implements AdminOptionCategoryServic
         optionCategoryRepository.save(OptionCategory.builder()
                 .name(optionCategoryDto.getName())
                 .build());
+    }
 
     // 관리자 옵션 카테고리 수정-jiyeon-23.09.05
     @Transactional
