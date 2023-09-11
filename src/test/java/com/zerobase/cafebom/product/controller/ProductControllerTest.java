@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.product.controller;
 
+import static com.zerobase.cafebom.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -10,9 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.zerobase.cafebom.auth.service.AuthService;
+import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.dto.BestProductDto;
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDto;
 import com.zerobase.cafebom.product.service.ProductService;
@@ -151,5 +154,59 @@ class ProductControllerTest {
             .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))
             .andExpect(jsonPath("$.errorMessage").value(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage()))
             .andExpect(status().isBadRequest());
+    }
+
+    // minsu-23.09.06
+    @Test
+    @DisplayName("베스트 상품 목록 조회 성공")
+    void successBestProductList() throws Exception {
+        // given
+        List<BestProductDto> bestProductList = new ArrayList<>();
+        bestProductList.add(BestProductDto.builder()
+            .productId(1)
+            .name("베스트 상품 1")
+            .price(1000)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture1")
+            .build());
+        bestProductList.add(BestProductDto.builder()
+            .productId(2)
+            .name("베스트 상품 2")
+            .price(1500)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture2")
+            .build());
+
+        given(productService.findBestProductList()).willReturn(bestProductList);
+
+        // when
+        mockMvc.perform(get("/product/best-list"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].productId").value(1))
+            .andExpect(jsonPath("$[0].name").value("베스트 상품 1"))
+            .andExpect(jsonPath("$[0].price").value(1000))
+            .andExpect(jsonPath("$[0].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$[0].picture").value("picture1"))
+            .andExpect(jsonPath("$[1].productId").value(2))
+            .andExpect(jsonPath("$[1].name").value("베스트 상품 2"))
+            .andExpect(jsonPath("$[1].price").value(1500))
+            .andExpect(jsonPath("$[1].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$[1].picture").value("picture2"))
+            .andDo(print());
+    }
+
+    // minsu-23.09.08
+    @Test
+    @DisplayName("베스트 상품 목록 조회 실패 - 베스트 상품이 없는 경우")
+    void failBestProductListWhenNoBestProducts() throws Exception {
+        // given
+        given(productService.findBestProductList()).willThrow(new CustomException(BEST_PRODUCT_NOT_EXISTS));
+
+        // when
+        mockMvc.perform(get("/product/best-list"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value(BEST_PRODUCT_NOT_EXISTS.toString()))
+            .andExpect(jsonPath("$.errorMessage").value(BEST_PRODUCT_NOT_EXISTS.getMessage()))
+            .andDo(print());
     }
 }

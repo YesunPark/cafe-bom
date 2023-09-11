@@ -8,6 +8,16 @@ public class AdminOptionCategoryDto {
 
     @Getter
     @Builder
+    public static class Request {
+
+        String name;
+
+        public static AdminOptionCategoryDto.Request from(AdminOptionCategoryForm.Request request) {
+            return Request.builder()
+                    .name(request.getName())
+                    .build();
+        }
+    }
     public static class Response {
 
         private Integer optionCategoryId;
