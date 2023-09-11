@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.domain;
 
 import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     List<Orders> findByMemberAndCreatedDateBetween(Member member, LocalDateTime startDate,
         LocalDateTime endDate);
+
+    List<Orders> findByReceiptStatus(OrdersReceiptStatus receiptStatus);
 }

@@ -9,7 +9,7 @@ public class AdminOptionCategoryDto {
     @Builder
     public static class Request {
 
-        private String name;
+        String name;
 
         public static AdminOptionCategoryDto.Request from(AdminOptionCategoryForm.Request request) {
             return Request.builder()
