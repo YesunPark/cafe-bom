@@ -98,7 +98,7 @@ public class AdminOrdersControllerTest {
     // minsu-23.09.05
     @Test
     @DisplayName("주문 거절 성공 - 주문을 정상적으로 거절")
-    @WithMockUser(roles = "ADMIN")
+//    @WithMockUser(roles = "ADMIN")
     void successOrdersReceiptReject() throws Exception {
         // given
         Long ordersId = 1L;
@@ -117,7 +117,7 @@ public class AdminOrdersControllerTest {
     // minsu-23.09.05
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 성공 - 주문의 조리 예정 시간을 정상적으로 선택")
-    @WithMockUser(roles = "ADMIN")
+//    @WithMockUser(roles = "ADMIN")
     void successAdminOrdersCookingTimeModify() throws Exception {
         // given
         Long ordersId = 1L;

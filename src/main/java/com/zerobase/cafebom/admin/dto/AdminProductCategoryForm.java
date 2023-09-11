@@ -1,16 +1,28 @@
-package com.zerobase.cafebom.productcategory.dto;
+package com.zerobase.cafebom.admin.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
-public class ProductCategoryForm {
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+public class AdminProductCategoryForm {
 
     @Getter
+    @Builder
     public static class Response {
 
+        private Integer productCategoryId;
+
         private String name;
+
+        public static AdminProductCategoryForm.Response from(AdminProductCategoryDto.Response productCategoryDto) {
+            return Response.builder()
+                    .productCategoryId(productCategoryDto.getProductCategoryId())
+                    .name(productCategoryDto.getName())
+                    .build();
+        }
     }
 
     @Getter
