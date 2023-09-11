@@ -45,7 +45,5 @@ public class Cart extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private CartOrderStatus status;
 
-
-
     public void setQuantity(Integer count){this.productCount = count; }
 }

@@ -1,19 +1,9 @@
 package com.zerobase.cafebom.cart.service;
 
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
-//import com.zerobase.cafebom.cart.domain.entity.Cart;
-//import com.zerobase.cafebom.cart.repository.CartRepository;
 import com.zerobase.cafebom.cart.service.dto.CartProductDto;
-//import com.zerobase.cafebom.cartoption.domain.entity.CartOption;
-//import com.zerobase.cafebom.cartoption.repository.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.exception.ErrorCode;
-//import com.zerobase.cafebom.member.domain.entity.Member;
-//import com.zerobase.cafebom.member.repository.MemberRepository;
-//import com.zerobase.cafebom.option.domain.entity.Option;
-//import com.zerobase.cafebom.option.repository.OptionRepository;
-
-//import com.zerobase.cafebom.product.repository.ProductRepository;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.option.domain.OptionRepository;
@@ -98,17 +88,6 @@ public class CartService {
 
         return cartListDtoList;
     }
-
-
-//public class CartService {
-
-    //private final ProductRepository productRepository;
-    //private final MemberRepository memberRepository;
-    //private final CartRepository cartRepository;
-    //private final CartOptionRepository cartOptionRepository;
-    //private final OptionRepository optionRepository;
-
-    //private final TokenProvider tokenProvider;
 
     //사용자가 선택한 type에 맞는 메소드 실행-youngseon-2023-09-10
     public List<CartProductDto> findType(String token, CartAddForm cartAddForm, String type) {
