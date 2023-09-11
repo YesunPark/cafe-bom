@@ -22,7 +22,6 @@ public class AdminOptionCategoryController {
     private final AdminOptionCategoryService adminOptionCategoryService;
 
     @ApiOperation(value = "옵션 카테고리 등록", notes = "관리자가 옵션 카테고리를 등록합니다.")
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> OptionCategoryAdd(AdminOptionCategoryForm.Request optionCategoryFormRequest) {
         adminOptionCategoryService.addOptionCategory(optionCategoryFormRequest);
