@@ -28,12 +28,12 @@ public class OptionServiceImpl implements OptionService {
     public void addOption(OptionDto.Request optionAddDto) {
         Integer optionCategoryId = optionAddDto.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-            .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
         Option option = Option.builder()
-            .optionCategory(optionCategory)
-            .name(optionAddDto.getName())
-            .price(optionAddDto.getPrice())
-            .build();
+                .optionCategory(optionCategory)
+                .name(optionAddDto.getName())
+                .price(optionAddDto.getPrice())
+                .build();
         optionRepository.save(option);
     }
 
@@ -42,20 +42,20 @@ public class OptionServiceImpl implements OptionService {
     public void modifyOption(Integer id, OptionDto.Request request) {
         Integer optionCategoryId = request.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-            .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
 
         Option optionId = optionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
 
         Option modifyOption = Option.builder()
-            .optionCategory(optionCategory)
-            .name(request.getName())
-            .price(request.getPrice())
-            .build();
+                .optionCategory(optionCategory)
+                .name(request.getName())
+                .price(request.getPrice())
+                .build();
 
         optionRepository.save(modifyOption.toBuilder()
-            .id(optionId.getId())
-            .build());
+                .id(optionId.getId())
+                .build());
 
     }
 
@@ -63,7 +63,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     public void removeOption(Integer id) {
         Option option = optionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
         optionRepository.deleteById(option.getId());
     }
 
@@ -72,8 +72,8 @@ public class OptionServiceImpl implements OptionService {
     public List<OptionForm.Response> findAllOption() {
         List<Option> optionList = optionRepository.findAll();
         List<OptionForm.Response> optionDtoList = optionList.stream()
-            .map(OptionForm.Response::from)
-            .collect(Collectors.toList());
+                .map(OptionForm.Response::from)
+                .collect(Collectors.toList());
         return optionDtoList;
     }
 
@@ -81,7 +81,7 @@ public class OptionServiceImpl implements OptionService {
     @Override
     public OptionForm.Response findByIdOption(Integer id) {
         Option option = optionRepository.findById(id)
-            .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
         OptionForm.Response response = OptionForm.Response.from(option);
         return response;
     }
