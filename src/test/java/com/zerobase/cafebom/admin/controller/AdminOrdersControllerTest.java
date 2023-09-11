@@ -64,7 +64,7 @@ public class AdminOrdersControllerTest {
     @WithMockUser(roles = "ADMIN")
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
-        Long ordersId = null;
+        Long ordersId = 1L;
         doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
             .when(ordersService).modifyOrdersStatus(ordersId,
                 OrdersStatusModifyDto.builder().newStatus(COOKING).build()
@@ -72,7 +72,7 @@ public class AdminOrdersControllerTest {
 
         // then
         mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId))
-            .andExpect(status().isNotFound())
+            .andExpect(status().isBadRequest())
             .andDo(print());
     }
 
