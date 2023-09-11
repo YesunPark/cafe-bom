@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import com.zerobase.cafebom.security.TokenProvider;
@@ -37,6 +38,9 @@ public class OrdersStatusControllerTest {
 
     @MockBean
     private OrdersHistoryService ordersHistoryService;
+
+    @MockBean
+    private MemberRepository memberRepository;
 
     // minsu-23.08.24
     @Test
