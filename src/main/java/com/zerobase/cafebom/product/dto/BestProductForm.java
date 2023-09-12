@@ -12,8 +12,8 @@ public class BestProductForm {
 
     private List<BestProductResponse> bestProducts;
 
-    @Getter
     @Builder
+    @Getter
     public static class BestProductResponse {
 
         private Integer productId;
@@ -26,7 +26,8 @@ public class BestProductForm {
 
         private String picture;
 
-        public static List<BestProductForm.BestProductResponse> from(List<BestProductDto> bestProductDto) {
+        public static List<BestProductForm.BestProductResponse> from(
+            List<BestProductDto> bestProductDto) {
             return bestProductDto.stream()
                 .map(productDto -> BestProductForm.BestProductResponse.builder()
                     .productId(productDto.getProductId())

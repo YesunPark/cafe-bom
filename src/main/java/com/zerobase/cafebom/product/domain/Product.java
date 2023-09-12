@@ -4,17 +4,14 @@ import com.zerobase.cafebom.admin.dto.AdminProductDto;
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.type.SoldOutStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Builder(toBuilder = true)
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 public class Product extends BaseTimeEntity {
