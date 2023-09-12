@@ -33,4 +33,7 @@ public class OrdersProduct extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @NotNull
+    private Integer count;
 }
