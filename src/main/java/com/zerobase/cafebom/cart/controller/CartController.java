@@ -84,7 +84,6 @@ public class CartController {
     @GetMapping("/{cartId}")
     public ResponseEntity<List<CartProductDto>> cartList(
         @PathVariable Long cartId,
-        @RequestBody @Valid CartAddForm cartAddForm,
         @RequestHeader(name = "Authorization") String token
     ) {
         return ResponseEntity.ok(cartService.findCart(token,cartId));
