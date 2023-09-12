@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/option")
 @RequiredArgsConstructor
-@Slf4j
 public class AdminOptionController {
 
     private final OptionService optionService;
@@ -34,10 +33,7 @@ public class AdminOptionController {
     // jiyeon-23.09.05
     @ApiOperation(value = "옵션 등록", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
-    public ResponseEntity<?> optionAdd(
-        @RequestHeader(AUTHORIZATION) String token,
-        @RequestBody OptionForm.Request optionFormRequest) {
-        log.info("controller============" + token);
+    public ResponseEntity<?> optionAdd(@RequestBody OptionForm.Request optionFormRequest) {
         optionService.addOption(OptionDto.Request.from(optionFormRequest));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -42,7 +42,7 @@ public class OrdersController {
 
     private final OrdersService ordersService;
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다.")
     @GetMapping("/elapsed-time/{ordersId}")
     public ResponseEntity<OrdersElapsedFindForm> elapsedTimeGet(@PathVariable Long ordersId) {
@@ -53,7 +53,7 @@ public class OrdersController {
         return ResponseEntity.ok(response);
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @ApiOperation(value = "주문 취소", notes = "관리자가 주문을 수락하기 전에 사용자가 주문을 취소합니다.")
     @PatchMapping("/cancel/{ordersId}")
     public ResponseEntity<Void> ordersCancelModify(@PathVariable Long ordersId) {

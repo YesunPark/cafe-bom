@@ -4,7 +4,6 @@ import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.option.dto.OptionDto;
-import com.zerobase.cafebom.option.dto.OptionDto.Request;
 import com.zerobase.cafebom.option.dto.OptionForm;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategoryRepository;
@@ -26,7 +25,7 @@ public class OptionServiceImpl implements OptionService {
 
     // 옵션 등록-jiyeon-23.08.30
     @Override
-    public void addOption(Request optionAddDto) {
+    public void addOption(OptionDto.Request optionAddDto) {
         Integer optionCategoryId = optionAddDto.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
                 .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
