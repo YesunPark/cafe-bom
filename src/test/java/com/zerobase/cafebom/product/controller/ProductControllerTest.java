@@ -4,6 +4,7 @@ import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISM
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,11 +27,13 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(ProductController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ProductControllerTest {
 
     @Autowired
@@ -146,7 +149,8 @@ class ProductControllerTest {
     @DisplayName("카테고리 별 상품 조회 실패 - 입력 타입 불일치")
     void failProductListMethodArgumentTypeMismatch() throws Exception {
         // when
-        mockMvc.perform(get("/product/list/test"))
+        mockMvc.perform(get("/product/list/test")
+                .with(csrf()))
             .andDo(print())
             .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))
             .andExpect(jsonPath("$.errorMessage").value(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage()))
