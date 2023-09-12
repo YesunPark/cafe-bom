@@ -6,10 +6,14 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
+@Getter
+@Builder
 public class BestProductForm {
 
-    @Builder
+    private List<BestProductResponse> bestProducts;
+
     @Getter
+    @Builder
     public static class BestProductResponse {
 
         private Integer productId;
