@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.controller;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -21,6 +22,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(OrdersController.class)
+@WithMockUser
 public class OrdersStatusControllerTest {
 
     @Autowired
@@ -38,10 +40,9 @@ public class OrdersStatusControllerTest {
     @MockBean
     private OrdersHistoryService ordersHistoryService;
 
-    // minsu-23.08.24
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 경과 시간 조회 성공 - 주문에 대한 경과 시간 조회")
-    @WithMockUser(roles = "USER")
     void successGetElapsedTime() throws Exception {
         // given
         Long ordersId = 1L;
@@ -56,17 +57,17 @@ public class OrdersStatusControllerTest {
             .andDo(print());
     }
 
-    // minsu-23.09.01
+    // minsu-23.09.12
     @Test
     @DisplayName("사용자 주문 취소 성공 - 주문을 정상적으로 취소")
-    @WithMockUser(roles = "USER")
     void successUserOrdersCancel() throws Exception {
         // given
         Long ordersId = 1L;
 
         // then
         mockMvc.perform(patch("/auth/orders/cancel/{ordersId}", ordersId)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
             .andExpect(status().isNoContent())
             .andDo(print());
     }

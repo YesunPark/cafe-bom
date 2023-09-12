@@ -25,15 +25,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.csrf(AbstractHttpConfigurer::disable)
+        http
+            .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults()) // CORS 설정 허용
             .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
             .authorizeHttpRequests(auth -> auth
-                .antMatchers("/**/signup/**", "/**/signin", "/product/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/auth/**").hasAuthority(ROLE_USER.name())
-                .antMatchers("/admin/**").hasAuthority(ROLE_ADMIN.name())
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .antMatchers("/signup/**", "/signin", "/product/**").permitAll()
+                .antMatchers("/auth/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider),
                     UsernamePasswordAuthenticationFilter.class)
