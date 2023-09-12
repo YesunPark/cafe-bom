@@ -224,7 +224,7 @@ public class CartService {
         return cartProductDtoList;
     }
 
-    // 장바구니에 저장된 상품 목록 조회-youngseon-23.09.10
+    // 장바구니 단건 조회-youngseon-23.09.10
     public List<CartProductDto> findCart(String token, Long cartId) {
         Long userId = tokenProvider.getId(token);
 
@@ -250,7 +250,7 @@ public class CartService {
             cartProductDto.addOptionId(optionId);
         }
 
-            cartProductDtoList.add(cartProductDto);
+        cartProductDtoList.add(cartProductDto);
 
         return cartProductDtoList;
     }
