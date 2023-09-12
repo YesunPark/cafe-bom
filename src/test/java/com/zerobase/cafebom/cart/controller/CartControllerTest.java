@@ -3,12 +3,13 @@ package com.zerobase.cafebom.cart.controller;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
@@ -23,9 +24,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(CartController.class)
+@WithMockUser
 class CartControllerTest {
 
     @Autowired
@@ -44,7 +47,7 @@ class CartControllerTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.05
+    // wooyoung-23.09.12
     @Test
     @DisplayName("장바구니 목록 조회 성공")
     void successCartList() throws Exception {
@@ -120,6 +123,4 @@ class CartControllerTest {
             .andExpect(jsonPath("$[0].productOptions[0].id").value(optionList.get(0).getId()))
             .andExpect(jsonPath("$[0].productCount").value(3));
     }
-
-
 }
