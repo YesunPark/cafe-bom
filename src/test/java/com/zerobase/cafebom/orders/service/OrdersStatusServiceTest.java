@@ -4,9 +4,9 @@ import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -52,7 +52,7 @@ class OrdersStatusServiceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // minsu-23.09.02
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 상태 변경 실패 - 다음 상태 이외의 주문으로는 변경 불가")
     void failUpdateOrdersStatusNotNone() {
@@ -69,7 +69,7 @@ class OrdersStatusServiceTest {
         // then
         CustomException exception = assertThrows(CustomException.class,
             () -> ordersService.modifyOrdersStatus(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_CORRECT);
+        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_STATUS_ONLY_NEXT);
     }
 
     // minsu-23.09.02
