@@ -32,15 +32,15 @@
    </tr>
   <tr>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="강우영"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/801e2b25-e3fa-4c9e-83e3-43b3b0280a78" width=300px alt="강우영"> 
         <br/>
     </td>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="김민수"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/871f84d5-a2da-49e0-927e-8c023f2419ed" width=300px alt="김민수"> 
         <br/>
    </td>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="김영선"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/98f1d69f-3890-45af-9c90-2221b478dd7b" width=300px alt="김영선"> 
         <br/>
    </td>
     <td align="center">
@@ -48,24 +48,18 @@
         <br/>
    </td>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="백지연"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/77fe609d-7718-434e-b1ca-98dc61a40816" width=300px alt="백지연"> 
         <br/>
    </td>
   </tr>
   <tr>
     <td align="center" class="우영">
-        <a href="http://www.naver.com">💻 깃허브</a>
+        <a href="https://github.com/sunlake123">💻 깃허브</a>
         <br/>
-        <a href="http://www.naver.com">📖 블로그</a>
-        <br/>   
-        <a href="http://www.naver.com">📬 이메일</a>
+        <a href="https://velog.io/@sunlake123">📖 블로그</a>
    </td>
    <td align="center" class="민수">
-        <a href="http://www.naver.com">💻 깃허브</a>
-        <br/>
-        <a href="http://www.naver.com">📖 블로그</a>
-        <br/>   
-        <a href="http://www.naver.com">📬 이메일</a>
+        <a href="https://github.com/bingsoo95">💻 깃허브</a>
    </td>
    <td align="center" class="영선">
         <a href="https://github.com/thsu1084">💻 깃허브</a>
@@ -99,12 +93,14 @@
         <a href="https://velog.io/@lynn080">프로젝트 회고</a>
    </td>
     <td align="center" class="지연">
-        <a href="./docs/jiyeon-review.md">프로젝트 회고</a>
+        <a href="">프로젝트 회고</a>
    </td>
   </tr>
 </table>
 
 ////////////////////////////////////////////////////////////////////////////////////
+
+[예시 링크](./docs/jiyeon-review.md)
 
 <table align="center"><!-- 팀원 표2 -->
   <tr>
@@ -126,40 +122,34 @@
    </tr>
   <tr>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="강우영"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/801e2b25-e3fa-4c9e-83e3-43b3b0280a78" width=300px alt="강우영"> 
         <br/>
     </td>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="김민수"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/871f84d5-a2da-49e0-927e-8c023f2419ed" width=300px alt="김민수"> 
         <br/>
-   </td>
+    </td>
     <td align="center">
-        <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="김영선"> 
+        <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/98f1d69f-3890-45af-9c90-2221b478dd7b" width=300px alt="김영선"> 
         <br/>
-   </td>
+    </td>
     <td align="center">
         <img src="https://user-images.githubusercontent.com/61264510/220117269-9ca3a740-5483-4c26-83f1-3fe2aa3f957b.png" width=300px alt="박예선"> 
         <br/>
-   </td>
+    </td>
     <td align="center">
         <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/77fe609d-7718-434e-b1ca-98dc61a40816" width=300px alt="백지연"> 
         <br/>
-   </td>
+    </td>
   </tr>
   <tr>
     <td align="center" class="우영">
-        <a href="https://github.com/YesunPark/justcode-6-2nd-team7-front"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
+        <a href="https://github.com/sunlake123"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
         <br/>
-        <a href="https://velog.io/@lynn080"><img alt="vlog-link" height="25" src="https://img.shields.io/badge/Tech blog-20C997?style=flat-square&logo=Velog&&logoColor=white"/></a>
-        <br/>   
-        <a href="mailto:lynn08082@gmail.com"><img alt="gmail-link" height="25" src="https://img.shields.io/badge/Email-d14836?style=flat-square&logo=Gmail&&logoColor=white"/></a>
+        <a href="https://velog.io/@sunlake123"><img alt="vlog-link" height="25" src="https://img.shields.io/badge/Tech blog-20C997?style=flat-square&logo=Velog&&logoColor=white"/></a>
    </td>
    <td align="center" class="민수">
-        <a href="https://github.com/YesunPark/justcode-6-2nd-team7-front"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
-        <br/>
-        <a href="https://velog.io/@lynn080"><img alt="vlog-link" height="25" src="https://img.shields.io/badge/Tech blog-20C997?style=flat-square&logo=Velog&&logoColor=white"/></a>
-        <br/>   
-        <a href="mailto:lynn08082@gmail.com"><img alt="gmail-link" height="25" src="https://img.shields.io/badge/Email-d14836?style=flat-square&logo=Gmail&&logoColor=white"/></a>
+        <a href="https://github.com/bingsoo95"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
    </td>
    <td align="center" class="영선">
         <a href="https://github.com/thsu1084"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
@@ -216,10 +206,53 @@
 
 # 주요 기능
 
+---
+1번 후보
+
+### 전체 기능
+<table align="center"><!-- 팀원 표 -->
+  <tr>
+   <th>
+    공통
+   </th>
+   <th>
+    사용자
+   </th>
+   <th >
+    관리자
+   </th>
+   </tr>
+  <tr>
+   <td align="left" width="350px" class="공통">
+    - 회원가입, 로그인
+    <br/>
+    - 상품 목록 및 상품 상세 페이지 조회
+   </td>
+   <td align="left" width="350px" class="사용자">
+    - 장바구니 관리
+    <br/>
+    - 주문 내역 관리
+    <br/>
+    - 리뷰 관리
+   </td>
+   <td align="left" width="350px" class="관리자">
+    - 상품 및 상품 카테고리 관리
+    <br/>
+    - 옵션 및 옵션 카테고리 관리
+    <br/>
+    - 주문 수락 및 주문 상태 관리
+   </td>
+  </tr>
+</table>
+
+---
+
+2번 후보
+
 ### 공통
 
-- 회원가입
-- 로그인
+- 회원가입, 로그인
+- 상품 목록 및 상품 상세 조회
 
 ### 사용자
 
@@ -228,8 +261,28 @@
 - 리뷰 관리
 
 ### 관리자
+- 상품 관리
+- 상품 카테고리 관리
+- 옵션 카테고리 및 옵션 관리
+- 주문 수락 및 주문 상태 관리
 
-# 기능 세부 내용
+---
+
+### 회원가입, 로그인
+
+### 상품 목록 및 상품 상세 조회
+
+### 장바구니 관리
+
+### 주문 내역 관리
+
+### 리뷰 관리
+
+### 상품 및 상품 카테고리 관리
+
+### 옵션 카테고리 및 옵션 관리
+
+### 주문 수락 및 주문 상태 관리
 
 # 형상 관리
 
