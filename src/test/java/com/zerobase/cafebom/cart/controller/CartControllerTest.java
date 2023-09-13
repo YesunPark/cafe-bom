@@ -13,8 +13,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -48,9 +50,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @WebMvcTest(CartController.class)
 @WithMockUser
+@MockBean(JpaMetamodelMappingContext.class)
+@AutoConfigureWebMvc
 class CartControllerTest {
 
     @Autowired
@@ -75,6 +80,7 @@ class CartControllerTest {
     @DisplayName("상품 넣기 성공")
     public void successCartSave() throws Exception {
         // given
+        given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
             .count(5)
@@ -91,6 +97,7 @@ class CartControllerTest {
             .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(cartAddForm))
+            .with(csrf())
         );
 
         // then
@@ -103,6 +110,7 @@ class CartControllerTest {
     @DisplayName("상품 수량 변경 성공")
     public void successCartModify() throws Exception {
         // given
+        given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
             .count(5)
@@ -119,6 +127,7 @@ class CartControllerTest {
             .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(cartAddForm))
+            .with(csrf())
         );
 
         // then
@@ -131,6 +140,7 @@ class CartControllerTest {
     @DisplayName("상품 삭제 성공")
     public void successCartRemove() throws Exception {
         // given
+        given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
             .count(5)
@@ -147,6 +157,7 @@ class CartControllerTest {
             .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(cartAddForm))
+            .with(csrf())
         );
 
         // then
@@ -159,6 +170,7 @@ class CartControllerTest {
     @DisplayName("장바구니 조회 성공")
     public void successCartIdList() throws Exception {
         // given
+        given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
             .count(5)
