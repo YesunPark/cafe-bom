@@ -24,7 +24,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @Controller
 @RequestMapping("/admin/product")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
 public class AdminProductController {
 
     private final AdminProductService adminProductService;
@@ -32,7 +31,7 @@ public class AdminProductController {
     // jiyeon-23.09.05
     @ApiOperation(value = "상품 전체 목록 조회", notes = "관리자가 전체 상품 목록을 조회합니다.")
     @GetMapping(value = "/list", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> productList() {
+    public ResponseEntity<List<AdminProductForm.Response>> productList() {
         List<AdminProductForm.Response> productList = adminProductService.findProductList();
         return ResponseEntity.ok().body(productList);
     }
@@ -40,7 +39,7 @@ public class AdminProductController {
     // jiyeon-23.09.05
     @ApiOperation(value = "상품 단건 조회", notes = "관리자가 하나의 상품에 대한 정보를 조회합니다.")
     @GetMapping("/{productId}")
-    public ResponseEntity<?> productIdGet(@PathVariable Integer productId) {
+    public ResponseEntity<AdminProductForm.Response> productIdGet(@PathVariable Integer productId) {
         AdminProductForm.Response response = adminProductService.findProductById(productId);
         return ResponseEntity.ok().body(response);
     }
@@ -58,7 +57,7 @@ public class AdminProductController {
     // jiyeon-23.09.05
     @ApiOperation(value = "상품 수정", notes = "관리자가 상품 정보를 수정합니다.")
     @PutMapping(value = "/{productId}", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> productModify(
+    public ResponseEntity<Void> productModify(
         @RequestParam(value = "image") MultipartFile image,
         @PathVariable Integer productId,
         AdminProductForm adminProductForm) throws IOException {
@@ -69,7 +68,7 @@ public class AdminProductController {
     // jiyeon-23.09.05
     @ApiOperation(value = "상품 삭제", notes = "관리자가 상품을 삭제합니다.")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<?> productRemove(@PathVariable Integer productId) throws IOException {
+    public ResponseEntity<Void> productRemove(@PathVariable Integer productId) throws IOException {
         adminProductService.removeProduct(productId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
