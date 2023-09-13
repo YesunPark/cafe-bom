@@ -53,6 +53,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public Member(String toString, String password, List<GrantedAuthority> grantedAuthorities) {
+        super();
+    }
 
     public static Member from(SignupDto signupDto, String encoredPassword, Role role) {
         return Member.builder()
@@ -62,10 +65,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
             .email(signupDto.getEmail())
             .role(role)
             .build();
-    }
-
-    public Member(String toString, String password, List<GrantedAuthority> grantedAuthorities) {
-        super();
     }
 
     @Override
