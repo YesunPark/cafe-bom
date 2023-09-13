@@ -2,6 +2,7 @@ package com.zerobase.cafebom.admin.controller;
 
 import static com.zerobase.cafebom.type.OrdersCookingStatus.COOKING;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +28,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(AdminOrdersController.class)
+@WithMockUser(roles = "ADMIN")
 public class AdminOrdersControllerTest {
 
     @Autowired
@@ -41,10 +43,9 @@ public class AdminOrdersControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 상태 변경 성공 - 정상적으로 주문 상태 변경")
-    @WithMockUser(roles = "ADMIN")
     void successOrdersStatus() throws Exception {
         // given
         Long ordersId = 1L;
@@ -53,15 +54,15 @@ public class AdminOrdersControllerTest {
         // then
         mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isNoContent())
             .andDo(print());
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 상태 변경 실패 - 주문이 존재하지 않는 경우")
-    @WithMockUser(roles = "ADMIN")
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
         Long ordersId = 1L;
@@ -71,15 +72,15 @@ public class AdminOrdersControllerTest {
             );
 
         // then
-        mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId))
+        mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId)
+                .with(csrf()))
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 수락 성공 - 주문을 정상적으로 수락")
-    @WithMockUser(roles = "ADMIN")
     void successOrdersReceiptAccept() throws Exception {
         // given
         Long ordersId = 1L;
@@ -90,15 +91,15 @@ public class AdminOrdersControllerTest {
         // then
         mockMvc.perform(patch("/admin/orders/receipt-status/{ordersId}", ordersId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isNoContent())
             .andDo(print());
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @Test
     @DisplayName("주문 거절 성공 - 주문을 정상적으로 거절")
-    @WithMockUser(roles = "ADMIN")
     void successOrdersReceiptReject() throws Exception {
         // given
         Long ordersId = 1L;
@@ -109,15 +110,15 @@ public class AdminOrdersControllerTest {
         // then
         mockMvc.perform(patch("/admin/orders/receipt-status/{ordersId}", ordersId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isNoContent())
             .andDo(print());
     }
 
-    // minsu-23.09.05
+    // minsu-23.09.12
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 성공 - 주문의 조리 예정 시간을 정상적으로 선택")
-    @WithMockUser(roles = "ADMIN")
     void successAdminOrdersCookingTimeModify() throws Exception {
         // given
         Long ordersId = 1L;
@@ -128,7 +129,8 @@ public class AdminOrdersControllerTest {
         // then
         mockMvc.perform(patch("/admin/orders/cooking-time/{ordersId}", ordersId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isNoContent());
     }
 }

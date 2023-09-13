@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.orders.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(OrdersController.class)
+@WithMockUser
 class OrdersAddControllerTest {
 
     @Autowired
@@ -53,7 +56,7 @@ class OrdersAddControllerTest {
             .build();
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
     void successOrdersAdd() throws Exception {
@@ -61,24 +64,26 @@ class OrdersAddControllerTest {
         mockMvc.perform(post("/auth/orders")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().is(201))
             .andDo(print());
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
     void failOrdersAddAuthorizationNotPresent() throws Exception {
         // when
         mockMvc.perform(post("/auth/orders")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {
@@ -90,7 +95,8 @@ class OrdersAddControllerTest {
         mockMvc.perform(post("/auth/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
