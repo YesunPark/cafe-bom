@@ -49,7 +49,7 @@ public class Cart extends BaseTimeEntity {
         this.productCount = count;
     }
 
-    public void addCount(Integer count) {
+    public void addProductCount(Integer count) {
         this.productCount += count;
     }
 

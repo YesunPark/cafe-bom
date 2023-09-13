@@ -301,7 +301,7 @@ public class CartService {
                     result = compare(optionIdList, optionIdCopyList);
 
                     if (result) {
-                        otherCart.addCount(cartAddForm.getCount());
+                        otherCart.addProductCount(cartAddForm.getCount());
                         cartRepository.save(otherCart);
                         count++;
                     }
