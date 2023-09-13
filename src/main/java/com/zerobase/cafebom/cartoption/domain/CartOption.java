@@ -37,4 +37,11 @@ public class CartOption extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OPTION_ID")
     private Option option;
+
+    public static CartOption createCartOption(Cart cart,Option option){
+        return CartOption.builder()
+            .cart(cart)
+            .option(option)
+            .build();
+    }
 }
