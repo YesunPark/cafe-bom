@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.cart.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
-import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.type.CartOrderStatus.WAITING_ACCEPTANCE;
@@ -12,8 +12,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
 import com.zerobase.cafebom.cart.domain.Cart;
@@ -33,7 +31,6 @@ import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -199,8 +196,22 @@ class CartServiceTest {
         assertThat(cartListDtos.get(0).getProductId()).isEqualTo(espresso.getId());
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
-        assertThat(cartListDtos.get(0).getCartListOptionDtos().get(0).getOptionId()).isEqualTo(iceAmountOption1.getId());
+        assertThat(cartListDtos.get(0).getCartListOptionDtos().get(0).getOptionId()).isEqualTo(
+            iceAmountOption1.getId());
         assertThat(cartListDtos.get(0).getProductCount()).isEqualTo(cart1.getProductCount());
+    }
+
+    // wooyoung-23.09.14
+    @Test
+    @DisplayName("장바구니 목록 조회 실패 - 존재하지 않는 사용자")
+    void failFindCartListMemberNotExists() {
+        // given
+        given(memberRepository.findById(member.getId())).willReturn(Optional.empty());
+
+        // when
+        assertThatThrownBy(() -> cartService.findCartList(TOKEN))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
     }
 
     Member member = Member.builder()
@@ -240,7 +251,7 @@ class CartServiceTest {
         // when, then
         assertThatThrownBy(() -> cartService.modifyCart(TOKEN, cartAddForm))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
     }
 
     // youngseon-23.09.11
@@ -300,7 +311,7 @@ class CartServiceTest {
         // when, then
         assertThatThrownBy(() -> cartService.removeCart(TOKEN, cartAddForm))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
         verify(cartRepository, times(0)).deleteById(cart.getId());
     }
 
@@ -358,8 +369,10 @@ class CartServiceTest {
         // given
         given(tokenProvider.getId(TOKEN)).willReturn(member.getId());
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(productRepository.findById(cartAddForm.getProductId())).willReturn(Optional.of(product));
-        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(Collections.emptyList());
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(
+            Optional.of(product));
+        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(
+            Collections.emptyList());
 
         // when
         List<CartProductDto> result = cartService.saveCart(TOKEN, cartAddForm);
