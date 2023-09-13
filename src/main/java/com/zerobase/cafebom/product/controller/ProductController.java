@@ -2,11 +2,15 @@ package com.zerobase.cafebom.product.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import com.zerobase.cafebom.product.dto.BestProductForm;
+import static org.springframework.http.HttpStatus.OK;
+
 import com.zerobase.cafebom.product.dto.ProductDetailDto;
 import com.zerobase.cafebom.product.dto.ProductDetailForm;
 import com.zerobase.cafebom.product.dto.ProductDto;
 import com.zerobase.cafebom.product.dto.ProductListForm;
 import com.zerobase.cafebom.product.service.ProductService;
+import com.zerobase.cafebom.product.dto.BestProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
@@ -40,7 +44,7 @@ public class ProductController {
         }
 
         return ResponseEntity.status(OK)
-                .body(productListForm);
+            .body(productListForm);
     }
 
     // wooyoung-23.09.05
@@ -51,5 +55,15 @@ public class ProductController {
 
         return ResponseEntity.status(OK)
             .body(ProductDetailForm.Response.from(productDetails));
+    }
+
+    // minsu-23.09.08
+    @ApiOperation(value = "베스트 상품 목록 조회", notes = "주문 수량을 기준으로 베스트 상품 5개를 조회합니다.")
+    @GetMapping("/best-list")
+    public ResponseEntity<List<BestProductForm.BestProductResponse>> bestProductList() {
+        List<BestProductDto> bestProduct = productService.findBestProductList();
+        List<BestProductForm.BestProductResponse> bestProductResponse = BestProductForm.BestProductResponse.from(
+            bestProduct);
+        return ResponseEntity.ok(bestProductResponse);
     }
 }
