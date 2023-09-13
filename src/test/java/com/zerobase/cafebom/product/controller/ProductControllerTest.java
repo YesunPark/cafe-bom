@@ -51,7 +51,7 @@ class ProductControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
-    // wooyoung-23.08.29
+    // wooyoung-23.09.14
     @Test
     @DisplayName("카테고리 별 상품 조회 성공")
     void successProductList() throws Exception {
@@ -71,11 +71,11 @@ class ProductControllerTest {
         // when
         mockMvc.perform(get("/product/list/1"))
             .andDo(print())
-            .andExpect(jsonPath("$[0].productId").value("1"))
-            .andExpect(jsonPath("$[0].name").value("아메리카노"))
-            .andExpect(jsonPath("$[0].price").value(2000))
-            .andExpect(jsonPath("$[0].soldOutStatus").value("IN_STOCK"))
-            .andExpect(jsonPath("$[0].picture").value("picture"))
+            .andExpect(jsonPath("$.productDtoList[0].productId").value("1"))
+            .andExpect(jsonPath("$.productDtoList[0].name").value("아메리카노"))
+            .andExpect(jsonPath("$.productDtoList[0].price").value(2000))
+            .andExpect(jsonPath("$.productDtoList[0].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$.productDtoList[0].picture").value("picture"))
             .andExpect(status().isOk());
     }
 

@@ -272,11 +272,11 @@ class CartControllerTest {
         mockMvc.perform(get("/auth/cart")
                 .header("Authorization", TOKEN))
             .andDo(print())
-            .andExpect(jsonPath("$[0].cartId").value(cart.getId()))
-            .andExpect(jsonPath("$[0].productId").value(espresso.getId()))
-            .andExpect(jsonPath("$[0].productName").value(espresso.getName()))
-            .andExpect(jsonPath("$[0].productPicture").value(espresso.getPicture()))
-            .andExpect(jsonPath("$[0].cartListOptionDtos[0].optionId").value(cartListOptionDtos.get(0).getOptionId()))
-            .andExpect(jsonPath("$[0].productCount").value(3));
+            .andExpect(jsonPath("$.cartListDtoList[0].cartId").value(cart.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productId").value(espresso.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productName").value(espresso.getName()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productPicture").value(espresso.getPicture()))
+            .andExpect(jsonPath("$.cartListDtoList[0].cartListOptionDtos[0].optionId").value(cartListOptionDtos.get(0).getOptionId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productCount").value(3));
     }
 }
