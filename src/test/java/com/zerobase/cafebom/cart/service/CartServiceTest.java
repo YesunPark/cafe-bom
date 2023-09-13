@@ -13,6 +13,7 @@ import com.zerobase.cafebom.cart.dto.CartListDto;
 import com.zerobase.cafebom.cartoption.domain.CartOption;
 import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.product.domain.Product;
@@ -20,6 +21,7 @@ import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,9 @@ class CartServiceTest {
 
     @Mock
     private TokenProvider tokenProvider;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @Mock
     private CartRepository cartRepository;
@@ -50,7 +55,7 @@ class CartServiceTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.04
+    // wooyoung-23.09.14
     @Test
     @DisplayName("장바구니 목록 조회 성공")
     void successFindCartList() {
@@ -62,6 +67,8 @@ class CartServiceTest {
             .email("abcde@fghij.com")
             .role(ROLE_USER)
             .build();
+
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
 
         ProductCategory coffee = ProductCategory.builder()
             .name("커피")
@@ -77,6 +84,7 @@ class CartServiceTest {
             .build();
 
         Cart cart1 = Cart.builder()
+            .id(1L)
             .member(member)
             .product(espresso)
             .productCount(1)
@@ -84,6 +92,7 @@ class CartServiceTest {
             .build();
 
         Cart cart2 = Cart.builder()
+            .id(2L)
             .member(member)
             .product(espresso)
             .productCount(2)
@@ -91,6 +100,7 @@ class CartServiceTest {
             .build();
 
         Cart cart3 = Cart.builder()
+            .id(3L)
             .member(member)
             .product(espresso)
             .productCount(3)
@@ -160,10 +170,11 @@ class CartServiceTest {
 
         // then
         assertThat(cartListDtos.size()).isEqualTo(3);
+        assertThat(cartListDtos.get(0).getCartId()).isEqualTo(cart1.getId());
         assertThat(cartListDtos.get(0).getProductId()).isEqualTo(espresso.getId());
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
-        assertThat(cartListDtos.get(0).getProductOptions().get(0)).isEqualTo(iceAmountOption1);
+        assertThat(cartListDtos.get(0).getCartListOptionDtos().get(0).getOptionId()).isEqualTo(iceAmountOption1.getId());
         assertThat(cartListDtos.get(0).getProductCount()).isEqualTo(cart1.getProductCount());
     }
 
