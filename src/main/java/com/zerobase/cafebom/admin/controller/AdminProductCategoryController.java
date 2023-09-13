@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Tag(name = "admin-product-category-controller", description = "관리자 상품 카테고리 CRUD API")
@@ -28,7 +29,7 @@ public class AdminProductCategoryController {
     @PostMapping
     public ResponseEntity<Void> productCategoryAdd(@RequestBody AdminProductCategoryForm.Request form) {
         adminProductCategoryService.addProductCategory(AdminProductCategoryDto.Request.from(form));
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @ApiOperation(value = "상품 카테고리 수정", notes = "관리자가 상품 카테고리의 이름을 수정합니다.")
