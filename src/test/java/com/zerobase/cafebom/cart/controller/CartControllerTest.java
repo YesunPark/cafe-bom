@@ -4,6 +4,7 @@ package com.zerobase.cafebom.cart.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
 import com.zerobase.cafebom.cart.service.CartService;
+import com.zerobase.cafebom.cart.service.dto.CartProductDto;
 import com.zerobase.cafebom.security.TokenProvider;
 import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.Collections;
@@ -64,6 +65,34 @@ class CartControllerTest {
     @BeforeEach
     public void setUp() {
         objectMapper = new ObjectMapper();
+    }
+
+    //youngseon-23.09.11
+    @Test
+    @DisplayName("상품 넣기 성공")
+    public void successCartSave() throws Exception {
+        // given
+        CartAddForm cartAddForm = CartAddForm.builder()
+            .optionIdList(Collections.singletonList(1))
+            .count(5)
+            .productId(1)
+            .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
+            .build();
+
+        Mockito.when(cartService.saveCart(Mockito.anyString(), Mockito.any()))
+            .thenReturn(Collections.emptyList());
+
+        // when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+            .post("/auth/cart/save")
+            .header("Authorization", token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cartAddForm))
+        );
+
+        // then
+        result.andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     //youngseon-23.09.11
@@ -135,7 +164,7 @@ class CartControllerTest {
             .build();
 
         Mockito.when(cartService.findCart(Mockito.anyString(), Mockito.anyLong()))
-            .thenReturn(Collections.emptyList());
+            .thenReturn(CartProductDto.builder().build());
 
         // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders

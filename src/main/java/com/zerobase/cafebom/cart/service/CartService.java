@@ -24,8 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
 import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 
@@ -36,11 +38,6 @@ import com.zerobase.cafebom.cartoption.domain.CartOption;
 import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.product.domain.Product;
-import com.zerobase.cafebom.security.TokenProvider;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -225,16 +222,14 @@ public class CartService {
     }
 
     // 장바구니 단건 조회-youngseon-23.09.10
-    public List<CartProductDto> findCart(String token, Long cartId) {
+    public CartProductDto findCart(String token, Long cartId) {
         Long userId = tokenProvider.getId(token);
 
         Member member = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         Cart otherCart = cartRepository.findById(cartId)
-            .orElseThrow(() -> new CustomException(CART_IS_EMPTY));
-
-        List<CartProductDto> cartProductDtoList = new ArrayList<>();
+            .orElseThrow(() -> new CustomException(CART_DOES_NOT_EXIST));
 
         CartProductDto cartProductDto = CartProductDto.from(otherCart);
 
@@ -250,7 +245,106 @@ public class CartService {
             cartProductDto.addOptionId(optionId);
         }
 
-        cartProductDtoList.add(cartProductDto);
+        return cartProductDto;
+    }
+
+
+    // 장바구니에 상품 넣기-youngseon-23.09.12
+    public List<CartProductDto> saveCart(String token, CartAddForm cartAddForm) {
+
+        Long userId = tokenProvider.getId(token);
+
+        Member member = memberRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
+
+        Product product = productRepository.findById(cartAddForm.getProductId())
+            .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
+
+        List<Cart> cartList = cartRepository.findByMemberAndProduct(member, product);
+
+
+        if (cartList.size() == 0){
+
+            Cart cart = Cart.createCart(member, product, cartAddForm.getCount(),
+                cartAddForm.getCartOrderStatus());
+
+            cartRepository.save(cart);
+
+            for (Integer optionId : cartAddForm.getOptionIdList()) {
+
+                Option option = optionRepository.findById(optionId)
+                    .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+
+                CartOption cartOption = CartOption.createCartOption(cart, option);
+
+                cartOptionRepository.save(cartOption);
+
+            }
+
+        }else if (cartList.size() > 0) {
+
+            Boolean result = false;
+
+            Integer count = 0;
+
+            for (Cart otherCart : cartList) {
+
+                List<Integer> optionIdList = from(otherCart);
+
+                Collections.sort(optionIdList);
+
+                List<Integer> optionIdCopyList = cartAddForm.getOptionIdList().stream()
+                    .sorted()
+                    .collect(Collectors.toList());
+
+                if (optionIdList.size() == cartAddForm.getOptionIdList().size()) {
+                    result = compare(optionIdList, optionIdCopyList);
+
+                    if (result) {
+                        otherCart.addCount(cartAddForm.getCount());
+                        cartRepository.save(otherCart);
+                        count++;
+                    }
+                }
+            }
+
+            if (count == 0) {
+                Cart cart = Cart.createCart(member, product, cartAddForm.getCount(),
+                    cartAddForm.getCartOrderStatus());
+
+                cartRepository.save(cart);
+
+                for (Integer optionId : cartAddForm.getOptionIdList()) {
+
+                    Option option = optionRepository.findById(optionId)
+                        .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+
+                    CartOption cartOption = CartOption.createCartOption(cart, option);
+
+                    cartOptionRepository.save(cartOption);
+
+                }
+            }
+
+        }
+
+        List<Cart> carts = cartRepository.findByMember(member);
+
+        List<CartProductDto> cartProductDtoList = new ArrayList<>();
+
+        for (Cart otherCart : carts) {
+
+            CartProductDto cartProductDto = CartProductDto.from(otherCart);
+
+            List<CartOption> cartOptionList = cartOptionRepository.findByCart(otherCart);
+
+            for (CartOption cartOption : cartOptionList) {
+                cartProductDto.addOptionId(cartOption.getOption().getId());
+            }
+
+            cartProductDtoList.add(cartProductDto);
+        }
+
 
         return cartProductDtoList;
     }

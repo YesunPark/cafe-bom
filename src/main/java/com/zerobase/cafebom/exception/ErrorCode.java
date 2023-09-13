@@ -38,6 +38,7 @@ public enum ErrorCode {
 
     // Cart
     CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", BAD_REQUEST),
+    CART_DOES_NOT_EXIST("장바구니가 존재하지 않습니다.",BAD_REQUEST),
 
     // ProductCategory
     PRODUCTCATEGORY_NOT_EXISTS("존재하지 않는 상품 카테고리입니다.", BAD_REQUEST),
