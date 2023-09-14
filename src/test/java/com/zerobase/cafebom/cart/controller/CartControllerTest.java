@@ -278,6 +278,4 @@ class CartControllerTest {
             .andExpect(jsonPath("$[0].productOptions[0].id").value(optionList.get(0).getId()))
             .andExpect(jsonPath("$[0].productCount").value(3));
     }
-
-
 }
