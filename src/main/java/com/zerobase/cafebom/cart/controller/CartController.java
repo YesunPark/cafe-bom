@@ -79,16 +79,6 @@ public class CartController {
         return ResponseEntity.ok(cartService.removeCart(token, cartAddForm));
     }
 
-    // youngseon-23.09.11
-    @ApiOperation(value = "장바구니 조회" , notes = "사용자가 장바구니를 조회할 수 있습니다.")
-    @GetMapping("/{cartId}")
-    public ResponseEntity<CartProductDto> cartIdList(
-        @PathVariable Long cartId,
-        @RequestHeader(name = "Authorization") String token
-    ) {
-        return ResponseEntity.ok(cartService.findCart(token,cartId));
-    }
-
     // youngseon-23.09.12
     @ApiOperation(value = "장바구니 상품 넣기" , notes = "사용자가 장바구니에 상품을 넣을 수 있다.")
     @PostMapping("/save")
