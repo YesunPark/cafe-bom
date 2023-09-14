@@ -46,7 +46,7 @@ public enum ErrorCode {
 
     // Option
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", BAD_REQUEST),
-    OPTION_CATEGORY_NOT_EXISTS("옵션 카테고리를 찾을 수 없습니다.", BAD_REQUEST),
+    OPTION_CATEGORY_NOT_EXISTS("존재하지 않는 옵션 카테고리입니다.", BAD_REQUEST),
 
     // Review
     REVIEW_ALREADY_WRITTEN("이미 리뷰가 작성된 주문 상품입니다.", CONFLICT),
