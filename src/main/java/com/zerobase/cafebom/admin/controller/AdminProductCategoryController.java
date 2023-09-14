@@ -20,11 +20,11 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/category")
-//@PreAuthorize(("hasRole('ADMIN')"))
 public class AdminProductCategoryController {
 
     private final AdminProductCategoryService adminProductCategoryService;
 
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 등록", notes = "관리자가 상품 카테고리를 등록합니다.")
     @PostMapping
     public ResponseEntity<Void> productCategoryAdd(@RequestBody AdminProductCategoryForm.Request form) {
@@ -32,6 +32,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(CREATED).build();
     }
 
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 수정", notes = "관리자가 상품 카테고리의 이름을 수정합니다.")
     @PutMapping("/{productCategoryId}")
     public ResponseEntity<Void> productCategoryModify(
@@ -42,6 +43,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 삭제", notes = "관리자가 상품 카테고리를 삭제합니다.")
     @DeleteMapping("/{productCategoryId}")
     public ResponseEntity<Void> productCategoryRemove(@PathVariable Integer productCategoryId) {
@@ -49,6 +51,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 전체조회", notes = "관리자가 상품 카테고리를 전체조회합니다.")
     @GetMapping
     public ResponseEntity<List<AdminProductCategoryForm.Response>> productCategoryList1() {
@@ -59,6 +62,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.ok().body(productCategoryFormList);
     }
 
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리Id별 조회", notes = "관리자가 상품 카테고리Id별 전체조회합니다.")
     @GetMapping("/{productCategoryId}")
     public ResponseEntity<AdminProductCategoryForm.Response> productCategoryById(@PathVariable Integer productCategoryId) {

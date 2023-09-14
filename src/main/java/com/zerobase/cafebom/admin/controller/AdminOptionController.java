@@ -23,7 +23,7 @@ public class AdminOptionController {
 
     private final OptionService optionService;
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 등록", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
     public ResponseEntity<Void> optionAdd(@RequestBody OptionForm.Request optionFormRequest) {
@@ -31,7 +31,7 @@ public class AdminOptionController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 수정", notes = "관리자가 옵션의 정보를 수정합니다.")
     @PutMapping("/{optionId}")
     public ResponseEntity<Void> optionModify(
@@ -41,7 +41,7 @@ public class AdminOptionController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 삭제", notes = "관리자가 옵션을 삭제합니다.")
     @DeleteMapping("/{optionId}")
     public ResponseEntity<Void> optionRemove(@PathVariable Integer optionId) {
@@ -49,7 +49,7 @@ public class AdminOptionController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 전체 조회", notes = "관리자가 전체 옵션 목록을 조회합니다.")
     @GetMapping("/list")
     public ResponseEntity<List<OptionForm.Response>> optionList() {
@@ -57,7 +57,7 @@ public class AdminOptionController {
         return ResponseEntity.ok().body(optionList);
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 단건 조회", notes = "관리자가 하나의 옵션에 대한 정보를 조회합니다.")
     @GetMapping("/{optionId}")
     public ResponseEntity<OptionForm.Response> optionListById(@PathVariable Integer optionId) {

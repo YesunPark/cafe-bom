@@ -28,7 +28,7 @@ public class AdminProductController {
 
     private final AdminProductService adminProductService;
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 전체 목록 조회", notes = "관리자가 전체 상품 목록을 조회합니다.")
     @GetMapping(value = "/list", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AdminProductForm.Response>> productList() {
@@ -36,7 +36,7 @@ public class AdminProductController {
         return ResponseEntity.ok().body(productList);
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 단건 조회", notes = "관리자가 하나의 상품에 대한 정보를 조회합니다.")
     @GetMapping("/{productId}")
     public ResponseEntity<AdminProductForm.Response> productIdGet(@PathVariable Integer productId) {
@@ -44,7 +44,7 @@ public class AdminProductController {
         return ResponseEntity.ok().body(response);
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 등록", notes = "관리자가 상품을 등록합니다.")
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> productAdd(
@@ -54,7 +54,7 @@ public class AdminProductController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 수정", notes = "관리자가 상품 정보를 수정합니다.")
     @PutMapping(value = "/{productId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> productModify(
@@ -65,7 +65,7 @@ public class AdminProductController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 삭제", notes = "관리자가 상품을 삭제합니다.")
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> productRemove(@PathVariable Integer productId) throws IOException {
@@ -73,7 +73,7 @@ public class AdminProductController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.08.29
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 품절여부 수정", notes = "관리자가 상품의 품절여부를 수정합니다.")
     @PatchMapping
     public ResponseEntity<Void> productSoldOutModify(
