@@ -44,4 +44,22 @@ public class Cart extends BaseTimeEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private CartOrderStatus status;
+
+    public void setProductCount(Integer count) {
+        this.productCount = count;
+    }
+
+    public void addProductCount(Integer count) {
+        this.productCount += count;
+    }
+
+    public static Cart createCart(Member member, Product product, Integer productCount,
+        CartOrderStatus status) {
+        return Cart.builder()
+            .member(member)
+            .product(product)
+            .productCount(productCount)
+            .status(status)
+            .build();
+    }
 }
