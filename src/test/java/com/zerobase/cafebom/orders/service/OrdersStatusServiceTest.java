@@ -52,10 +52,10 @@ class OrdersStatusServiceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // minsu-23.09.12
+    // minsu-23.09.15
     @Test
-    @DisplayName("주문 상태 변경 실패 - 다음 상태 이외의 주문으로는 변경 불가")
-    void failUpdateOrdersStatusNotNone() {
+    @DisplayName("주문 상태 변경 실패 - 주문 상태는 전으로 돌아갈 수 없음")
+    void failUpdateOrdersStatusOnlyNext() {
         // given
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))

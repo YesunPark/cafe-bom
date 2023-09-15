@@ -12,8 +12,8 @@ public class BestProductForm {
 
     private List<BestProductResponse> bestProducts;
 
-    @Builder
     @Getter
+    @Builder
     public static class BestProductResponse {
 
         private Integer productId;
