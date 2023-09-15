@@ -95,6 +95,8 @@
    </td>
    <td align="center" class="지연">
         <a href="https://github.com/rkoji"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
+        <br/>   
+        <a href="mailto:wl0wn1212@gmail.com"><img alt="gmail-link" height="25" src="https://img.shields.io/badge/Email-d14836?style=flat-square&logo=Gmail&&logoColor=white"/></a>
    </td>
   </tr>
   <tr>
@@ -102,16 +104,16 @@
         -
    </td>
     <td align="center" class="민수">
-        <a href="https://velog.io/@lynn080">프로젝트 회고</a>
+        -
    </td>
     <td align="center" class="영선">
-        <a href="https://velog.io/@lynn080">프로젝트 회고</a>
+        -
    </td>
     <td align="center" class="예선">
         <a href="">프로젝트 회고</a>
    </td>
     <td align="center" class="지연">
-        <a href="https://velog.io/@lynn080">프로젝트 회고</a>
+        <a href="https://momentous-tulip-597.notion.site/0cfa442944d54907813b4125c7ed66e1?pvs=4">프로젝트 회고</a>
    </td>
   </tr>
 
@@ -152,7 +154,7 @@
 
 - **Docker**
 - **Amazon EC2**
-- **Amazon S3** - 이미지 파일 저장
+- **Amazon S3** - 상품 및 리뷰 이미지 저장
 
 ### Collaboration
 
