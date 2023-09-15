@@ -274,14 +274,6 @@
 
 ---
 
-# 형상 관리
-
-| Notion                                                                                                  | Jira                                                                                                 |
-|:--------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------|
-| ![Notion1](https://github.com/YesunPark/cafe-bom/assets/108933466/daab4e2f-1859-4b6f-9d91-d4cdeabe9687) | ![Jira](https://github.com/YesunPark/cafe-bom/assets/108933466/63d9e02e-49f4-458a-992f-46f490d1da30) | 
-
----
-
 # api 명세
 
 | Domain       | URL                                                                        | Http Method                 | description       | 접근 권한 |
@@ -309,6 +301,34 @@
 |              | /auth/cart/save                                                            | `POST`                      | 장바구니 상품 추가        | USER  |
 |              | /auth/pay                                                                  | `PUT`                       | 장바구니 전체 결제        | USER  |
 | **Review**   | /auth/review                                                               | `POST`                      | 리뷰 등록             | USER  |
+
+<br/>
+
+---
+
+
+# 형상 관리
+
+<table align="center"> <!-- 팀원 표 -->
+  <tr>
+   <th>
+    Notion
+   </th>
+   <th>
+    Jira
+   </th>
+   </tr>
+  <tr>
+   <td align="left" width="500px" class="Notion">
+      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/daab4e2f-1859-4b6f-9d91-d4cdeabe9687"/>
+      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/cd231c74-2f02-4450-938d-5e413fa335cc"/>
+   </td>
+   <td align="left" width="500px" class="Jira">
+      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/63d9e02e-49f4-458a-992f-46f490d1da30"/>
+  </tr>
+</table>
+
+<br/>
 
 ---
 
