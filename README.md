@@ -142,8 +142,8 @@
 
 - **Java 11** 
 - **SpringBoot 3.0**
-- **Spring Security**
 - **Spring Data JPA**
+- **Spring Security**
 - **JWT(json web tokens)**
 - **JUnit** 
 - **Swagger**
