@@ -321,7 +321,7 @@
    </tr>
   <tr>
    <td align="left" width="500px" class="Notion">
-      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/daab4e2f-1859-4b6f-9d91-d4cdeabe9687"/>
+      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/f7e57203-ceeb-4c2b-b2a2-306c68c51b63"/>
       <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/cd231c74-2f02-4450-938d-5e413fa335cc"/>
    </td>
    <td align="left" width="500px" class="Jira">
