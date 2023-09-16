@@ -83,10 +83,6 @@
    </td>
    <td align="center" class="영선">
         <a href="https://github.com/thsu1084"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
-        <br/>
-        <a href="https://velog.io/@lynn080"><img alt="vlog-link" height="25" src="https://img.shields.io/badge/Tech blog-20C997?style=flat-square&logo=Velog&&logoColor=white"/></a>
-        <br/>   
-        <a href="mailto:lynn08082@gmail.com"><img alt="gmail-link" height="25" src="https://img.shields.io/badge/Email-d14836?style=flat-square&logo=Gmail&&logoColor=white"/></a>
    </td>
    <td align="center" class="예선">
         <a href="https://github.com/YesunPark"><img alt="github-link" height="25" src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/></a>
