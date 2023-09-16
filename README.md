@@ -24,7 +24,7 @@
 > 백엔드 5명
 
 > ### 배포 링크 (Swagger API Test 가능) 👈 클릭!
-> 링크 달아야 함!
+> ❌❌❌ 링크 달아야 함!
 
 ## 팀원
 
@@ -109,7 +109,7 @@
         -
    </td>
     <td align="center" class="예선">
-        <a href="">프로젝트 회고</a>
+        <a href="https://velog.io/@lynn080/BackEnd-%ED%8C%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0">프로젝트 회고</a>
    </td>
     <td align="center" class="지연">
         <a href="https://momentous-tulip-597.notion.site/0cfa442944d54907813b4125c7ed66e1?pvs=4">프로젝트 회고</a>
