@@ -309,15 +309,23 @@
 <table align="center"> <!-- 팀원 표 -->
   <tr>
    <th>
-    Notion
+      [ Notion ]
+      <br/>
+      컨벤션, api 명세, 팀 규칙, 미팅 로그 등
+      <br/>
+      프로젝트 진행에 필요한 전반적인 사항 기록
    </th>
    <th>
-    Jira
+      [ Jira ]
+      <br/>
+      개발을 진행하며 Sprint 단위로 계획한 사항의
+      <br/>
+      담당자, 마감일, 진행 상황, 세부 사항 기록
    </th>
    </tr>
   <tr>
    <td align="left" width="500px" class="Notion">
-      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/f7e57203-ceeb-4c2b-b2a2-306c68c51b63"/>
+      <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/349bfa12-b79b-47f0-88fa-d5b5e87b9133"/>
       <img src="https://github.com/YesunPark/cafe-bom/assets/108933466/cd231c74-2f02-4450-938d-5e413fa335cc"/>
    </td>
    <td align="left" width="500px" class="Jira">
@@ -334,25 +342,25 @@
 1. 상호 존중과 화합
     - 질문할 때나 리뷰할 때나 미팅할 때나 늘 상호존중! 즐거운 협업이 될 수 있도록 노력합니다.
 2. 바쁜 하루를 마무리하는 미팅
-    - ❤️‍ Daily Scrum 🔥
+    - ❤️‍ **Daily Scrum** 🔥
         - 주중 저녁, 매일 서로 어떤 하루를 보냈는지를 알기 위해 데일리 스크럼을 진행합니다.
         - 무엇을 하고 있었는지, 무엇을 새로 시작했는지, 앞으로 무엇을 할 것인지, 그리고 그 날의 Trouble Shooting과 PR 확인 여부 등을 공유합니다.
-        - 논의 사항이 있다면 Notion에 미리 기록해 Daily Scrum에서 논의합니다.
+        - 논의 사항이 있다면 **Notion에 미리 기록**해 Daily Scrum에서 논의합니다.
 3. 한 주를 마무리하는 미팅
-    - ✈️ Sprint Plan ✈️
+    - ✈️ **Sprint Plan** ✈️
         - 일주일을 시작하는 월요일에 한 주 동안 어떤 일을 할지 계획을 세웁니다.
-    - 🏆 Sprint Result 🏆
+    - 🏆 **Sprint Result** 🏆
         - 지난 Sprint Plan에서 세웠던 계획을 얼마나 이행했는지에 대해 돌아봅니다.
-    - 📬 Sprint Review 📬
+    - 📬 **Sprint Review** 📬
         - 전체적으로 어떠한 한 주를 보냈는지에 대해 업무적으로 좋았던 부분/아쉬웠던 부분, 개인적으로 좋았던 부분/아쉬웠던 부분에 대해 작성하고 발표합니다.
-4. 즐거운 개발 시간, 🕜 Core Time 🕜
+4. 즐거운 개발 시간, 🕜 **Core Time** 🕜
     - 협업 효율을 올리기 위해 주중에 다 같이 개발하는 시간인 코어 타임을 가집니다.
-    - 주중 오후 2 ~ 9시는 필수, 주말은 자유입니다.
-5. 만남의 광장 GatherTown
+    - 주중 오후 **2 ~ 9시**는 필수, 주말은 자유입니다.
+5. 만남의 광장 **GatherTown**
     - GatherTown에서 회의를 진행하고, 대화할 일이 있다면 모여서 토의합니다.
 6. 내가 아는 건 모두가!
     - Notion을 통해 프로젝트 전반의 결정 사항과 회의 내용, 회의 결과, 컨벤션, ERD 등을 기록합니다.
     - Slack을 통해 전달할 사항이나 개발 외적인 논의사항 그리고 Jira, GitHub 과의 프로젝트 PR 연동을 통해 즉각적인 피드백이 이루어질 수 있도록 합니다.
     - Jira를 통해 서로의 작업 계획, 진척도, 현재 어떠한 작업을 하고 있는지에 대해 파악할 수 있도록 합니다.
 7. 모두의 Pull Request
-    - 3인 이상의 팀원들에게 Approve를 받아야 PR을 Merge할 수 있습니다.
+    - **3인 이상의 팀원들**에게 Approve를 받아야 PR을 Merge할 수 있습니다.
