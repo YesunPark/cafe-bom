@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.auth.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import lombok.Getter;
 
 public class SigninForm {
 
+    @ApiModel(value = "SigninFormRequest")
     @Getter
     public static class Request {
 
@@ -21,6 +23,7 @@ public class SigninForm {
         private String password;
     }
 
+    @ApiModel(value = "SigninFormResponse")
     @Getter
     @Builder
     public static class Response {
