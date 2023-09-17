@@ -160,7 +160,7 @@ class ProductControllerTest {
             .andExpect(status().isBadRequest());
     }
 
-    // minsu-23.09.06
+    // minsu-23.09.12
     @Test
     @DisplayName("베스트 상품 목록 조회 성공")
     void successBestProductList() throws Exception {
@@ -186,16 +186,16 @@ class ProductControllerTest {
         // when
         mockMvc.perform(get("/product/best-list"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].productId").value(1))
-            .andExpect(jsonPath("$[0].name").value("베스트 상품 1"))
-            .andExpect(jsonPath("$[0].price").value(1000))
-            .andExpect(jsonPath("$[0].soldOutStatus").value("IN_STOCK"))
-            .andExpect(jsonPath("$[0].picture").value("picture1"))
-            .andExpect(jsonPath("$[1].productId").value(2))
-            .andExpect(jsonPath("$[1].name").value("베스트 상품 2"))
-            .andExpect(jsonPath("$[1].price").value(1500))
-            .andExpect(jsonPath("$[1].soldOutStatus").value("IN_STOCK"))
-            .andExpect(jsonPath("$[1].picture").value("picture2"))
+            .andExpect(jsonPath("$.bestProducts[0].productId").value(1))
+            .andExpect(jsonPath("$.bestProducts[0].name").value("베스트 상품 1"))
+            .andExpect(jsonPath("$.bestProducts[0].price").value(1000))
+            .andExpect(jsonPath("$.bestProducts[0].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$.bestProducts[0].picture").value("picture1"))
+            .andExpect(jsonPath("$.bestProducts[1].productId").value(2))
+            .andExpect(jsonPath("$.bestProducts[1].name").value("베스트 상품 2"))
+            .andExpect(jsonPath("$.bestProducts[1].price").value(1500))
+            .andExpect(jsonPath("$.bestProducts[1].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$.bestProducts[1].picture").value("picture2"))
             .andDo(print());
     }
 

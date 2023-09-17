@@ -1,25 +1,45 @@
 package com.zerobase.cafebom.cart.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
+import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.type.CartOrderStatus.WAITING_ACCEPTANCE;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+
+import com.zerobase.cafebom.cart.controller.form.CartAddForm;
 import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.domain.CartRepository;
 import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cart.service.dto.CartProductDto;
 import com.zerobase.cafebom.cartoption.domain.CartOption;
 import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
+import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +47,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CartServiceTest {
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    @Mock
+    private OptionRepository optionRepository;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -165,6 +197,172 @@ class CartServiceTest {
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
         assertThat(cartListDtos.get(0).getProductOptions().get(0)).isEqualTo(iceAmountOption1);
         assertThat(cartListDtos.get(0).getProductCount()).isEqualTo(cart1.getProductCount());
+    }
+
+    Member member = Member.builder()
+        .id(1L)
+        .build();
+    Product product = Product.builder()
+        .id(1)
+        .build();
+    Cart cart = Cart.builder()
+        .id(1L)
+        .member(member)
+        .product(product)
+        .productCount(2)
+        .build();
+
+    CartAddForm cartAddForm = CartAddForm.builder()
+        .optionIdList(List.of())
+        .count(10)
+        .productId(product.getId())
+        .cartOrderStatus(BEFORE_ORDER)
+        .build();
+
+    @BeforeEach
+    public void setUp() {
+        // given
+        given(tokenProvider.getId(TOKEN)).willReturn(member.getId());
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 수정 실패 - 존재하지 않는 회원")
+    public void failModifyCartMemberNotExists() {
+        // given
+        given(memberRepository.findById(member.getId())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> cartService.modifyCart(TOKEN, cartAddForm))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 수정 실패 - 상품이 존재하지 않음")
+    public void failModifyCartProductNotExists() {
+        // given
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> cartService.modifyCart(TOKEN, cartAddForm))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.PRODUCT_NOT_EXISTS.getMessage());
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 수정 성공")
+    public void successModifyCart() {
+        // given
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(
+            Optional.of(product));
+        given(cartRepository.save(any(Cart.class))).willReturn(cart);
+        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(List.of(cart));
+
+        // when
+        List<CartProductDto> result = cartService.modifyCart(TOKEN, cartAddForm);
+
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 삭제 성공")
+    public void successRemoveCart() {
+        // given
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(
+            Optional.of(product));
+        given(cartRepository.save(any(Cart.class))).willReturn(cart);
+        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(List.of(cart));
+
+        // when
+        List<CartProductDto> result = cartService.removeCart(TOKEN, cartAddForm);
+
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 삭제 실패 - 멤버가 존재하지 않음")
+    public void failRemoveCartMemberNotExists() {
+        // given
+        given(memberRepository.findById(member.getId())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> cartService.removeCart(TOKEN, cartAddForm))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+        verify(cartRepository, times(0)).deleteById(cart.getId());
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 삭제 실패 - 상품이 존재하지 않음")
+    public void failRemoveCartProductNotExists() {
+        // given
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> cartService.removeCart(TOKEN, cartAddForm))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.PRODUCT_NOT_EXISTS.getMessage());
+        verify(cartRepository, times(0)).deleteById(cart.getId());
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카트 조회 성공")
+    public void successFindCart() {
+        //given
+        given(tokenProvider.getId(TOKEN)).willReturn(1L);
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+        given(cartRepository.findById(cart.getId())).willReturn(Optional.of(cart));
+
+        // when
+        CartProductDto result = cartService.findCart(TOKEN, cart.getId());
+
+        //then
+        assertThat(result).isNotNull();
+    }
+
+    // youngseon-23.09.11
+    @Test
+    @DisplayName("카드 조회 실패 - 장바구니가 비어있음")
+    public void failFindCartEmptyCart() {
+        Long cartId = 1L;
+
+        //given
+        given(tokenProvider.getId(TOKEN)).willReturn(1L);
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+        given(cartRepository.findById(cartId)).willReturn(Optional.empty());
+
+        // when, then
+        assertThatThrownBy(() -> cartService.findCart(TOKEN, cartId))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(CART_DOES_NOT_EXIST.getMessage());
+    }
+
+    // youngseon-23.09.12
+    @Test
+    @DisplayName("장바구니에 새로운 상품 추가 성공")
+    public void successSaveCart() {
+        // given
+        given(tokenProvider.getId(TOKEN)).willReturn(member.getId());
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(Optional.of(product));
+        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(Collections.emptyList());
+
+        // when
+        List<CartProductDto> result = cartService.saveCart(TOKEN, cartAddForm);
+
+        // then
+        assertThat(result).isNotNull();
+
     }
 
 }

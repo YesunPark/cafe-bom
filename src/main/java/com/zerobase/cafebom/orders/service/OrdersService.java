@@ -7,9 +7,9 @@ import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_CORRECT;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
 
 import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.domain.CartRepository;
@@ -58,8 +58,8 @@ public class OrdersService {
 
     private final TokenProvider tokenProvider;
 
-    // 다음 상태 이외엔 주문 상태 변경 불가-minsu-23.09.01
-    private OrdersCookingStatus getPreviousCookingStatus(OrdersCookingStatus currentStatus) {
+    // 다음 상태 이외엔 주문 상태 변경 불가-minsu-23.09.12
+    private OrdersCookingStatus modifyNextCookingStatus(OrdersCookingStatus currentStatus) {
         switch (currentStatus) {
             case NONE:
                 return OrdersCookingStatus.COOKING;
@@ -72,7 +72,7 @@ public class OrdersService {
         }
     }
 
-    // 주문 상태 변경-minsu-23.08.18
+    // 주문 상태 변경-minsu-23.09.12
     @Transactional
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
@@ -80,10 +80,10 @@ public class OrdersService {
 
         OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
         OrdersCookingStatus currentStatus = orders.getCookingStatus();
-        OrdersCookingStatus previousStatus = getPreviousCookingStatus(currentStatus);
+        OrdersCookingStatus nextStatus = modifyNextCookingStatus(currentStatus);
 
-        if (newStatus != previousStatus) {
-            throw new CustomException(ORDERS_NOT_CORRECT);
+        if (newStatus != nextStatus) {
+            throw new CustomException(ORDERS_STATUS_ONLY_NEXT);
         }
 
         orders.modifyReceivedTime(newStatus);
@@ -91,8 +91,8 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-    // 주문 수락 시간 저장-minsu-23.08.20
-    public LocalDateTime getReceivedTime(Long ordersId) {
+    // 주문 수락 시간 저장-minsu-23.09.12
+    public LocalDateTime saveReceivedTime(Long ordersId) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 

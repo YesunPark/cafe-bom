@@ -1,7 +1,6 @@
 package com.zerobase.cafebom.type;
 
 public enum OrdersCookingTime {
-
     NONE("없음"),
     _5_TO_10_MINUTES("5분 ~ 10분"),
     _10_TO_15_MINUTES("10분 ~ 15분"),
