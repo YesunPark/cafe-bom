@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.review.controller.form;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Min;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Range;
 
 public class ReviewAddForm {
 
+    @ApiModel(value = "ReviewAddFormRequest")
     @Builder
     @Getter
     public static class Request {
