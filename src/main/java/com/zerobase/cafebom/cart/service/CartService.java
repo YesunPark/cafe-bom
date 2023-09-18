@@ -45,7 +45,7 @@ public class CartService {
 
     private final OptionRepository optionRepository;
 
-    // 장바구니 목록 조회-wooyoung-23.09.03
+    // 장바구니 목록 조회-wooyoung-23.09.18
     public List<CartListDto> findCartList(String token) {
         Long memberId = tokenProvider.getId(token);
 

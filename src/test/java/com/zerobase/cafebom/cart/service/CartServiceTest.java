@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.cart.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
@@ -70,7 +71,7 @@ class CartServiceTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.04
+    // wooyoung-23.09.18
     @Test
     @DisplayName("멤버 id로 장바구니 목록 조회 성공")
     void successFindCartList() {
@@ -187,6 +188,19 @@ class CartServiceTest {
         .cartOrderStatus(BEFORE_ORDER)
         .build();
 
+    // wooyoung-23.09.18
+    @Test
+    @DisplayName("장바구니 목록 조회 실패 - 존재하지 않는 회원")
+    void failFindCartListMemberNotExists() {
+        // given
+        given(tokenProvider.getId(TOKEN)).willReturn(2L);
+
+        // when
+        assertThatThrownBy(() -> cartService.findCartList(TOKEN))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
+    }
+
     @BeforeEach
     public void setUp() {
         // given
@@ -204,7 +218,7 @@ class CartServiceTest {
         // when, then
         assertThatThrownBy(() -> cartService.modifyCart(TOKEN, cartAddForm))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
     }
 
     // youngseon-23.09.11
@@ -264,7 +278,7 @@ class CartServiceTest {
         // when, then
         assertThatThrownBy(() -> cartService.removeCart(TOKEN, cartAddForm))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(ErrorCode.MEMBER_NOT_EXISTS.getMessage());
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
         verify(cartRepository, times(0)).deleteById(cart.getId());
     }
 
