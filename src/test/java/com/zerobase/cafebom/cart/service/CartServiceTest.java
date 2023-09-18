@@ -1,7 +1,5 @@
 package com.zerobase.cafebom.cart.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
-import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.type.CartOrderStatus.WAITING_ACCEPTANCE;
@@ -12,7 +10,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
@@ -33,7 +30,6 @@ import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +78,7 @@ class CartServiceTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.04
+    // wooyoung-23.09.18
     @Test
     @DisplayName("멤버 id로 장바구니 목록 조회 성공")
     void successFindCartList() {
@@ -111,21 +107,21 @@ class CartServiceTest {
         Cart cart1 = Cart.builder()
             .member(member)
             .product(espresso)
-            .productCount(1)
+            .quantity(1)
             .status(BEFORE_ORDER)
             .build();
 
         Cart cart2 = Cart.builder()
             .member(member)
             .product(espresso)
-            .productCount(2)
+            .quantity(2)
             .status(WAITING_ACCEPTANCE)
             .build();
 
         Cart cart3 = Cart.builder()
             .member(member)
             .product(espresso)
-            .productCount(3)
+            .quantity(3)
             .status(BEFORE_ORDER)
             .build();
 
@@ -196,7 +192,7 @@ class CartServiceTest {
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
         assertThat(cartListDtos.get(0).getProductOptions().get(0)).isEqualTo(iceAmountOption1);
-        assertThat(cartListDtos.get(0).getProductCount()).isEqualTo(cart1.getProductCount());
+        assertThat(cartListDtos.get(0).getQuantity()).isEqualTo(cart1.getQuantity());
     }
 
     Member member = Member.builder()
@@ -209,12 +205,12 @@ class CartServiceTest {
         .id(1L)
         .member(member)
         .product(product)
-        .productCount(2)
+        .quantity(2)
         .build();
 
     CartAddForm cartAddForm = CartAddForm.builder()
         .optionIdList(List.of())
-        .count(10)
+        .quantity(10)
         .productId(product.getId())
         .cartOrderStatus(BEFORE_ORDER)
         .build();

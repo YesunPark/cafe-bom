@@ -19,5 +19,5 @@ public class CartListDto {
 
     private List<Option> productOptions;
 
-    private Integer productCount;
+    private Integer quantity;
 }

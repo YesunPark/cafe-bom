@@ -21,7 +21,7 @@ public class CartListForm {
 
         private List<Option> productOptions;
 
-        private Integer productCount;
+        private Integer quantity;
 
         public static CartListForm.Response from(CartListDto cartListDto) {
             return CartListForm.Response.builder()
@@ -29,7 +29,7 @@ public class CartListForm {
                 .productName(cartListDto.getProductName())
                 .productPicture(cartListDto.getProductPicture())
                 .productOptions(cartListDto.getProductOptions())
-                .productCount(cartListDto.getProductCount())
+                .quantity(cartListDto.getQuantity())
                 .build();
         }
     }
