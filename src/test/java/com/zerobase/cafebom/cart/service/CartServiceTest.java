@@ -1,10 +1,7 @@
 package com.zerobase.cafebom.cart.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
-import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
-import static com.zerobase.cafebom.type.CartOrderStatus.WAITING_ACCEPTANCE;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -12,8 +9,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
 import com.zerobase.cafebom.cart.domain.Cart;
@@ -27,18 +22,14 @@ import com.zerobase.cafebom.exception.ErrorCode;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.option.domain.Option;
-import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
 import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,9 +50,6 @@ class CartServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
-
-    @Mock
-    private OptionRepository optionRepository;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -95,6 +83,8 @@ class CartServiceTest {
             .role(ROLE_USER)
             .build();
 
+        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+
         ProductCategory coffee = ProductCategory.builder()
             .name("커피")
             .build();
@@ -119,13 +109,6 @@ class CartServiceTest {
             .member(member)
             .product(espresso)
             .productCount(2)
-            .status(WAITING_ACCEPTANCE)
-            .build();
-
-        Cart cart3 = Cart.builder()
-            .member(member)
-            .product(espresso)
-            .productCount(3)
             .status(BEFORE_ORDER)
             .build();
 
@@ -133,9 +116,8 @@ class CartServiceTest {
 
         cartList.add(cart1);
         cartList.add(cart2);
-        cartList.add(cart3);
 
-        given(cartRepository.findAllByMemberAndStatus(1L, BEFORE_ORDER)).willReturn(cartList);
+        given(cartRepository.findAllByMemberAndStatus(member, BEFORE_ORDER)).willReturn(cartList);
 
         OptionCategory iceAmount = OptionCategory.builder()
             .id(1)
@@ -152,11 +134,6 @@ class CartServiceTest {
             .optionCategory(iceAmount)
             .build();
 
-        Option iceAmountOption3 = Option.builder()
-            .id(3)
-            .optionCategory(iceAmount)
-            .build();
-
         CartOption cartOption1 = CartOption.builder()
             .id(1L)
             .cart(cart1)
@@ -169,29 +146,20 @@ class CartServiceTest {
             .option(iceAmountOption2)
             .build();
 
-        CartOption cartOption3 = CartOption.builder()
-            .id(3L)
-            .cart(cart3)
-            .option(iceAmountOption3)
-            .build();
-
         List<CartOption> cartOptions1 = new ArrayList<>();
         List<CartOption> cartOptions2 = new ArrayList<>();
-        List<CartOption> cartOptions3 = new ArrayList<>();
 
         cartOptions1.add(cartOption1);
         cartOptions2.add(cartOption2);
-        cartOptions3.add(cartOption3);
 
         given(cartOptionRepository.findAllByCart(cart1)).willReturn(cartOptions1);
         given(cartOptionRepository.findAllByCart(cart2)).willReturn(cartOptions2);
-        given(cartOptionRepository.findAllByCart(cart3)).willReturn(cartOptions3);
 
         // when
         List<CartListDto> cartListDtos = cartService.findCartList(TOKEN);
 
         // then
-        assertThat(cartListDtos.size()).isEqualTo(3);
+        assertThat(cartListDtos.size()).isEqualTo(2);
         assertThat(cartListDtos.get(0).getProductId()).isEqualTo(espresso.getId());
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
