@@ -25,10 +25,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.headers()
+            .frameOptions().disable();
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(Customizer.withDefaults()) // CORS 설정 허용
-            .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
+            .csrf().disable()
+//            .csrf(AbstractHttpConfigurer::disable)
+//            .cors(Customizer.withDefaults()) // CORS 설정 허용
+//            .headers(c -> c.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
             .authorizeHttpRequests(auth -> auth
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
