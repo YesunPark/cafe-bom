@@ -48,11 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrdersService {
 
     private final MemberRepository memberRepository;
-
     private final CartRepository cartRepository;
     private final CartOptionRepository cartOptionRepository;
     private final OptionRepository optionRepository;
-
     private final OrdersRepository ordersRepository;
     private final OrdersProductRepository ordersProductRepository;
     private final OrdersProductOptionRepository ordersProductOptionRepository;
@@ -228,9 +226,5 @@ public class OrdersService {
                         .build())
             );
         });
-
-        // 장바구니 테이블에서 사용자의 모든 장바구니 정보 삭제
-        // cartRepository.deleteAllByMember(memberById);
-        // 데일리스크럼 때 논의해보고 처리할 예정
     }
 }
