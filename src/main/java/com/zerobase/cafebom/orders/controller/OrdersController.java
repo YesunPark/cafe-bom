@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.controller;
 
 import static com.zerobase.cafebom.exception.ErrorCode.START_DATE_AND_END_DATE_ARE_ESSENTIAL;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
@@ -20,7 +21,6 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -64,11 +64,11 @@ public class OrdersController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.18
     @ApiOperation(value = "주문 내역 저장",
         notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
     @PostMapping
-    public ResponseEntity<Void> ordersAdd(@RequestHeader(name = "Authorization") String token,
+    public ResponseEntity<Void> ordersAdd(@RequestHeader(AUTHORIZATION) String token,
         @Valid @RequestBody OrdersAddForm.Request ordersAddForm) {
         ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
         return ResponseEntity.status(CREATED).build();
