@@ -22,6 +22,7 @@ import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.orders.domain.Orders;
 import com.zerobase.cafebom.orders.domain.OrdersRepository;
 import com.zerobase.cafebom.orders.dto.OrdersAddDto;
+import com.zerobase.cafebom.orders.dto.OrdersAddForm;
 import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
 import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
 import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
@@ -187,9 +188,10 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-    // 주문 생성-yesun-23.08.31
+    // 주문 생성-yesun-23.09.18
     @Transactional
-    public void addOrders(String token, OrdersAddDto.Request ordersAddDto) {
+    public void addOrders(String token, OrdersAddForm.Request ordersAddForm) {
+        OrdersAddDto.Request ordersAddDto = OrdersAddDto.Request.from(ordersAddForm);
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));

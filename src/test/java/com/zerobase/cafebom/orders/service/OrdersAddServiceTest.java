@@ -2,6 +2,7 @@ package com.zerobase.cafebom.orders.service;
 
 import static com.zerobase.cafebom.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.type.Payment.KAKAO_PAY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -18,7 +19,7 @@ import com.zerobase.cafebom.option.domain.OptionRepository;
 import com.zerobase.cafebom.orders.domain.Orders;
 import com.zerobase.cafebom.orders.domain.OrdersRepository;
 import com.zerobase.cafebom.orders.dto.OrdersAddDto;
-import com.zerobase.cafebom.orders.dto.OrdersAddDto.Request;
+import com.zerobase.cafebom.orders.dto.OrdersAddForm;
 import com.zerobase.cafebom.ordersproduct.domain.OrdersProduct;
 import com.zerobase.cafebom.ordersproduct.domain.OrdersProductRepository;
 import com.zerobase.cafebom.ordersproductoption.domain.OrdersProductOptionRepository;
@@ -65,8 +66,11 @@ class OrdersAddServiceTest {
     private TokenProvider tokenProvider;
 
     String token = "Bearer token";
-    OrdersAddDto.Request ordersAddDto = Request.builder()
-        .payment(Payment.KAKAO_PAY)
+    OrdersAddForm.Request ordersAddFrom = OrdersAddForm.Request.builder()
+        .payment(KAKAO_PAY)
+        .build();
+    OrdersAddDto.Request ordersAddDto = OrdersAddDto.Request.builder()
+        .payment(KAKAO_PAY)
         .build();
     Member member = Member.builder()
         .id(1L)
@@ -84,15 +88,14 @@ class OrdersAddServiceTest {
         .productCount(2)
         .build();
 
-    // yesun-23.08.31
+    // yesun-23.09.18
     @BeforeEach
     public void setUp() {
-        // given
         given(tokenProvider.getId(token)).willReturn(member.getId());
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.18
     @Test
     @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
     void successAddOrders() {
@@ -105,13 +108,13 @@ class OrdersAddServiceTest {
                 .build());
 
         // when
-        ordersService.addOrders(token, ordersAddDto);
+        ordersService.addOrders(token, ordersAddFrom);
 
         // then
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(ordersService).should(times(1)).addOrders(token, ordersAddFrom);
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.18
     @Test
     @DisplayName("주문 저장 실패 - 유효하지 않는 토큰으로 요청")
     void failAddOrdersMemberNotExists() {
@@ -120,13 +123,13 @@ class OrdersAddServiceTest {
             .willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddFrom))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(MEMBER_NOT_EXISTS.getMessage());
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(ordersService).should(times(1)).addOrders(token, ordersAddFrom);
     }
 
-    // yesun-23.08.31
+    // yesun-23.09.18
     @Test
     @DisplayName("주문 저장 실패 - 장바구니에 담은 상품이 없음")
     void failAddOrdersProductNotExists() {
@@ -134,9 +137,9 @@ class OrdersAddServiceTest {
         given(cartRepository.findAllByMember(member)).willReturn(List.of());
 
         // when, then
-        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddFrom))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(CART_IS_EMPTY.getMessage());
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(ordersService).should(times(1)).addOrders(token, ordersAddFrom);
     }
 }

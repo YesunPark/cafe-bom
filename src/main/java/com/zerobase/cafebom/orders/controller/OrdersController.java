@@ -69,8 +69,9 @@ public class OrdersController {
         notes = "사용자의 토큰을 받아 현재 장바구니에 담겨있는 목록들을 주문 내역 테이블에 저장합니다.")
     @PostMapping
     public ResponseEntity<Void> ordersAdd(@RequestHeader(AUTHORIZATION) String token,
-        @Valid @RequestBody OrdersAddForm.Request ordersAddForm) {
-        ordersService.addOrders(token, OrdersAddDto.Request.from(ordersAddForm));
+        @Valid @RequestBody OrdersAddForm.Request ordersAddForm
+    ) {
+        ordersService.addOrders(token, ordersAddForm);
         return ResponseEntity.status(CREATED).build();
     }
 
