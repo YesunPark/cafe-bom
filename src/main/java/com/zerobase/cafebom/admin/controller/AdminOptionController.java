@@ -19,6 +19,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Controller
 @RequestMapping("/admin/option")
 @RequiredArgsConstructor
+//@PreAuthorize("hasRole('ADMIN')")
 public class AdminOptionController {
 
     private final OptionService optionService;

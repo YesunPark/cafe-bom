@@ -6,10 +6,14 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 
+@Getter
+@Builder
 public class BestProductForm {
 
-    @Builder
+    private List<BestProductResponse> bestProducts;
+
     @Getter
+    @Builder
     public static class BestProductResponse {
 
         private Integer productId;
@@ -22,7 +26,8 @@ public class BestProductForm {
 
         private String picture;
 
-        public static List<BestProductForm.BestProductResponse> from(List<BestProductDto> bestProductDto) {
+        public static List<BestProductForm.BestProductResponse> from(
+            List<BestProductDto> bestProductDto) {
             return bestProductDto.stream()
                 .map(productDto -> BestProductForm.BestProductResponse.builder()
                     .productId(productDto.getProductId())

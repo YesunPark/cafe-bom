@@ -24,7 +24,7 @@ public enum ErrorCode {
     ORDERS_NOT_EXISTS("존재하지 않는 주문입니다.", BAD_REQUEST),
     ORDERS_ALREADY_COOKING_STATUS("이미 조리 중인 주문입니다.", BAD_REQUEST),
     ORDERS_NOT_COOKING_STATUS("조리 중인 주문이 아닙니다.", BAD_REQUEST),
-    ORDERS_NOT_CORRECT("주문 상태는 이전 상태로 변경이 불가능합니다.", BAD_REQUEST),
+    ORDERS_STATUS_ONLY_NEXT("주문 상태는 한 단계 다음으로만 변경이 가능합니다.", BAD_REQUEST),
     ORDERS_ALREADY_CANCELED("이미 취소된 주문입니다.", BAD_REQUEST),
     ORDERS_NOT_RECEIVED_STATUS("수락되지 않은 주문입니다.", BAD_REQUEST),
     ORDERS_COOKING_TIME_ALREADY_SET("이미 조리 예정 시간이 설정되어 있습니다.", BAD_REQUEST),
@@ -36,6 +36,7 @@ public enum ErrorCode {
 
     // Cart
     CART_IS_EMPTY("장바구니에 담긴 상품이 없습니다.", BAD_REQUEST),
+    CART_DOES_NOT_EXIST("존재하지 않는 장바구니입니다.",BAD_REQUEST),
 
     // ProductCategory
     PRODUCTCATEGORY_NOT_EXISTS("존재하지 않는 상품 카테고리입니다.", BAD_REQUEST),
