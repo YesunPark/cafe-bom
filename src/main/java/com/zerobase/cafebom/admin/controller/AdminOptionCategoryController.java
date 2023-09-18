@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,26 +27,26 @@ public class AdminOptionCategoryController {
 
     private final AdminOptionCategoryService adminOptionCategoryService;
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 카테고리 등록", notes = "관리자가 옵션 카테고리를 등록합니다.")
     @PostMapping
     public ResponseEntity<Void> OptionCategoryAdd(
-            @RequestBody AdminOptionCategoryForm.Request optionCategoryFormRequest) {
+            @Valid @RequestBody AdminOptionCategoryForm.Request optionCategoryFormRequest) {
         adminOptionCategoryService.addOptionCategory(optionCategoryFormRequest);
         return ResponseEntity.status(CREATED).build();
     }
 
-    // jiyeon-23.09.05
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 카테고리 수정", notes = "관리자가 옵션 카테고리를 수정합니다.")
     @PatchMapping("/{optionCategoryId}")
     public ResponseEntity<Void> optionCategoryModify(
             @PathVariable Integer optionCategoryId,
-            @RequestBody AdminOptionCategoryForm.Request optionCategoryForm) {
+            @Valid @RequestBody AdminOptionCategoryForm.Request optionCategoryForm) {
         adminOptionCategoryService.modifyOptionCategory(optionCategoryId, optionCategoryForm);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.09
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 카테고리 삭제", notes = "관리자가 옵션 카테고리를 삭제합니다.")
     @DeleteMapping("/{optionCategoryId}")
     public ResponseEntity<Void> OptionCategoryRemove(@PathVariable Integer optionCategoryId) {
@@ -53,7 +54,7 @@ public class AdminOptionCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.09
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 카테고리 전체 목록 조회", notes = "관리자가 옵션 카테고리 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<AdminOptionCategoryForm.Response>> OptionCategoryList() {
@@ -66,7 +67,7 @@ public class AdminOptionCategoryController {
         return ResponseEntity.ok(adminOptionCategoryFormList);
     }
 
-    // jiyeon-23.09.09
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 카테고리 단건 조회", notes = "관리자가 하나의 옵션 카테고리에 대한 정보를 조회합니다.")
     @GetMapping("/{optionCategoryId}")
     public ResponseEntity<AdminOptionCategoryForm.Response> optionCategoryListById(

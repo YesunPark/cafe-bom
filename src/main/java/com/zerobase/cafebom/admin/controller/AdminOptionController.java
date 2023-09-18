@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -25,25 +26,26 @@ public class AdminOptionController {
 
     private final AdminOptionService adminOptionService;
 
-    // jiyeon-23.09.13
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 등록", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
-    public ResponseEntity<Void> optionAdd(@RequestBody AdminOptionForm.Request optionFormRequest) {
+    public ResponseEntity<Void> optionAdd(
+            @Valid @RequestBody AdminOptionForm.Request optionFormRequest) {
         adminOptionService.addOption(AdminOptionDto.Request.from(optionFormRequest));
         return ResponseEntity.status(CREATED).build();
     }
 
-    // jiyeon-23.09.13
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 수정", notes = "관리자가 옵션의 정보를 수정합니다.")
     @PutMapping("/{optionId}")
     public ResponseEntity<Void> optionModify(
         @PathVariable Integer optionId,
-        @RequestBody AdminOptionForm.Request form) {
+        @Valid @RequestBody AdminOptionForm.Request form) {
         adminOptionService.modifyOption(optionId, AdminOptionDto.Request.from(form));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.13
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 삭제", notes = "관리자가 옵션을 삭제합니다.")
     @DeleteMapping("/{optionId}")
     public ResponseEntity<Void> optionRemove(@PathVariable Integer optionId) {
@@ -51,7 +53,7 @@ public class AdminOptionController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.13
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 전체 조회", notes = "관리자가 전체 옵션 목록을 조회합니다.")
     @GetMapping("/list")
     public ResponseEntity<List<AdminOptionForm.Response>> optionList() {
@@ -59,7 +61,7 @@ public class AdminOptionController {
         return ResponseEntity.ok().body(optionList);
     }
 
-    // jiyeon-23.09.13
+    // jiyeon-23.09.18
     @ApiOperation(value = "옵션 단건 조회", notes = "관리자가 하나의 옵션에 대한 정보를 조회합니다.")
     @GetMapping("/{optionId}")
     public ResponseEntity<AdminOptionForm.Response> optionListById(@PathVariable Integer optionId) {
