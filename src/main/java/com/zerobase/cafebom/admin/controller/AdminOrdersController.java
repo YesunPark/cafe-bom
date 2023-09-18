@@ -1,29 +1,22 @@
 package com.zerobase.cafebom.admin.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
-import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyForm;
-import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyForm;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.orders.dto.*;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @Tag(name = "admin-orders-controller", description = "관리자 주문 관련 API")
 @RestController
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin/orders")
 public class AdminOrdersController {
 

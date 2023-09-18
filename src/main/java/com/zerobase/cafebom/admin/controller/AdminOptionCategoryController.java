@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Tag(name = "admin-option-category-controller", description = "관리자 옵션 카테고리 CRUD API")
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/admin/option-category")
 public class AdminOptionCategoryController {
 
