@@ -28,7 +28,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
     public void addOption(AdminOptionDto.Request optionAddDto) {
         Integer optionCategoryId = optionAddDto.getOptionCategoryId();
         OptionCategory optionCategory = optionCategoryRepository.findById(optionCategoryId)
-                .orElseThrow(() -> new CustomException(OPTION_NOT_EXISTS));
+                .orElseThrow(() -> new CustomException(OPTION_CATEGORY_NOT_EXISTS));
         Option option = Option.builder()
                 .optionCategory(optionCategory)
                 .name(optionAddDto.getName())
