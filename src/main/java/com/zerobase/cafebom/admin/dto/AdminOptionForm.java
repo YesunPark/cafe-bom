@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.option.dto;
+package com.zerobase.cafebom.admin.dto;
 
 import com.zerobase.cafebom.option.domain.Option;
 import io.swagger.annotations.ApiModel;
@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
-public class OptionForm {
+public class AdminOptionForm {
 
     @ApiModel(value = "OptionFormRequest")
     @Getter
@@ -42,7 +42,7 @@ public class OptionForm {
 
         private Integer price;
 
-        public static OptionForm.Response from(Option option) {
+        public static AdminOptionForm.Response from(Option option) {
             Response response = Response.builder()
                 .id(option.getId())
                 .optionCategoryId(option.getOptionCategory().getId())
