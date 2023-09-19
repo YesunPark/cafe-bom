@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.option.dto;
 
 import com.zerobase.cafebom.option.domain.Option;
+import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -9,6 +10,7 @@ import lombok.Getter;
 
 public class OptionForm {
 
+    @ApiModel(value = "OptionFormRequest")
     @Getter
     public static class Request {
 
@@ -27,6 +29,7 @@ public class OptionForm {
         private Integer price;
     }
 
+    @ApiModel(value = "OptionFormResponse")
     @Getter
     @Builder
     public static class Response {

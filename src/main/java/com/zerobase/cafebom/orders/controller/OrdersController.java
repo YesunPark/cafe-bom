@@ -11,6 +11,7 @@ import com.zerobase.cafebom.orders.dto.OrdersElapsedFindForm;
 import com.zerobase.cafebom.orders.dto.OrdersHisDto;
 import com.zerobase.cafebom.orders.service.OrdersHistoryService;
 import com.zerobase.cafebom.orders.service.OrdersService;
+import com.zerobase.cafebom.security.TokenProvider;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
@@ -41,6 +42,8 @@ public class OrdersController {
     private final OrdersHistoryService orderService;
 
     private final OrdersService ordersService;
+
+    private final TokenProvider tokenProvider;
 
     // minsu-23.09.12
     @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다.")
@@ -76,10 +79,12 @@ public class OrdersController {
         notes = "기본적으로 3개월간의 내역이 조회되고, 기간 별 필터링을 해서 조회할 수 있습니다.")
     @GetMapping("/list")
     public ResponseEntity<List<OrdersHisDto>> getOrderHistoryList(
-        @RequestParam("memberId") Long memberId,
+        @RequestHeader(name = "Authorization") String token,
         @RequestParam(value = "viewType", required = false) String viewType,
         @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+
+        Long memberId = tokenProvider.getId(token);
 
         if ("기간".equals(viewType) && (startDate == null || endDate == null)) {
             throw new CustomException(START_DATE_AND_END_DATE_ARE_ESSENTIAL);

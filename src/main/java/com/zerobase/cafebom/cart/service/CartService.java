@@ -1,6 +1,5 @@
 package com.zerobase.cafebom.cart.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
 import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
@@ -204,34 +203,6 @@ public class CartService {
         }
         return cartProductDtoList;
     }
-
-    // 장바구니 단건 조회-youngseon-23.09.10
-    public CartProductDto findCart(String token, Long cartId) {
-        Long userId = tokenProvider.getId(token);
-
-        Member member = memberRepository.findById(userId)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
-
-        Cart otherCart = cartRepository.findById(cartId)
-            .orElseThrow(() -> new CustomException(CART_DOES_NOT_EXIST));
-
-        CartProductDto cartProductDto = CartProductDto.from(otherCart);
-
-        List<CartOption> cartOptionList = cartOptionRepository.findByCart(otherCart);
-
-        List<Integer> cartOptionIds = new ArrayList<>();
-
-        for (CartOption cartOption : cartOptionList) {
-            cartOptionIds.add(cartOption.getOption().getId());
-        }
-
-        for (Integer optionId : cartOptionIds) {
-            cartProductDto.addOptionId(optionId);
-        }
-
-        return cartProductDto;
-    }
-
 
     // 장바구니에 상품 넣기-youngseon-23.09.12
     public List<CartProductDto> saveCart(String token, CartAddForm cartAddForm) {

@@ -156,36 +156,6 @@ class CartControllerTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    //youngseon-23.09.11
-    @Test
-    @DisplayName("장바구니 조회 성공")
-    public void successCartIdList() throws Exception {
-        // given
-        given(tokenProvider.getId(token)).willReturn(1L);
-        CartAddForm cartAddForm = CartAddForm.builder()
-            .optionIdList(Collections.singletonList(1))
-            .count(5)
-            .productId(1)
-            .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
-            .build();
-
-        Mockito.when(cartService.findCart(Mockito.anyString(), Mockito.anyLong()))
-            .thenReturn(CartProductDto.builder().build());
-
-        // when
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
-            .get("/auth/cart/{cartId}", 1L)
-            .header("Authorization", token)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(cartAddForm))
-        );
-
-        // then
-        result.andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-
     static String TOKEN = "bearer token";
 
     @BeforeEach

@@ -329,39 +329,6 @@ class CartServiceTest {
         verify(cartRepository, times(0)).deleteById(cart.getId());
     }
 
-    // youngseon-23.09.11
-    @Test
-    @DisplayName("카트 조회 성공")
-    public void successFindCart() {
-        //given
-        given(tokenProvider.getId(TOKEN)).willReturn(1L);
-        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-        given(cartRepository.findById(cart.getId())).willReturn(Optional.of(cart));
-
-        // when
-        CartProductDto result = cartService.findCart(TOKEN, cart.getId());
-
-        //then
-        assertThat(result).isNotNull();
-    }
-
-    // youngseon-23.09.11
-    @Test
-    @DisplayName("카드 조회 실패 - 장바구니가 비어있음")
-    public void failFindCartEmptyCart() {
-        Long cartId = 1L;
-
-        //given
-        given(tokenProvider.getId(TOKEN)).willReturn(1L);
-        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-        given(cartRepository.findById(cartId)).willReturn(Optional.empty());
-
-        // when, then
-        assertThatThrownBy(() -> cartService.findCart(TOKEN, cartId))
-            .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(CART_DOES_NOT_EXIST.getMessage());
-    }
-
     // youngseon-23.09.12
     @Test
     @DisplayName("장바구니에 새로운 상품 추가 성공")
