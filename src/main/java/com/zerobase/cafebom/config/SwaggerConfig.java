@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new ApiInfoBuilder()
             .title("Cafe-Bom Api Test")
             .description("Cafe-Bom REST API")
-            .version("0.0.1")
+            .version("1.0.1")
             .contact(new Contact("Cafe-Bom GitHub", "https://github.com/YesunPark/cafe-bom", ""))
             .build();
     }
