@@ -1,11 +1,25 @@
 package com.zerobase.cafebom.cart.service;
 
+import static com.zerobase.cafebom.exception.ErrorCode.CART_DOES_NOT_EXIST;
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
+
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListOptionDto;
 import com.zerobase.cafebom.cart.service.dto.CartProductDto;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
 import com.zerobase.cafebom.exception.CustomException;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.member.domain.MemberRepository;
+import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.option.domain.OptionRepository;
+import com.zerobase.cafebom.product.domain.Product;
 import com.zerobase.cafebom.product.domain.ProductRepository;
 import com.zerobase.cafebom.security.TokenProvider;
 import java.util.ArrayList;
@@ -35,21 +49,24 @@ import com.zerobase.cafebom.product.domain.Product;
 @Transactional
 public class CartService {
 
+    private final MemberRepository memberRepository;
+
     private final CartRepository cartRepository;
 
     private final CartOptionRepository cartOptionRepository;
 
-    private final TokenProvider tokenProvider;
-
     private final ProductRepository productRepository;
 
-    private final MemberRepository memberRepository;
-
     private final OptionRepository optionRepository;
+
+    private final TokenProvider tokenProvider;
 
     // 장바구니 목록 조회-wooyoung-23.09.18
     public List<CartListDto> findCartList(String token) {
         Long memberId = tokenProvider.getId(token);
+
+        memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         List<Cart> cartList = cartRepository.findAllByMemberAndStatus(memberId, BEFORE_ORDER);
 
@@ -58,23 +75,13 @@ public class CartService {
         for (Cart cart : cartList) {
             List<CartOption> allByCart = cartOptionRepository.findAllByCart(cart);
 
-            List<Option> optionList = new ArrayList<>();
+            List<CartListOptionDto> cartListOptionDtos = new ArrayList<>();
 
             for (CartOption cartOption : allByCart) {
-                optionList.add(cartOption.getOption());
+                cartListOptionDtos.add(CartListOptionDto.from(cartOption.getOption()));
             }
 
-            Product product = cart.getProduct();
-
-            CartListDto cartListDto = CartListDto.builder()
-                .productId(product.getId())
-                .productName(product.getName())
-                .productPicture(product.getPicture())
-                .productOptions(optionList)
-                .quantity(cart.getQuantity())
-                .build();
-
-            cartListDtoList.add(cartListDto);
+            cartListDtoList.add(CartListDto.from(cart, cartListOptionDtos));
         }
 
         return cartListDtoList;

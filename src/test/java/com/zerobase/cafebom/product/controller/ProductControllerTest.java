@@ -51,6 +51,47 @@ class ProductControllerTest {
     @MockBean
     private TokenProvider tokenProvider;
 
+    // wooyoung-23.09.14
+    @Test
+    @DisplayName("카테고리 별 상품 조회 성공")
+    void successProductList() throws Exception {
+        // given
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        productDtoList.add(ProductDto.builder()
+            .productId(1)
+            .name("아메리카노")
+            .price(2000)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture")
+            .build());
+
+        given(productService.findProductList(anyInt())).willReturn(productDtoList);
+
+        // when
+        mockMvc.perform(get("/product/list/1"))
+            .andDo(print())
+            .andExpect(jsonPath("$.productDtoList[0].productId").value("1"))
+            .andExpect(jsonPath("$.productDtoList[0].name").value("아메리카노"))
+            .andExpect(jsonPath("$.productDtoList[0].price").value(2000))
+            .andExpect(jsonPath("$.productDtoList[0].soldOutStatus").value("IN_STOCK"))
+            .andExpect(jsonPath("$.productDtoList[0].picture").value("picture"))
+            .andExpect(status().isOk());
+    }
+
+    // wooyoung-23.08.29
+    @Test
+    @DisplayName("카테고리 별 상품 조회 실패 - 입력 타입 불일치")
+    void failProductListMethodArgumentTypeMismatch() throws Exception {
+        // when
+        mockMvc.perform(get("/product/list/test")
+                .with(csrf()))
+            .andDo(print())
+            .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))
+            .andExpect(jsonPath("$.errorMessage").value(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage()))
+            .andExpect(status().isBadRequest());
+    }
+
     // wooyoung-23.09.05
     @Test
     @DisplayName("상품 상세 조회 성공")
@@ -119,48 +160,7 @@ class ProductControllerTest {
             .andExpect(jsonPath("$.productOptionList").isMap());
     }
 
-    // wooyoung-23.08.29
-    @Test
-    @DisplayName("카테고리 별 상품 조회 성공")
-    void successProductList() throws Exception {
-        // given
-        List<ProductDto> productDtoList = new ArrayList<>();
-
-        productDtoList.add(ProductDto.builder()
-            .productId(1)
-            .name("아메리카노")
-            .price(2000)
-            .soldOutStatus(IN_STOCK)
-            .picture("picture")
-            .build());
-
-        given(productService.findProductList(anyInt())).willReturn(productDtoList);
-
-        // when
-        mockMvc.perform(get("/product/list/1"))
-            .andDo(print())
-            .andExpect(jsonPath("$[0].productId").value("1"))
-            .andExpect(jsonPath("$[0].name").value("아메리카노"))
-            .andExpect(jsonPath("$[0].price").value(2000))
-            .andExpect(jsonPath("$[0].soldOutStatus").value("IN_STOCK"))
-            .andExpect(jsonPath("$[0].picture").value("picture"))
-            .andExpect(status().isOk());
-    }
-
-    // wooyoung-23.08.29
-    @Test
-    @DisplayName("카테고리 별 상품 조회 실패 - 입력 타입 불일치")
-    void failProductListMethodArgumentTypeMismatch() throws Exception {
-        // when
-        mockMvc.perform(get("/product/list/test")
-                .with(csrf()))
-            .andDo(print())
-            .andExpect(jsonPath("$.errorCode").value(METHOD_ARGUMENT_TYPE_MISMATCH.toString()))
-            .andExpect(jsonPath("$.errorMessage").value(METHOD_ARGUMENT_TYPE_MISMATCH.getMessage()))
-            .andExpect(status().isBadRequest());
-    }
-
-    // minsu-23.09.12
+    // minsu-23.09.06
     @Test
     @DisplayName("베스트 상품 목록 조회 성공")
     void successBestProductList() throws Exception {
