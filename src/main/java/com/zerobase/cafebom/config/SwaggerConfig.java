@@ -25,8 +25,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public Docket api() {
 
         return new Docket(DocumentationType.OAS_30)
-            .securityContexts(Arrays.asList(securityContext())) // swagger Authorize 버튼 생성을 위한 기능 추가
-            .securitySchemes(Arrays.asList(apiKey())) // swagger Authorize 버튼 생성을 위한 기능 추가
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.zerobase.cafebom"))
             .paths(PathSelectors.any())
@@ -56,25 +56,23 @@ public class SwaggerConfig implements WebMvcConfigurer {
             .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    // swagger Authorize 버튼 생성을 위한 기능 추가
+    // swagger Authorize 버튼 생성을 위한 기능
     private SecurityContext securityContext(){
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
                 .build();
     }
 
-    // swagger Authorize 버튼 생성을 위한 기능 추가
+    // swagger Authorize 버튼 생성을 위한 기능
     private List<SecurityReference> defaultAuth(){
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");
         return List.of(new SecurityReference("Authorization", authorizationScopes));
     }
 
-    // swagger Authorize 버튼 생성을 위한 기능 추가
+    // swagger Authorize 버튼 생성을 위한 기능
     private ApiKey apiKey(){
         return new ApiKey("Authorization", "Authorization", "header");
     }
-
-
 
 }
