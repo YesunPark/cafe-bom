@@ -16,7 +16,6 @@ import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.dto.CartListDto;
 import com.zerobase.cafebom.cart.dto.CartListOptionDto;
 import com.zerobase.cafebom.cart.service.CartService;
-import com.zerobase.cafebom.cart.service.dto.CartProductDto;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.option.domain.Option;
 import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
@@ -66,7 +65,7 @@ class CartControllerTest {
         objectMapper = new ObjectMapper();
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 넣기 성공")
     public void successCartSave() throws Exception {
@@ -74,7 +73,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -96,7 +95,7 @@ class CartControllerTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 수량 변경 성공")
     public void successCartModify() throws Exception {
@@ -104,7 +103,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -126,7 +125,7 @@ class CartControllerTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 삭제 성공")
     public void successCartRemove() throws Exception {
@@ -134,7 +133,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -163,7 +162,7 @@ class CartControllerTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.14
+    // wooyoung-23.09.18
     @Test
     @DisplayName("장바구니 목록 조회 성공")
     void successCartList() throws Exception {
@@ -193,7 +192,7 @@ class CartControllerTest {
             .id(1L)
             .member(member)
             .product(espresso)
-            .productCount(1)
+            .quantity(1)
             .status(BEFORE_ORDER)
             .build();
 
@@ -231,7 +230,7 @@ class CartControllerTest {
             .productName(espresso.getName())
             .productPicture(espresso.getPicture())
             .cartListOptionDtos(cartListOptionDtos)
-            .productCount(3)
+            .quantity(3)
             .build();
 
         dtoList.add(dto);
@@ -247,6 +246,6 @@ class CartControllerTest {
             .andExpect(jsonPath("$.cartListDtoList[0].productName").value(espresso.getName()))
             .andExpect(jsonPath("$.cartListDtoList[0].productPicture").value(espresso.getPicture()))
             .andExpect(jsonPath("$.cartListDtoList[0].cartListOptionDtos[0].optionId").value(cartListOptionDtos.get(0).getOptionId()))
-            .andExpect(jsonPath("$.cartListDtoList[0].productCount").value(3));
+            .andExpect(jsonPath("$.cartListDtoList[0].quantity").value(3));
     }
 }

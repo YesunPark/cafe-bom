@@ -21,7 +21,7 @@ public class CartListDto {
 
     private List<CartListOptionDto> cartListOptionDtos;
 
-    private Integer productCount;
+    private Integer quantity;
 
     public static CartListDto from(Cart cart, List<CartListOptionDto> cartListOptionDtos) {
         return CartListDto.builder()
@@ -30,7 +30,7 @@ public class CartListDto {
             .productName(cart.getProduct().getName())
             .productPicture(cart.getProduct().getPicture())
             .cartListOptionDtos(cartListOptionDtos)
-            .productCount(cart.getProductCount())
+            .quantity(cart.getQuantity())
             .build();
     }
 }
