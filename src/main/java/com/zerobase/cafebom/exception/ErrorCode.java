@@ -1,12 +1,10 @@
 package com.zerobase.cafebom.exception;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @AllArgsConstructor
@@ -42,13 +40,14 @@ public enum ErrorCode {
 
     // ProductCategory
     PRODUCTCATEGORY_NOT_EXISTS("존재하지 않는 상품 카테고리입니다.", BAD_REQUEST),
+    PRODUCTCATEGORY_ARLEADY_EXISTS("이미 존재하는 상품 카테고리입니다.", CONFLICT),
 
     // OrdersProduct
     ORDERS_PRODUCT_NOT_EXISTS("존재하지 않는 주문상품입니다.", BAD_REQUEST),
 
     // Option
     OPTION_NOT_EXISTS("존재하지 않는 옵션입니다.", BAD_REQUEST),
-    OPTION_CATEGORY_NOT_EXISTS("옵션 카테고리를 찾을 수 없습니다.", BAD_REQUEST),
+    OPTION_CATEGORY_NOT_EXISTS("존재하지 않는 옵션 카테고리입니다.", BAD_REQUEST),
 
     // Review
     REVIEW_ALREADY_WRITTEN("이미 리뷰가 작성된 주문 상품입니다.", CONFLICT),
