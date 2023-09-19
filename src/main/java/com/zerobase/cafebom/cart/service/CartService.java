@@ -30,6 +30,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import static com.zerobase.cafebom.exception.ErrorCode.MEMBER_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
+import static com.zerobase.cafebom.exception.ErrorCode.PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
+
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.domain.CartRepository;
+import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cartoption.domain.CartOption;
+import com.zerobase.cafebom.cartoption.domain.CartOptionRepository;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.product.domain.Product;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -47,7 +61,7 @@ public class CartService {
 
     private final TokenProvider tokenProvider;
 
-    // 장바구니 목록 조회-wooyoung-23.09.14
+    // 장바구니 목록 조회-wooyoung-23.09.18
     public List<CartListDto> findCartList(String token) {
         Long memberId = tokenProvider.getId(token);
 
@@ -73,7 +87,7 @@ public class CartService {
         return cartListDtoList;
     }
 
-    // 장바구니에 상품 삭제-youngseon-23.09.10
+    // 장바구니에 상품 삭제-youngseon-23.09.18
     public List<CartProductDto> removeCart(String token, CartAddForm cartAddForm) {
 
         Long userId = tokenProvider.getId(token);
@@ -94,7 +108,7 @@ public class CartService {
 
             Boolean result = false;
 
-            Integer count = 0;
+            Integer quantity = 0;
 
             for (Cart otherCart : cartList) {
 
@@ -111,11 +125,11 @@ public class CartService {
                     if (result) {
                         cartOptionRepository.deleteAllByCart(otherCart);
                         cartRepository.deleteById(otherCart.getId());
-                        count++;
+                        quantity++;
                     }
                 }
             }
-            if (count == 0) {
+            if (quantity == 0) {
                 throw new CustomException(PRODUCT_NOT_EXISTS);
             }
         }
@@ -140,7 +154,7 @@ public class CartService {
         return cartProductDtoList;
     }
 
-    // 장바구니 상품 수량 변경- youngseon-23.09.10
+    // 장바구니 상품 수량 변경-youngseon-23.09.18
     public List<CartProductDto> modifyCart(String token, CartAddForm cartAddForm) {
 
         Long userId = tokenProvider.getId(token);
@@ -162,7 +176,7 @@ public class CartService {
 
             Boolean result = false;
 
-            Integer count = 0;
+            Integer quantity = 0;
 
             for (Cart otherCart : cartList) {
 
@@ -177,13 +191,13 @@ public class CartService {
                 if (optionIdList.size() == cartAddForm.getOptionIdList().size()) {
                     result = compare(optionIdList, optionIdCopyList);
                     if (result) {
-                        otherCart.setProductCount(cartAddForm.getCount());
+                        otherCart.setQuantity(cartAddForm.getQuantity());
                         cartRepository.save(otherCart);
-                        count++;
+                        quantity++;
                     }
                 }
             }
-            if (count == 0) {
+            if (quantity == 0) {
                 throw new CustomException(PRODUCT_NOT_EXISTS);
             }
         }
@@ -205,35 +219,7 @@ public class CartService {
         return cartProductDtoList;
     }
 
-    // 장바구니 단건 조회-youngseon-23.09.10
-    public CartProductDto findCart(String token, Long cartId) {
-        Long userId = tokenProvider.getId(token);
-
-        Member member = memberRepository.findById(userId)
-            .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
-
-        Cart otherCart = cartRepository.findById(cartId)
-            .orElseThrow(() -> new CustomException(CART_DOES_NOT_EXIST));
-
-        CartProductDto cartProductDto = CartProductDto.from(otherCart);
-
-        List<CartOption> cartOptionList = cartOptionRepository.findByCart(otherCart);
-
-        List<Integer> cartOptionIds = new ArrayList<>();
-
-        for (CartOption cartOption : cartOptionList) {
-            cartOptionIds.add(cartOption.getOption().getId());
-        }
-
-        for (Integer optionId : cartOptionIds) {
-            cartProductDto.addOptionId(optionId);
-        }
-
-        return cartProductDto;
-    }
-
-
-    // 장바구니에 상품 넣기-youngseon-23.09.12
+    // 장바구니에 상품 넣기-youngseon-23.09.18
     public List<CartProductDto> saveCart(String token, CartAddForm cartAddForm) {
 
         Long userId = tokenProvider.getId(token);
@@ -249,7 +235,7 @@ public class CartService {
 
         if (cartList.size() == 0){
 
-            Cart cart = Cart.createCart(member, product, cartAddForm.getCount(),
+            Cart cart = Cart.createCart(member, product, cartAddForm.getQuantity(),
                 cartAddForm.getCartOrderStatus());
 
             cartRepository.save(cart);
@@ -269,7 +255,7 @@ public class CartService {
 
             Boolean result = false;
 
-            Integer count = 0;
+            Integer quantity = 0;
 
             for (Cart otherCart : cartList) {
 
@@ -285,15 +271,15 @@ public class CartService {
                     result = compare(optionIdList, optionIdCopyList);
 
                     if (result) {
-                        otherCart.addProductCount(cartAddForm.getCount());
+                        otherCart.addQuantity(cartAddForm.getQuantity());
                         cartRepository.save(otherCart);
-                        count++;
+                        quantity++;
                     }
                 }
             }
 
-            if (count == 0) {
-                Cart cart = Cart.createCart(member, product, cartAddForm.getCount(),
+            if (quantity == 0) {
+                Cart cart = Cart.createCart(member, product, cartAddForm.getQuantity(),
                     cartAddForm.getCartOrderStatus());
 
                 cartRepository.save(cart);

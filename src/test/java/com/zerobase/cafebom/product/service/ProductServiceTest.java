@@ -209,10 +209,10 @@ class ProductServiceTest {
         receivedOrders.add(Orders.builder().id(2L).receiptStatus(RECEIVED).build());
 
         List<OrdersProduct> ordersProducts1 = new ArrayList<>();
-        ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).count(5).build());
+        ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).quantity(5).build());
 
         List<OrdersProduct> ordersProducts2 = new ArrayList<>();
-        ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).count(3).build());
+        ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).quantity(3).build());
 
         given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(receivedOrders);
         given(ordersProductRepository.findByOrdersId(1L)).willReturn(ordersProducts1);

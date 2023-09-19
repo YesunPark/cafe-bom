@@ -51,13 +51,14 @@ public class ProductController {
             .body(ProductDetailForm.Response.from(productDetails));
     }
 
-    // minsu-23.09.08
+    // minsu-23.09.12
     @ApiOperation(value = "베스트 상품 목록 조회", notes = "주문 수량을 기준으로 베스트 상품 5개를 조회합니다.")
     @GetMapping("/best-list")
-    public ResponseEntity<List<BestProductForm.BestProductResponse>> bestProductList() {
+    public ResponseEntity<BestProductForm> bestProductList() {
         List<BestProductDto> bestProduct = productService.findBestProductList();
-        List<BestProductForm.BestProductResponse> bestProductResponse = BestProductForm.BestProductResponse.from(
-            bestProduct);
-        return ResponseEntity.ok(bestProductResponse);
+        BestProductForm bestProductForm = BestProductForm.builder()
+            .bestProducts(BestProductForm.BestProductResponse.from(bestProduct))
+            .build();
+        return ResponseEntity.ok(bestProductForm);
     }
 }

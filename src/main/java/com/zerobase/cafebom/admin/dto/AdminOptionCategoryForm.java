@@ -1,5 +1,6 @@
 package com.zerobase.cafebom.admin.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Size;
 
 public class AdminOptionCategoryForm {
 
+    @ApiModel(value = "AdminOptionCategoryFormRequest")
     @Getter
     public static class Request {
         @Schema(description = "옵션 카테고리명", example = "샷추가")
@@ -17,6 +19,7 @@ public class AdminOptionCategoryForm {
         private String name;
     }
 
+    @ApiModel(value ="AdminOptionCategoryFormResponse" )
     @Getter
     @Builder
     public static class Response {

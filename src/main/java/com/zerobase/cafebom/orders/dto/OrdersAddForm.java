@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.orders.dto;
 
 import com.zerobase.cafebom.type.Payment;
+import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 public class OrdersAddForm {
 
+    @ApiModel(value = "OrdersAddFormRequest")
     @Getter
     @Builder
     @AllArgsConstructor
