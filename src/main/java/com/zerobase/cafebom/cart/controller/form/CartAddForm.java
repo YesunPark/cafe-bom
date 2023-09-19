@@ -3,8 +3,6 @@ package com.zerobase.cafebom.cart.controller.form;
 import com.zerobase.cafebom.type.CartOrderStatus;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +17,8 @@ public class CartAddForm {
     @NotNull(message = "productId는 필수입니다.")
     private Integer productId;
 
-    @NotNull(message = "count는 필수입니다.")
-    private Integer count;
+    @NotNull(message = "quantity는 필수입니다.")
+    private Integer quantity;
 
     private List<Integer> optionIdList;
 

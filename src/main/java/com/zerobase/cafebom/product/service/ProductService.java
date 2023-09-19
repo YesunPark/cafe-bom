@@ -85,30 +85,30 @@ public class ProductService {
         return productDtoList;
     }
 
-    // 베스트 상품 목록 조회-minsu-23.09.08
+    // 베스트 상품 목록 조회-minsu-23.09.18
     @Transactional
     public List<BestProductDto> findBestProductList() {
 
         List<Orders> receivedOrders = ordersRepository.findByReceiptStatus(RECEIVED);
 
-        Map<Product, Integer> productCountMap = new HashMap<>();
+        Map<Product, Integer> productQuantityMap = new HashMap<>();
 
         for (Orders orders : receivedOrders) {
             List<OrdersProduct> ordersProducts = ordersProductRepository.findByOrdersId(
                 orders.getId());
             for (OrdersProduct ordersProduct : ordersProducts) {
                 Product product = ordersProduct.getProduct();
-                int count = ordersProduct.getCount();
+                int quantity = ordersProduct.getQuantity();
 
-                if (productCountMap.containsKey(product)) {
-                    count += productCountMap.get(product);
+                if (productQuantityMap.containsKey(product)) {
+                    quantity += productQuantityMap.get(product);
                 }
 
-                productCountMap.put(product, count);
+                productQuantityMap.put(product, quantity);
             }
         }
 
-        List<Product> bestProductList = productCountMap.entrySet().stream()
+        List<Product> bestProductList = productQuantityMap.entrySet().stream()
             .sorted((entry1, entry2) -> Integer.compare(entry2.getValue(), entry1.getValue()))
             .limit(5)
             .map(Map.Entry::getKey)
