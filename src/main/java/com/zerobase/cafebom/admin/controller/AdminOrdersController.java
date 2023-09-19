@@ -11,8 +11,10 @@ import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
 import com.zerobase.cafebom.orders.service.OrdersService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,40 +27,41 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/orders")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminOrdersController {
 
     private final OrdersService ordersService;
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @ApiOperation(value = "주문 상태 변경", notes = "관리자가 주문 상태를 변경합니다.")
     @PatchMapping("/status/{ordersId}")
     public ResponseEntity<Void> ordersStatusModify(
         @PathVariable Long ordersId,
-        @RequestBody OrdersStatusModifyForm ordersStatusModifyForm) {
+        @RequestBody @Valid OrdersStatusModifyForm ordersStatusModifyForm) {
 
         ordersService.modifyOrdersStatus(ordersId,
             OrdersStatusModifyDto.from(ordersStatusModifyForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @ApiOperation(value = "주문 수락 또는 거절", notes = "관리자가 주문을 수락 또는 거절합니다.")
     @PatchMapping("/receipt-status/{ordersId}")
     public ResponseEntity<Void> ordersReceiptModify(
         @PathVariable Long ordersId,
-        @RequestBody OrdersReceiptModifyForm ordersReceiptModifyForm) {
+        @RequestBody @Valid OrdersReceiptModifyForm ordersReceiptModifyForm) {
 
         ordersService.modifyOrdersReceiptStatus(ordersId,
             OrdersReceiptModifyDto.from(ordersReceiptModifyForm));
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @ApiOperation(value = "주문 조리 예정 시간 선택", notes = "관리자가 수락된 주문 조리 예정 시간을 선택합니다.")
     @PatchMapping("/cooking-time/{ordersId}")
     public ResponseEntity<Void> ordersCookingTimeModify(
         @PathVariable Long ordersId,
-        @RequestBody OrdersCookingTimeModifyForm cookingTimeModifyForm) {
+        @RequestBody @Valid OrdersCookingTimeModifyForm cookingTimeModifyForm) {
 
         ordersService.modifyOrdersCookingTime(ordersId,
             OrdersCookingTimeModifyDto.from(cookingTimeModifyForm));

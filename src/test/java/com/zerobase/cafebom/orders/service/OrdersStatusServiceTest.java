@@ -13,6 +13,8 @@ import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.exception.CustomException;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.member.domain.MemberRepository;
 import com.zerobase.cafebom.orders.domain.Orders;
 import com.zerobase.cafebom.orders.domain.OrdersRepository;
 import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
@@ -31,7 +33,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,8 +41,8 @@ class OrdersStatusServiceTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private TokenProvider tokenProvider;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private OrdersService ordersService;
@@ -49,8 +50,17 @@ class OrdersStatusServiceTest {
     @Mock
     private OrdersRepository ordersRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Mock
+    private MemberRepository memberRepository;
+
+    @Mock
+    private TokenProvider tokenProvider;
+
+    private String token = "Bearer token";
+
+    Member member = Member.builder()
+        .id(1L)
+        .build();
 
     // minsu-23.09.15
     @Test
@@ -72,35 +82,38 @@ class OrdersStatusServiceTest {
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_STATUS_ONLY_NEXT);
     }
 
-    // minsu-23.09.02
+    // minsu-23.09.19
     @Test
     @DisplayName("주문 경과 시간 조회 실패 - 주문이 존재하지 않는 경우")
     void failGetElapsedTimeNotFound() {
         // given
         Long ordersId = 1L;
+        given(tokenProvider.getId(token)).willReturn(member.getId());
 
         given(ordersRepository.findById(ordersId))
             .willThrow(new CustomException(ORDERS_NOT_EXISTS));
 
         // then
-        assertThrows(CustomException.class, () -> ordersService.findElapsedTime(ordersId));
+        assertThrows(CustomException.class, () -> ordersService.findElapsedTime(token, ordersId));
     }
 
-    // minsu-23.08.24
+    // minsu-23.09.19
     @Test
     @DisplayName("주문 경과 시간 조회 실패 - 조리 중인 주문이 아닌 경우")
     public void failGetElapsedTimeNotCooking() {
         // given
         Long ordersId = 1L;
+        given(tokenProvider.getId(token)).willReturn(member.getId());
 
-        given(ordersRepository.findById(ordersId))
-            .willReturn(Optional.of(Orders.builder()
-                .cookingStatus(OrdersCookingStatus.NONE)
-                .build()));
+        Orders orders = Orders.builder()
+            .member(member)
+            .cookingStatus(OrdersCookingStatus.NONE)
+            .build();
+        given(ordersRepository.findById(ordersId)).willReturn(Optional.of(orders));
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> ordersService.findElapsedTime(ordersId));
+            () -> ordersService.findElapsedTime(token, ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_COOKING_STATUS);
     }
 
@@ -127,19 +140,24 @@ class OrdersStatusServiceTest {
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_CANCELED);
     }
 
-    // minsu-23.09.01
+    // minsu-23.09.19
     @Test
     @DisplayName("사용자 주문 취소 실패 - 이미 주문이 조리 중인 경우")
     void failUserOrdersCancelAlreadyCooking() {
         // given
         Long ordersId = 1L;
-        given(ordersRepository.findById(ordersId))
-            .willReturn(
-                Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
+        given(tokenProvider.getId(token)).willReturn(member.getId());
+
+        Orders orders = Orders.builder()
+            .member(member)
+            .cookingStatus(OrdersCookingStatus.COOKING)
+            .receiptStatus(OrdersReceiptStatus.RECEIVED)
+            .build();
+        given(ordersRepository.findById(ordersId)).willReturn(Optional.of(orders));
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> ordersService.modifyOrdersCancel(ordersId));
+            () -> ordersService.modifyOrdersCancel(token, ordersId));
         assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_COOKING_STATUS);
     }
 

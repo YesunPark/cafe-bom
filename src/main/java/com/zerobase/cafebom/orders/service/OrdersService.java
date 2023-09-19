@@ -6,6 +6,7 @@ import static com.zerobase.cafebom.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
+import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_ACCESS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_COOKING_STATUS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
 import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
@@ -72,8 +73,7 @@ public class OrdersService {
         }
     }
 
-    // 주문 상태 변경-minsu-23.09.12
-    @Transactional
+    // 주문 상태 변경-minsu-23.09.19
     public void modifyOrdersStatus(Long ordersId, OrdersStatusModifyDto ordersStatusModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
@@ -103,11 +103,16 @@ public class OrdersService {
         return orders.getReceivedTime();
     }
 
-    // 주문 경과 시간 계산-minsu-23.09.02
-    public Long findElapsedTime(Long ordersId) {
+    // 주문 경과 시간 계산-minsu-23.09.19
+    public Long findElapsedTime(String token, Long ordersId) {
+        Long userId = tokenProvider.getId(token);
 
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
+
+        if (!orders.getMember().getId().equals(userId)) {
+            throw new CustomException(ORDERS_NOT_ACCESS);
+        }
 
         if (orders.getCookingStatus() != OrdersCookingStatus.COOKING) {
             throw new CustomException(ORDERS_NOT_COOKING_STATUS);
@@ -120,8 +125,7 @@ public class OrdersService {
         return duration.toMinutes();
     }
 
-    // 주문 수락 또는 거절-minsu-23.09.02
-    @Transactional
+    // 주문 수락 또는 거절-minsu-23.09.19
     public void modifyOrdersReceiptStatus(Long ordersId,
         OrdersReceiptModifyDto ordersReceiptModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
@@ -143,11 +147,16 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-    // 주문 취소-minsu-23.08.25
-    @Transactional
-    public void modifyOrdersCancel(Long ordersId) {
+    // 주문 취소-minsu-23.09.19
+    public void modifyOrdersCancel(String token, Long ordersId) {
+        Long userId = tokenProvider.getId(token);
+
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
+
+        if (!orders.getMember().getId().equals(userId)) {
+            throw new CustomException(ORDERS_NOT_ACCESS);
+        }
 
         if (orders.getCookingStatus() == OrdersCookingStatus.COOKING
             || orders.getReceiptStatus() == OrdersReceiptStatus.RECEIVED) {
@@ -164,8 +173,7 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-    // 조리 예정 시간 선택-minsu-23.09.02
-    @Transactional
+    // 조리 예정 시간 선택-minsu-23.09.19
     public void modifyOrdersCookingTime(Long ordersId,
         OrdersCookingTimeModifyDto cookingTimeModifyDto) {
         Orders orders = ordersRepository.findById(ordersId)
