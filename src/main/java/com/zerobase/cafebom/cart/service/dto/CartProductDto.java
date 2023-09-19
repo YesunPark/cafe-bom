@@ -15,7 +15,7 @@ public class CartProductDto {
 
     private Product product;
 
-    private Integer count;
+    private Integer quantity;
 
     private List<Integer> optionIdList;
 
@@ -26,7 +26,7 @@ public class CartProductDto {
     public static CartProductDto from(Cart cart) {
         return CartProductDto.builder()
             .product(cart.getProduct())
-            .count(cart.getProductCount())
+            .quantity(cart.getQuantity())
             .optionIdList(new ArrayList<>())
             .build();
     }
