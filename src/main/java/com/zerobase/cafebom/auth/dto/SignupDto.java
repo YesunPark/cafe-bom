@@ -27,7 +27,7 @@ public class SignupDto {
     public static SignupDto from(SignupAdminForm signupAdminForm) {
         return SignupDto.builder()
             .password(signupAdminForm.getPassword())
-            .nickname(signupAdminForm.getAdminName())
+            .nickname(signupAdminForm.getNickname())
             .phone(signupAdminForm.getPhone())
             .email(signupAdminForm.getEmail())
             .build();

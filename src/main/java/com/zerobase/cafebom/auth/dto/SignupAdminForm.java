@@ -17,10 +17,11 @@ public class SignupAdminForm {
     @Size(min = 6, max = 6, message = "인증코드는 숫자 6자리입니다.")
     private String adminCode;
 
-    @Schema(description = "관리자 실명", example = "홍길동")
-    @NotBlank(message = "관리자 실명은 필수로 입력해야 합니다.")
-    @Pattern(regexp = "^[가-힣]{2,4}$", message = "관리자 실명은 한글 2~4자리로 입력해야 합니다.")
-    private String adminName;
+    @Schema(description = "관리자 닉네임", example = "관리자냥")
+    @Pattern(regexp = "^[가-힣]*$", message = "닉네임은 한글로 입력해야 합니다.")
+    @Size(min = 2, max = 6, message = "닉네임은 2~6 자리로 입력해야 합니다.")
+    @NotBlank(message = "닉네임은 필수로 입력해야 합니다.")
+    private String nickname;
 
     @Schema(description = "이메일", example = "admin@cafe.com")
     @Email(message = "이메일 형식을 확인해주세요.")
