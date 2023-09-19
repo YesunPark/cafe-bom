@@ -62,6 +62,53 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
+    // wooyoung-23.08.29
+    @Test
+    @DisplayName("카테고리 별 상품 목록 조회 성공")
+    void successFindProductList() {
+        // given
+        List<Product> productList = new ArrayList<>();
+
+        ProductCategory coffee = ProductCategory.builder()
+            .id(1)
+            .name("커피")
+            .build();
+
+        productList.add(Product.builder()
+            .id(1)
+            .productCategory(coffee)
+            .name("아메리카노")
+            .description("시원해요")
+            .price(2000)
+            .soldOutStatus(IN_STOCK)
+            .picture("picture")
+            .build());
+
+        given(productCategoryRepository.existsById(1)).willReturn(true);
+
+        given(productRepository.findAllByProductCategoryId(1))
+            .willReturn(productList);
+
+        // when
+        List<ProductDto> productDtoList = productService.findProductList(1);
+
+        // then
+        assertThat(productDtoList.get(0).getProductId()).isNotNull();
+        assertThat(productDtoList.get(0).getName()).isEqualTo("아메리카노");
+        assertThat(productDtoList.get(0).getPrice()).isEqualTo(2000);
+        assertThat(productDtoList.get(0).getPicture()).isEqualTo("picture");
+    }
+
+    // wooyoung-23.08.29
+    @Test
+    @DisplayName("카테고리 별 상품 목록 조회 실패 - 존재하지 않는 상품 카테고리")
+    void failFindProductListProductCategoryNotFound() {
+        // when
+        assertThatThrownBy(() -> productService.findProductList(1))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(PRODUCTCATEGORY_NOT_EXISTS.getMessage());
+    }
+
     // wooyoung-23.08.26
     @Test
     @DisplayName("상품 상세 조회 성공")
@@ -136,53 +183,6 @@ class ProductServiceTest {
             .hasMessage(PRODUCT_NOT_EXISTS.getMessage());
     }
 
-    // wooyoung-23.08.29
-    @Test
-    @DisplayName("ProductDto 리스트 가져오기 성공")
-    void successFindProductList() {
-        // given
-        List<Product> productList = new ArrayList<>();
-
-        ProductCategory coffee = ProductCategory.builder()
-            .id(1)
-            .name("커피")
-            .build();
-
-        productList.add(Product.builder()
-            .id(1)
-            .productCategory(coffee)
-            .name("아메리카노")
-            .description("시원해요")
-            .price(2000)
-            .soldOutStatus(IN_STOCK)
-            .picture("picture")
-            .build());
-
-        given(productCategoryRepository.existsById(1)).willReturn(true);
-
-        given(productRepository.findAllByProductCategoryId(1))
-            .willReturn(productList);
-
-        // when
-        List<ProductDto> productDtoList = productService.findProductList(1);
-
-        // then
-        assertThat(productDtoList.get(0).getProductId()).isNotNull();
-        assertThat(productDtoList.get(0).getName()).isEqualTo("아메리카노");
-        assertThat(productDtoList.get(0).getPrice()).isEqualTo(2000);
-        assertThat(productDtoList.get(0).getPicture()).isEqualTo("picture");
-    }
-
-    // wooyoung-23.08.29
-    @Test
-    @DisplayName("ProductDto 리스트 가져오기 실패 - 존재하지 않는 상품 카테고리")
-    void failFindProductListProductCategoryNotFound() {
-        // when
-        assertThatThrownBy(() -> productService.findProductList(1))
-            .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(PRODUCTCATEGORY_NOT_EXISTS.getMessage());
-    }
-
     // minsu-23.09.06
     @Test
     @DisplayName("베스트 상품 목록 조회 성공")
@@ -209,10 +209,10 @@ class ProductServiceTest {
         receivedOrders.add(Orders.builder().id(2L).receiptStatus(RECEIVED).build());
 
         List<OrdersProduct> ordersProducts1 = new ArrayList<>();
-        ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).count(5).build());
+        ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).quantity(5).build());
 
         List<OrdersProduct> ordersProducts2 = new ArrayList<>();
-        ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).count(3).build());
+        ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).quantity(3).build());
 
         given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(receivedOrders);
         given(ordersProductRepository.findByOrdersId(1L)).willReturn(ordersProducts1);

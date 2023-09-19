@@ -73,7 +73,7 @@ class CartServiceTest {
 
     // wooyoung-23.09.18
     @Test
-    @DisplayName("멤버 id로 장바구니 목록 조회 성공")
+    @DisplayName("장바구니 목록 조회 성공")
     void successFindCartList() {
         // given
         Member member = Member.builder()
@@ -100,16 +100,18 @@ class CartServiceTest {
             .build();
 
         Cart cart1 = Cart.builder()
+            .id(1L)
             .member(member)
             .product(espresso)
-            .productCount(1)
+            .quantity(1)
             .status(BEFORE_ORDER)
             .build();
 
         Cart cart2 = Cart.builder()
+            .id(2L)
             .member(member)
             .product(espresso)
-            .productCount(2)
+            .quantity(2)
             .status(BEFORE_ORDER)
             .build();
 
@@ -161,11 +163,26 @@ class CartServiceTest {
 
         // then
         assertThat(cartListDtos.size()).isEqualTo(2);
+        assertThat(cartListDtos.get(0).getCartId()).isEqualTo(cart1.getId());
         assertThat(cartListDtos.get(0).getProductId()).isEqualTo(espresso.getId());
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
         assertThat(cartListDtos.get(0).getProductPicture()).isEqualTo(espresso.getPicture());
-        assertThat(cartListDtos.get(0).getProductOptions().get(0)).isEqualTo(iceAmountOption1);
-        assertThat(cartListDtos.get(0).getProductCount()).isEqualTo(cart1.getProductCount());
+        assertThat(cartListDtos.get(0).getCartListOptionDtos().get(0).getOptionId()).isEqualTo(
+            iceAmountOption1.getId());
+        assertThat(cartListDtos.get(0).getQuantity()).isEqualTo(cart1.getQuantity());
+    }
+
+    // wooyoung-23.09.18
+    @Test
+    @DisplayName("장바구니 목록 조회 실패 - 존재하지 않는 사용자")
+    void failFindCartListMemberNotExists() {
+        // given
+        given(memberRepository.findById(member.getId())).willReturn(Optional.empty());
+
+        // when
+        assertThatThrownBy(() -> cartService.findCartList(TOKEN))
+            .isExactlyInstanceOf(CustomException.class)
+            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
     }
 
     Member member = Member.builder()
@@ -178,28 +195,15 @@ class CartServiceTest {
         .id(1L)
         .member(member)
         .product(product)
-        .productCount(2)
+        .quantity(2)
         .build();
 
     CartAddForm cartAddForm = CartAddForm.builder()
         .optionIdList(List.of())
-        .count(10)
+        .quantity(10)
         .productId(product.getId())
         .cartOrderStatus(BEFORE_ORDER)
         .build();
-
-    // wooyoung-23.09.18
-    @Test
-    @DisplayName("장바구니 목록 조회 실패 - 존재하지 않는 회원")
-    void failFindCartListMemberNotExists() {
-        // given
-        given(tokenProvider.getId(TOKEN)).willReturn(2L);
-
-        // when
-        assertThatThrownBy(() -> cartService.findCartList(TOKEN))
-            .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(MEMBER_NOT_EXISTS.getMessage());
-    }
 
     @BeforeEach
     public void setUp() {
@@ -303,8 +307,10 @@ class CartServiceTest {
         // given
         given(tokenProvider.getId(TOKEN)).willReturn(member.getId());
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-        given(productRepository.findById(cartAddForm.getProductId())).willReturn(Optional.of(product));
-        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(Collections.emptyList());
+        given(productRepository.findById(cartAddForm.getProductId())).willReturn(
+            Optional.of(product));
+        given(cartRepository.findByMemberAndProduct(member, product)).willReturn(
+            Collections.emptyList());
 
         // when
         List<CartProductDto> result = cartService.saveCart(TOKEN, cartAddForm);

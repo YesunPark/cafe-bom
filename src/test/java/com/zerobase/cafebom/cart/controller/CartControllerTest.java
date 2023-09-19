@@ -1,13 +1,31 @@
 package com.zerobase.cafebom.cart.controller;
 
 
+import static com.zerobase.cafebom.security.Role.ROLE_USER;
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
+import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
+import com.zerobase.cafebom.cart.domain.Cart;
+import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListOptionDto;
 import com.zerobase.cafebom.cart.service.CartService;
-import com.zerobase.cafebom.cart.service.dto.CartProductDto;
+import com.zerobase.cafebom.member.domain.Member;
+import com.zerobase.cafebom.option.domain.Option;
+import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
+import com.zerobase.cafebom.product.domain.Product;
+import com.zerobase.cafebom.productcategory.domain.ProductCategory;
 import com.zerobase.cafebom.security.TokenProvider;
 import com.zerobase.cafebom.type.CartOrderStatus;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,39 +36,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-
-import static com.zerobase.cafebom.security.Role.ROLE_USER;
-import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
-import com.zerobase.cafebom.cart.dto.CartListDto;
-import com.zerobase.cafebom.cart.service.CartService;
-import com.zerobase.cafebom.member.domain.Member;
-import com.zerobase.cafebom.option.domain.Option;
-import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
-import com.zerobase.cafebom.product.domain.Product;
-import com.zerobase.cafebom.productcategory.domain.ProductCategory;
-import com.zerobase.cafebom.security.TokenProvider;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @WebMvcTest(CartController.class)
 @WithMockUser
@@ -75,7 +65,7 @@ class CartControllerTest {
         objectMapper = new ObjectMapper();
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 넣기 성공")
     public void successCartSave() throws Exception {
@@ -83,7 +73,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -105,7 +95,7 @@ class CartControllerTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 수량 변경 성공")
     public void successCartModify() throws Exception {
@@ -113,7 +103,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -135,7 +125,7 @@ class CartControllerTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    //youngseon-23.09.11
+    // youngseon-23.09.18
     @Test
     @DisplayName("상품 삭제 성공")
     public void successCartRemove() throws Exception {
@@ -143,7 +133,7 @@ class CartControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         CartAddForm cartAddForm = CartAddForm.builder()
             .optionIdList(Collections.singletonList(1))
-            .count(5)
+            .quantity(5)
             .productId(1)
             .cartOrderStatus(CartOrderStatus.BEFORE_ORDER)
             .build();
@@ -172,7 +162,7 @@ class CartControllerTest {
         given(tokenProvider.getId(TOKEN)).willReturn(1L);
     }
 
-    // wooyoung-23.09.12
+    // wooyoung-23.09.18
     @Test
     @DisplayName("장바구니 목록 조회 성공")
     void successCartList() throws Exception {
@@ -198,6 +188,14 @@ class CartControllerTest {
             .picture("pictureEspresso")
             .build();
 
+        Cart cart = Cart.builder()
+            .id(1L)
+            .member(member)
+            .product(espresso)
+            .quantity(1)
+            .status(BEFORE_ORDER)
+            .build();
+
         OptionCategory iceAmount = OptionCategory.builder()
             .id(1)
             .name("얼음 양")
@@ -218,20 +216,21 @@ class CartControllerTest {
             .optionCategory(iceAmount)
             .build();
 
-        List<Option> optionList = new ArrayList<>();
+        List<CartListOptionDto> cartListOptionDtos = new ArrayList<>();
 
-        optionList.add(iceAmountOption1);
-        optionList.add(iceAmountOption2);
-        optionList.add(iceAmountOption3);
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption1));
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption2));
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption3));
 
         List<CartListDto> dtoList = new ArrayList<>();
 
         CartListDto dto = CartListDto.builder()
+            .cartId(cart.getId())
             .productId(espresso.getId())
             .productName(espresso.getName())
             .productPicture(espresso.getPicture())
-            .productOptions(optionList)
-            .productCount(3)
+            .cartListOptionDtos(cartListOptionDtos)
+            .quantity(3)
             .build();
 
         dtoList.add(dto);
@@ -242,10 +241,11 @@ class CartControllerTest {
         mockMvc.perform(get("/auth/cart")
                 .header("Authorization", TOKEN))
             .andDo(print())
-            .andExpect(jsonPath("$[0].productId").value(espresso.getId()))
-            .andExpect(jsonPath("$[0].productName").value(espresso.getName()))
-            .andExpect(jsonPath("$[0].productPicture").value(espresso.getPicture()))
-            .andExpect(jsonPath("$[0].productOptions[0].id").value(optionList.get(0).getId()))
-            .andExpect(jsonPath("$[0].productCount").value(3));
+            .andExpect(jsonPath("$.cartListDtoList[0].cartId").value(cart.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productId").value(espresso.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productName").value(espresso.getName()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productPicture").value(espresso.getPicture()))
+            .andExpect(jsonPath("$.cartListDtoList[0].cartListOptionDtos[0].optionId").value(cartListOptionDtos.get(0).getOptionId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].quantity").value(3));
     }
 }

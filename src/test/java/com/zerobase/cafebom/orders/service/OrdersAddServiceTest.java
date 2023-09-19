@@ -81,7 +81,7 @@ class OrdersAddServiceTest {
         .id(1L)
         .member(member)
         .product(Product.builder().build())
-        .productCount(2)
+        .quantity(2)
         .build();
 
     // yesun-23.08.31

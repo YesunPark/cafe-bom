@@ -9,13 +9,13 @@ import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.cart.service.dto.CartProductDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,21 +31,19 @@ public class CartController {
 
     private final CartService cartService;
 
-    // wooyoung-23.08.31
+    // wooyoung-23.09.14
     @ApiOperation(value = "장바구니 목록 조회", notes = "사용자가 장바구니 목록을 조회합니다.")
     @GetMapping
-    public ResponseEntity<List<CartListForm.Response>> cartList(
+    public ResponseEntity<CartListForm.Response> cartList(
         @RequestHeader(name = "Authorization") String token) {
 
         List<CartListDto> cartListDtos = cartService.findCartList(token);
 
-        List<CartListForm.Response> responses = new ArrayList<>();
+        CartListForm.Response response = CartListForm.Response.builder()
+            .cartListDtoList(cartListDtos)
+            .build();
 
-        for (CartListDto cartListDto : cartListDtos) {
-            responses.add(CartListForm.Response.from(cartListDto));
-        }
-
-        return ResponseEntity.status(OK).body(responses);
+        return ResponseEntity.status(OK).body(response);
     }
 
     // youngseon-23.09.11
