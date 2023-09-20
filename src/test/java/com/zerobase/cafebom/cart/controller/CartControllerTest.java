@@ -2,6 +2,7 @@ package com.zerobase.cafebom.cart.controller;
 
 
 import static com.zerobase.cafebom.security.Role.ROLE_USER;
+import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -11,7 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.cart.controller.form.CartAddForm;
+import com.zerobase.cafebom.cart.domain.Cart;
 import com.zerobase.cafebom.cart.dto.CartListDto;
+import com.zerobase.cafebom.cart.dto.CartListOptionDto;
 import com.zerobase.cafebom.cart.service.CartService;
 import com.zerobase.cafebom.member.domain.Member;
 import com.zerobase.cafebom.option.domain.Option;
@@ -185,6 +188,14 @@ class CartControllerTest {
             .picture("pictureEspresso")
             .build();
 
+        Cart cart = Cart.builder()
+            .id(1L)
+            .member(member)
+            .product(espresso)
+            .quantity(1)
+            .status(BEFORE_ORDER)
+            .build();
+
         OptionCategory iceAmount = OptionCategory.builder()
             .id(1)
             .name("얼음 양")
@@ -205,19 +216,20 @@ class CartControllerTest {
             .optionCategory(iceAmount)
             .build();
 
-        List<Option> optionList = new ArrayList<>();
+        List<CartListOptionDto> cartListOptionDtos = new ArrayList<>();
 
-        optionList.add(iceAmountOption1);
-        optionList.add(iceAmountOption2);
-        optionList.add(iceAmountOption3);
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption1));
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption2));
+        cartListOptionDtos.add(CartListOptionDto.from(iceAmountOption3));
 
         List<CartListDto> dtoList = new ArrayList<>();
 
         CartListDto dto = CartListDto.builder()
+            .cartId(cart.getId())
             .productId(espresso.getId())
             .productName(espresso.getName())
             .productPicture(espresso.getPicture())
-            .productOptions(optionList)
+            .cartListOptionDtos(cartListOptionDtos)
             .quantity(3)
             .build();
 
@@ -229,10 +241,11 @@ class CartControllerTest {
         mockMvc.perform(get("/auth/cart")
                 .header("Authorization", TOKEN))
             .andDo(print())
-            .andExpect(jsonPath("$[0].productId").value(espresso.getId()))
-            .andExpect(jsonPath("$[0].productName").value(espresso.getName()))
-            .andExpect(jsonPath("$[0].productPicture").value(espresso.getPicture()))
-            .andExpect(jsonPath("$[0].productOptions[0].id").value(optionList.get(0).getId()))
-            .andExpect(jsonPath("$[0].quantity").value(3));
+            .andExpect(jsonPath("$.cartListDtoList[0].cartId").value(cart.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productId").value(espresso.getId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productName").value(espresso.getName()))
+            .andExpect(jsonPath("$.cartListDtoList[0].productPicture").value(espresso.getPicture()))
+            .andExpect(jsonPath("$.cartListDtoList[0].cartListOptionDtos[0].optionId").value(cartListOptionDtos.get(0).getOptionId()))
+            .andExpect(jsonPath("$.cartListDtoList[0].quantity").value(3));
     }
 }

@@ -3,7 +3,6 @@ package com.zerobase.cafebom.orders.dto;
 import com.zerobase.cafebom.orders.domain.Orders;
 import com.zerobase.cafebom.type.OrdersReceiptStatus;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +26,7 @@ public class OrdersHisDto {
 
     private OrdersReceiptStatus ordersReceiptStatus;
 
-    private List<OrdersProductDto> orderedProductsList = new ArrayList<>();
+    private List<OrdersProductDto> orderedProductsList;
 
     public void addOrderProductDto(OrdersProductDto ordersProductDto) {
         orderedProductsList.add(ordersProductDto);
