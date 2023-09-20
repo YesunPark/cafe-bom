@@ -9,12 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.domain.MemberRepository;
-import com.zerobase.cafebom.orders.domain.Orders;
-import com.zerobase.cafebom.orders.dto.OrdersHisDto;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
-import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.front.member.domain.MemberRepository;
+import com.zerobase.cafebom.front.order.controller.OrdersController;
+import com.zerobase.cafebom.front.order.domain.Orders;
+import com.zerobase.cafebom.front.order.dto.OrdersHisDto;
+import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
+import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;

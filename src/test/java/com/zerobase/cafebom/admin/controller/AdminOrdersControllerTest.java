@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.admin.controller;
 
-import static com.zerobase.cafebom.type.OrdersCookingStatus.COOKING;
+import static com.zerobase.cafebom.common.type.OrderCookingStatus.COOKING;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -8,16 +8,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.exception.ErrorCode;
-import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyForm;
-import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyForm;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyForm;
-import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.OrdersCookingTime;
-import com.zerobase.cafebom.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.admin.order.controller.AdminOrdersController;
+import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.common.exception.ErrorCode;
+import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.common.type.OrderCookingTime;
+import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,7 @@ public class AdminOrdersControllerTest {
         // given
         Long ordersId = 1L;
         OrdersCookingTimeModifyForm form = OrdersCookingTimeModifyForm.builder()
-            .selectedCookingTime(OrdersCookingTime._5_TO_10_MINUTES)
+            .selectedCookingTime(OrderCookingTime._5_TO_10_MINUTES)
             .build();
 
         // then

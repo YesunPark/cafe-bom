@@ -6,12 +6,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.member.domain.MemberRepository;
-import com.zerobase.cafebom.orders.dto.OrdersAddForm;
-import com.zerobase.cafebom.orders.service.OrdersHistoryService;
-import com.zerobase.cafebom.orders.service.OrdersService;
-import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.Payment;
+import com.zerobase.cafebom.front.member.domain.MemberRepository;
+import com.zerobase.cafebom.front.order.controller.OrdersController;
+import com.zerobase.cafebom.front.order.dto.OrdersAddForm;
+import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
+import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.common.type.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

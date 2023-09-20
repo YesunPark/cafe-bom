@@ -1,9 +1,9 @@
 package com.zerobase.cafebom.cart.controller;
 
 
-import static com.zerobase.cafebom.security.Role.ROLE_USER;
-import static com.zerobase.cafebom.type.CartOrderStatus.BEFORE_ORDER;
-import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;
+import static com.zerobase.cafebom.common.type.CartOrderStatus.BEFORE_ORDER;
+import static com.zerobase.cafebom.common.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,18 +11,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.cart.controller.form.CartAddForm;
-import com.zerobase.cafebom.cart.domain.Cart;
-import com.zerobase.cafebom.cart.dto.CartListDto;
-import com.zerobase.cafebom.cart.dto.CartListOptionDto;
-import com.zerobase.cafebom.cart.service.CartService;
-import com.zerobase.cafebom.member.domain.Member;
-import com.zerobase.cafebom.option.domain.Option;
-import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
-import com.zerobase.cafebom.product.domain.Product;
-import com.zerobase.cafebom.productcategory.domain.ProductCategory;
-import com.zerobase.cafebom.security.TokenProvider;
-import com.zerobase.cafebom.type.CartOrderStatus;
+import com.zerobase.cafebom.front.cart.controller.CartController;
+import com.zerobase.cafebom.front.cart.dto.CartAddForm;
+import com.zerobase.cafebom.front.cart.domain.Cart;
+import com.zerobase.cafebom.front.cart.dto.CartListDto;
+import com.zerobase.cafebom.front.cart.dto.CartListOptionDto;
+import com.zerobase.cafebom.front.cart.service.impl.CartService;
+import com.zerobase.cafebom.front.member.domain.Member;
+import com.zerobase.cafebom.front.product.domain.Option;
+import com.zerobase.cafebom.front.product.domain.OptionCategory;
+import com.zerobase.cafebom.front.product.domain.Product;
+import com.zerobase.cafebom.front.product.domain.ProductCategory;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.common.type.CartOrderStatus;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

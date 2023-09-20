@@ -1,8 +1,8 @@
 package com.zerobase.cafebom.product.controller;
 
-import static com.zerobase.cafebom.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
-import static com.zerobase.cafebom.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
-import static com.zerobase.cafebom.type.SoldOutStatus.IN_STOCK;
+import static com.zerobase.cafebom.common.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
+import static com.zerobase.cafebom.common.type.SoldOutStatus.IN_STOCK;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -11,18 +11,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.zerobase.cafebom.auth.service.AuthService;
-import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.option.domain.Option;
-import com.zerobase.cafebom.optioncategory.domain.OptionCategory;
-import com.zerobase.cafebom.product.domain.Product;
-import com.zerobase.cafebom.product.dto.BestProductDto;
-import com.zerobase.cafebom.product.dto.ProductDetailDto;
-import com.zerobase.cafebom.product.dto.ProductDto;
-import com.zerobase.cafebom.product.service.ProductService;
-import com.zerobase.cafebom.productcategory.domain.ProductCategory;
-import com.zerobase.cafebom.productoptioncategory.domain.ProductOptionCategory;
-import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.auth.service.impl.AuthService;
+import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.front.product.controller.ProductController;
+import com.zerobase.cafebom.front.product.domain.Option;
+import com.zerobase.cafebom.front.product.domain.OptionCategory;
+import com.zerobase.cafebom.front.product.domain.Product;
+import com.zerobase.cafebom.front.product.dto.BestProductDto;
+import com.zerobase.cafebom.front.product.dto.ProductDetailDto;
+import com.zerobase.cafebom.front.product.dto.ProductDto;
+import com.zerobase.cafebom.front.product.service.impl.ProductService;
+import com.zerobase.cafebom.front.product.domain.ProductCategory;
+import com.zerobase.cafebom.front.product.domain.ProductOptionCategory;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

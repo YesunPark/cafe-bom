@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.auth.dto;
 
-import com.zerobase.cafebom.security.Role;
+import com.zerobase.cafebom.common.config.security.Role;
 import lombok.Builder;
 import lombok.Getter;
 
