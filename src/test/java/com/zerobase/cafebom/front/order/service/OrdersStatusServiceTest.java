@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.orders.service;
+package com.zerobase.cafebom.front.order.service;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
 import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_ALREADY_COOKING_STATUS;

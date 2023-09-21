@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.review.controller;
+package com.zerobase.cafebom.front.review.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

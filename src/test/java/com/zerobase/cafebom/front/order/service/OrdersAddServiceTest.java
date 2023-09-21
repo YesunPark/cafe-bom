@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.orders.service;
+package com.zerobase.cafebom.front.order.service;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.CART_IS_EMPTY;
 import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;

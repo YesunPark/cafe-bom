@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.product.controller;
+package com.zerobase.cafebom.front.product.controller;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;

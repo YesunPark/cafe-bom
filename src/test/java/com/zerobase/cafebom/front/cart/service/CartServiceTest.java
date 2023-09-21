@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.cart.service;
+package com.zerobase.cafebom.front.cart.service;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;

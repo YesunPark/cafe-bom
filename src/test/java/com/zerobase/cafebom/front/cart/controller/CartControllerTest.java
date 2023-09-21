@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.cart.controller;
+package com.zerobase.cafebom.front.cart.controller;
 
 
 import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;

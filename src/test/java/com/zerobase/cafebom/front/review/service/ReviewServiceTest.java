@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.review.service;
+package com.zerobase.cafebom.front.review.service;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;

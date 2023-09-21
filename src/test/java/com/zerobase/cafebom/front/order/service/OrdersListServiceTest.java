@@ -1,4 +1,4 @@
-package com.zerobase.cafebom.orders.service;
+package com.zerobase.cafebom.front.order.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
