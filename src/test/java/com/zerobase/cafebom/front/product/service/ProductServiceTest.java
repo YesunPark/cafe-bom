@@ -3,20 +3,20 @@ package com.zerobase.cafebom.front.product.service;
 import static com.zerobase.cafebom.common.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PRODUCT_NOT_EXISTS;
-import static com.zerobase.cafebom.common.type.OrdersReceiptStatus.RECEIVED;
+import static com.zerobase.cafebom.common.type.OrderReceiptStatus.RECEIVED;
 import static com.zerobase.cafebom.common.type.SoldOutStatus.IN_STOCK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.front.order.domain.Order;
 import com.zerobase.cafebom.front.product.domain.Option;
 import com.zerobase.cafebom.front.product.domain.OptionRepository;
 import com.zerobase.cafebom.front.product.domain.OptionCategory;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
 import com.zerobase.cafebom.front.product.domain.Product;
 import com.zerobase.cafebom.front.product.domain.ProductRepository;
 import com.zerobase.cafebom.front.product.dto.BestProductDto;
@@ -46,10 +46,10 @@ class ProductServiceTest {
     private ProductRepository productRepository;
 
     @Mock
-    private OrdersRepository ordersRepository;
+    private OrderRepository orderRepository;
 
     @Mock
-    private OrdersProductRepository ordersProductRepository;
+    private OrderProductRepository orderProductRepository;
 
     @Mock
     private ProductCategoryRepository productCategoryRepository;
@@ -205,19 +205,19 @@ class ProductServiceTest {
             .picture("picture2")
             .build();
 
-        List<Orders> receivedOrders = new ArrayList<>();
-        receivedOrders.add(Orders.builder().id(1L).receiptStatus(RECEIVED).build());
-        receivedOrders.add(Orders.builder().id(2L).receiptStatus(RECEIVED).build());
+        List<Order> receivedOrders = new ArrayList<>();
+        receivedOrders.add(Order.builder().id(1L).receiptStatus(RECEIVED).build());
+        receivedOrders.add(Order.builder().id(2L).receiptStatus(RECEIVED).build());
 
-        List<OrdersProduct> ordersProducts1 = new ArrayList<>();
-        ordersProducts1.add(OrdersProduct.builder().product(bestProduct1).quantity(5).build());
+        List<OrderProduct> orderProducts1 = new ArrayList<>();
+        orderProducts1.add(OrderProduct.builder().product(bestProduct1).quantity(5).build());
 
-        List<OrdersProduct> ordersProducts2 = new ArrayList<>();
-        ordersProducts2.add(OrdersProduct.builder().product(bestProduct2).quantity(3).build());
+        List<OrderProduct> orderProducts2 = new ArrayList<>();
+        orderProducts2.add(OrderProduct.builder().product(bestProduct2).quantity(3).build());
 
-        given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(receivedOrders);
-        given(ordersProductRepository.findByOrdersId(1L)).willReturn(ordersProducts1);
-        given(ordersProductRepository.findByOrdersId(2L)).willReturn(ordersProducts2);
+        given(orderRepository.findByReceiptStatus(RECEIVED)).willReturn(receivedOrders);
+        given(orderProductRepository.findByOrderId(1L)).willReturn(orderProducts1);
+        given(orderProductRepository.findByOrderId(2L)).willReturn(orderProducts2);
 
         // when
         List<BestProductDto> bestProductList = productService.findBestProductList();
@@ -239,7 +239,7 @@ class ProductServiceTest {
     @DisplayName("베스트 상품 조회 실패 - 상품이 존재하지 않는 경우")
     void failFindBestProductListNoBestProduct() {
         // given
-        given(ordersRepository.findByReceiptStatus(RECEIVED)).willReturn(new ArrayList<>());
+        given(orderRepository.findByReceiptStatus(RECEIVED)).willReturn(new ArrayList<>());
 
         // when
         assertThatThrownBy(() -> productService.findBestProductList())

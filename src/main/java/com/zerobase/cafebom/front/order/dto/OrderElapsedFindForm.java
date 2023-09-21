@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OrdersElapsedFindForm {
+public class OrderElapsedFindForm {
 
     private Long elapsedTimeMinutes;
 }

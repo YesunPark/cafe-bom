@@ -10,11 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.controller.OrdersController;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.dto.OrdersHisDto;
-import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
-import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.dto.OrderHisDto;
+import com.zerobase.cafebom.front.order.service.impl.OrderHistoryService;
+import com.zerobase.cafebom.front.order.service.impl.OrderService;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -29,11 +28,11 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = OrdersController.class)
+@WebMvcTest(controllers = OrderController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureWebMvc
 @WithMockUser
-public class OrdersListControllerTest {
+public class OrderListControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,13 +41,13 @@ public class OrdersListControllerTest {
     private TokenProvider tokenProvider;
 
     @MockBean
-    private OrdersHistoryService orderService;
+    private OrderHistoryService orderService;
 
     @MockBean
     private MemberRepository memberRepository;
 
     @MockBean
-    private OrdersService ordersService;
+    private OrderService orderService;
 
     private ObjectMapper objectMapper;
     private String token = "Bearer token";
@@ -64,8 +63,8 @@ public class OrdersListControllerTest {
     public void successGetAllOrderHistory() throws Exception {
         // given
         given(tokenProvider.getId(token)).willReturn(1L);
-        Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        Order orderSample = Order.builder().build();
+        OrderHisDto orderHisDto = new OrderHisDto(orderSample);
         when(orderService.findAllOrderHistory(1L)).thenReturn(
             Collections.singletonList(orderHisDto));
 
@@ -84,8 +83,8 @@ public class OrdersListControllerTest {
     public void successGetOrderHistoryByPeriod() throws Exception {
         // given
         given(tokenProvider.getId(token)).willReturn(1L);
-        Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        Order orderSample = Order.builder().build();
+        OrderHisDto orderHisDto = new OrderHisDto(orderSample);
         LocalDate startDate = LocalDate.of(2023, 1, 1);
         LocalDate endDate = LocalDate.of(2023, 3, 31);
         when(orderService.findOrderHistoryByPeriod(1L, startDate, endDate)).thenReturn(
@@ -108,8 +107,8 @@ public class OrdersListControllerTest {
     public void successGetOrderHistoryFor3Months() throws Exception {
         // given
         given(tokenProvider.getId(token)).willReturn(1L);
-        Orders orderSample = Orders.builder().build();
-        OrdersHisDto orderHisDto = new OrdersHisDto(orderSample);
+        Order orderSample = Order.builder().build();
+        OrderHisDto orderHisDto = new OrderHisDto(orderSample);
         when(orderService.findOrderHistoryFor3Months(1L)).thenReturn(
             Collections.singletonList(orderHisDto));
 

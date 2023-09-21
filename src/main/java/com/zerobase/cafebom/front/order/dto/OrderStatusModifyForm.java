@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersStatusModifyForm {
+public class OrderStatusModifyForm {
 
     private OrderCookingStatus newStatus;
 }

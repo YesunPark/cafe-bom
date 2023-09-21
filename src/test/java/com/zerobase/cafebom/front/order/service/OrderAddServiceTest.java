@@ -12,17 +12,17 @@ import com.zerobase.cafebom.front.cart.domain.Cart;
 import com.zerobase.cafebom.front.cart.domain.CartRepository;
 import com.zerobase.cafebom.front.cart.domain.CartOptionRepository;
 import com.zerobase.cafebom.common.exception.CustomException;
-import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.service.impl.OrderService;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
 import com.zerobase.cafebom.front.product.domain.OptionRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.dto.OrdersAddDto;
-import com.zerobase.cafebom.front.order.dto.OrdersAddDto.Request;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProductOptionRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.dto.OrderAddDto;
+import com.zerobase.cafebom.front.order.dto.OrderAddDto.Request;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProductOptionRepository;
 import com.zerobase.cafebom.front.product.domain.Product;
 import com.zerobase.cafebom.common.config.security.Role;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
@@ -41,16 +41,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @ExtendWith(MockitoExtension.class)
-class OrdersAddServiceTest {
+class OrderAddServiceTest {
 
     @Spy
     @InjectMocks
-    private OrdersService ordersService;
+    private OrderService orderService;
 
     @Mock
     private MemberRepository memberRepository;
     @Mock
-    private OrdersRepository ordersRepository;
+    private OrderRepository orderRepository;
     @Mock
     private CartRepository cartRepository;
     @Mock
@@ -58,15 +58,15 @@ class OrdersAddServiceTest {
     @Mock
     private OptionRepository optionRepository;
     @Mock
-    private OrdersProductRepository ordersProductRepository;
+    private OrderProductRepository orderProductRepository;
     @Mock
-    private OrdersProductOptionRepository ordersProductOptionRepository;
+    private OrderProductOptionRepository orderProductOptionRepository;
 
     @Mock
     private TokenProvider tokenProvider;
 
     String token = "Bearer token";
-    OrdersAddDto.Request ordersAddDto = Request.builder()
+    OrderAddDto.Request ordersAddDto = Request.builder()
         .payment(Payment.KAKAO_PAY)
         .build();
     Member member = Member.builder()
@@ -77,7 +77,7 @@ class OrdersAddServiceTest {
         .email("test@naber.com")
         .role(Role.ROLE_USER)
         .build();
-    Orders orders = Orders.fromAddOrdersDto(ordersAddDto, member);
+    Order order = Order.fromAddOrdersDto(ordersAddDto, member);
     Cart cart = Cart.builder()
         .id(1L)
         .member(member)
@@ -98,18 +98,18 @@ class OrdersAddServiceTest {
     @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
     void successAddOrders() {
         // given
-        given(ordersRepository.save(any(Orders.class))).willReturn(orders);
+        given(orderRepository.save(any(Order.class))).willReturn(order);
         given(cartRepository.findAllByMember(member)).willReturn(List.of(cart));
-        given(ordersProductRepository.save(any(OrdersProduct.class))).willReturn(
-            OrdersProduct.builder()
-                .ordersId(1L)
+        given(orderProductRepository.save(any(OrderProduct.class))).willReturn(
+            OrderProduct.builder()
+                .orderId(1L)
                 .build());
 
         // when
-        ordersService.addOrders(token, ordersAddDto);
+        orderService.addOrders(token, ordersAddDto);
 
         // then
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
     }
 
     // yesun-23.08.31
@@ -121,10 +121,10 @@ class OrdersAddServiceTest {
             .willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> orderService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(MEMBER_NOT_EXISTS.getMessage());
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
     }
 
     // yesun-23.08.31
@@ -135,9 +135,9 @@ class OrdersAddServiceTest {
         given(cartRepository.findAllByMember(member)).willReturn(List.of());
 
         // when, then
-        assertThatThrownBy(() -> ordersService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> orderService.addOrders(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(CART_IS_EMPTY.getMessage());
-        then(ordersService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
     }
 }

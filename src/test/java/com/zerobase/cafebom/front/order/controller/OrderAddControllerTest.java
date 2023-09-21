@@ -7,10 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.controller.OrdersController;
-import com.zerobase.cafebom.front.order.dto.OrdersAddForm;
-import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
-import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.front.order.dto.OrderAddForm;
+import com.zerobase.cafebom.front.order.service.impl.OrderHistoryService;
+import com.zerobase.cafebom.front.order.service.impl.OrderService;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.common.type.Payment;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,9 +22,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(OrdersController.class)
+@WebMvcTest(OrderController.class)
 @WithMockUser
-class OrdersAddControllerTest {
+class OrderAddControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,25 +33,25 @@ class OrdersAddControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private OrdersService ordersService;
+    private OrderService orderService;
     @MockBean
     private TokenProvider tokenProvider;
 
     @MockBean
-    private OrdersHistoryService ordersHistoryService;
+    private OrderHistoryService orderHistoryService;
 
     @MockBean
     private MemberRepository memberRepository;
 
     String token = "Bearer token";
 
-    OrdersAddForm.Request form;
+    OrderAddForm.Request form;
 
     // yesun-23.08.31
     @BeforeEach
     public void setUp() {
         // given
-        form = OrdersAddForm.Request.builder()
+        form = OrderAddForm.Request.builder()
             .payment(Payment.KAKAO_PAY)
             .build();
     }
@@ -89,7 +88,7 @@ class OrdersAddControllerTest {
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
     void failOrdersAddPaymentNotBlank() throws Exception {
         // given
-        OrdersAddForm.Request form = OrdersAddForm.Request.builder()
+        OrderAddForm.Request form = OrderAddForm.Request.builder()
             .build();
 
         // when

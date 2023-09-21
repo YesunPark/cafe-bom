@@ -1,9 +1,9 @@
 package com.zerobase.cafebom.admin.service;
 
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_ALREADY_CANCELED;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_COOKING_TIME_ALREADY_SET;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_NOT_RECEIVED_STATUS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_STATUS_ONLY_NEXT;
 import static com.zerobase.cafebom.common.type.OrderCookingStatus.COOKING;
 import static com.zerobase.cafebom.common.type.OrderCookingTime.OVER_25_MINUTES;
 import static com.zerobase.cafebom.common.type.OrderCookingTime._5_TO_10_MINUTES;
@@ -13,12 +13,12 @@ import static org.mockito.BDDMockito.given;
 
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.type.OrderCookingStatus;
-import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
+import com.zerobase.cafebom.common.type.OrderReceiptStatus;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.dto.OrderCookingTimeModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrderReceiptModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrderStatusModifyDto;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -31,16 +31,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(MockitoExtension.class)
-class AdminOrdersServiceTest {
+class AdminOrderServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @InjectMocks
-    private AdminOrdersService adminOrdersService;
+    private AdminOrderService adminOrderService;
 
     @Mock
-    private OrdersRepository ordersRepository;
+    private OrderRepository orderRepository;
 
     // minsu-23.09.20
     @Test
@@ -48,18 +48,18 @@ class AdminOrdersServiceTest {
     void failUpdateOrdersStatusOnlyNext() {
         // given
         Long ordersId = 1L;
-        given(ordersRepository.findById(ordersId))
+        given(orderRepository.findById(ordersId))
             .willReturn(
-                Optional.of(Orders.builder().cookingStatus(COOKING).build()));
+                Optional.of(Order.builder().cookingStatus(COOKING).build()));
 
-        OrdersStatusModifyDto modifyDto = OrdersStatusModifyDto.builder()
+        OrderStatusModifyDto modifyDto = OrderStatusModifyDto.builder()
             .newStatus(OrderCookingStatus.NONE)
             .build();
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrdersService.modifyOrdersStatus(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_STATUS_ONLY_NEXT);
+            () -> adminOrderService.modifyOrderStatus(ordersId, modifyDto));
+        assertThat(exception.getErrorCode()).isEqualTo(ORDER_STATUS_ONLY_NEXT);
     }
 
     // minsu-23.09.20
@@ -69,20 +69,20 @@ class AdminOrdersServiceTest {
         // given
         Long ordersId = 1L;
 
-        given(ordersRepository.findById(ordersId))
+        given(orderRepository.findById(ordersId))
             .willReturn(
-                Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
+                Optional.of(Order.builder().receiptStatus(OrderReceiptStatus.CANCELED).build()));
 
-        OrdersReceiptModifyDto modifyDto = OrdersReceiptModifyDto.builder()
-            .newReceiptStatus(OrdersReceiptStatus.RECEIVED)
+        OrderReceiptModifyDto modifyDto = OrderReceiptModifyDto.builder()
+            .newReceiptStatus(OrderReceiptStatus.RECEIVED)
             .build();
 
         // when
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrdersService.modifyOrdersReceiptStatus(ordersId, modifyDto));
+            () -> adminOrderService.modifyOrderReceiptStatus(ordersId, modifyDto));
 
         // then
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_ALREADY_CANCELED);
+        assertThat(exception.getErrorCode()).isEqualTo(ORDER_ALREADY_CANCELED);
     }
 
     // minsu-23.09.20
@@ -91,18 +91,18 @@ class AdminOrdersServiceTest {
     void failAdminOrdersCookingTimeModifyNotReceived() {
         // given
         Long ordersId = 1L;
-        given(ordersRepository.findById(ordersId))
+        given(orderRepository.findById(ordersId))
             .willReturn(
-                Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
+                Optional.of(Order.builder().receiptStatus(OrderReceiptStatus.CANCELED).build()));
 
-        OrdersCookingTimeModifyDto modifyDto = OrdersCookingTimeModifyDto.builder()
+        OrderCookingTimeModifyDto modifyDto = OrderCookingTimeModifyDto.builder()
             .selectedCookingTime(_5_TO_10_MINUTES)
             .build();
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrdersService.modifyOrdersCookingTime(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_NOT_RECEIVED_STATUS);
+            () -> adminOrderService.modifyOrderCookingTime(ordersId, modifyDto));
+        assertThat(exception.getErrorCode()).isEqualTo(ORDER_NOT_RECEIVED_STATUS);
     }
 
     // minsu-23.09.20
@@ -111,23 +111,23 @@ class AdminOrdersServiceTest {
     void failAdminOrdersCookingTimeModifyAlreadySet() {
         // given
         Long ordersId = 1L;
-        Orders orders = Orders.builder()
+        Order order = Order.builder()
             .id(ordersId)
             .cookingStatus(COOKING)
-            .receiptStatus(OrdersReceiptStatus.RECEIVED)
+            .receiptStatus(OrderReceiptStatus.RECEIVED)
             .cookingTime(_5_TO_10_MINUTES) // Already set
             .receivedTime(LocalDateTime.now())
             .build();
 
-        given(ordersRepository.findById(ordersId)).willReturn(Optional.of(orders));
+        given(orderRepository.findById(ordersId)).willReturn(Optional.of(order));
 
-        OrdersCookingTimeModifyDto modifyDto = OrdersCookingTimeModifyDto.builder()
+        OrderCookingTimeModifyDto modifyDto = OrderCookingTimeModifyDto.builder()
             .selectedCookingTime(OVER_25_MINUTES)
             .build();
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrdersService.modifyOrdersCookingTime(ordersId, modifyDto));
-        assertThat(exception.getErrorCode()).isEqualTo(ORDERS_COOKING_TIME_ALREADY_SET);
+            () -> adminOrderService.modifyOrderCookingTime(ordersId, modifyDto));
+        assertThat(exception.getErrorCode()).isEqualTo(ORDER_COOKING_TIME_ALREADY_SET);
     }
 }

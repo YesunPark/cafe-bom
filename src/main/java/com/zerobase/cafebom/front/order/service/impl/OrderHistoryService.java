@@ -6,12 +6,12 @@ import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.dto.OrdersHisDto;
-import com.zerobase.cafebom.front.order.dto.OrdersProductDto;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.dto.OrderHisDto;
+import com.zerobase.cafebom.front.order.dto.OrderProductDto;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,65 +23,65 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class OrdersHistoryService {
+public class OrderHistoryService {
 
-    private final OrdersRepository ordersRepository;
+    private final OrderRepository orderRepository;
 
-    private final OrdersProductRepository ordersProductRepository;
+    private final OrderProductRepository orderProductRepository;
 
     private final MemberRepository memberRepository;
 
     // 지난 3개월 주문내역 조회-youngseon-23.08.28
-    public List<OrdersHisDto> findOrderHistoryFor3Months(Long memberId) {
+    public List<OrderHisDto> findOrderHistoryFor3Months(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
-        List<Orders> orders = ordersRepository.findByMemberAndCreatedDateAfter(member,
+        List<Order> orders = orderRepository.findByMemberAndCreatedDateAfter(member,
             threeMonthsAgo);
         return from(orders);
     }
 
     // 모든 주문내역 조회-youngseon-23.08.28
-    public List<OrdersHisDto> findAllOrderHistory(Long memberId) {
+    public List<OrderHisDto> findAllOrderHistory(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        List<Orders> orders = ordersRepository.findByMember(member);
+        List<Order> orders = orderRepository.findByMember(member);
         return from(orders);
     }
 
     // 정해진 기간의 주문내역 조회-youngseon-23.08.28
-    public List<OrdersHisDto> findOrderHistoryByPeriod(Long memberId, LocalDate startDate,
+    public List<OrderHisDto> findOrderHistoryByPeriod(Long memberId, LocalDate startDate,
         LocalDate endDate) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
-        List<Orders> orders = ordersRepository.findByMemberAndCreatedDateBetween(member,
+        List<Order> orders = orderRepository.findByMemberAndCreatedDateBetween(member,
             startDateTime, endDateTime);
         return from(orders);
     }
 
     // 주문 정보중 사용자에게 보여줄 정보 반환-youngseon-23.08.28
-    public List<OrdersHisDto> from(List<Orders> orders) {
-        List<OrdersHisDto> ordersHisDtoList = new ArrayList<>();
+    private List<OrderHisDto> from(List<Order> orders) {
+        List<OrderHisDto> orderHisDtoList = new ArrayList<>();
 
-        for (Orders order : orders) {
-            OrdersHisDto ordersHisDto = new OrdersHisDto(order);
+        for (Order order : orders) {
+            OrderHisDto orderHisDto = new OrderHisDto(order);
 
-            List<OrdersProduct> ordersProductList = ordersProductRepository.findByOrdersId(
+            List<OrderProduct> orderProductList = orderProductRepository.findByOrderId(
                 order.getId());
 
-            for (OrdersProduct ordersProduct : ordersProductList) {
-                OrdersProductDto ordersProductDto = new OrdersProductDto(ordersProduct);
+            for (OrderProduct orderProduct : orderProductList) {
+                OrderProductDto orderProductDto = new OrderProductDto(orderProduct);
 
-                ordersHisDto.addOrderProductDto(ordersProductDto);
+                orderHisDto.addOrderProductDto(orderProductDto);
             }
 
-            ordersHisDtoList.add(ordersHisDto);
+            orderHisDtoList.add(orderHisDto);
         }
-        return ordersHisDtoList;
+        return orderHisDtoList;
     }
 }

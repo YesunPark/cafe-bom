@@ -8,17 +8,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zerobase.cafebom.admin.order.controller.AdminOrdersController;
-import com.zerobase.cafebom.admin.service.AdminOrdersService;
+import com.zerobase.cafebom.admin.order.controller.AdminOrderController;
+import com.zerobase.cafebom.admin.service.AdminOrderService;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.exception.ErrorCode;
 import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyForm;
-import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyForm;
-import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrderReceiptModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrderStatusModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrderStatusModifyForm;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.common.type.OrderCookingTime;
-import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.common.type.OrderReceiptStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(AdminOrdersController.class)
+@WebMvcTest(AdminOrderController.class)
 @WithMockUser(roles = "ADMIN")
-public class AdminOrdersControllerTest {
+public class AdminOrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +39,7 @@ public class AdminOrdersControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private AdminOrdersService adminOrdersService;
+    private AdminOrderService adminOrderService;
 
     @MockBean
     private TokenProvider tokenProvider;
@@ -50,7 +50,7 @@ public class AdminOrdersControllerTest {
     void successOrdersStatus() throws Exception {
         // given
         Long ordersId = 1L;
-        OrdersStatusModifyForm form = OrdersStatusModifyForm.builder().newStatus(COOKING).build();
+        OrderStatusModifyForm form = OrderStatusModifyForm.builder().newStatus(COOKING).build();
 
         // then
         mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId)
@@ -67,9 +67,9 @@ public class AdminOrdersControllerTest {
     void failUpdateOrdersStatusNotFound() throws Exception {
         // given
         Long ordersId = 1L;
-        doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
-            .when(adminOrdersService).modifyOrdersStatus(ordersId,
-                OrdersStatusModifyDto.builder().newStatus(COOKING).build()
+        doThrow(new CustomException(ErrorCode.ORDER_NOT_EXISTS))
+            .when(adminOrderService).modifyOrderStatus(ordersId,
+                OrderStatusModifyDto.builder().newStatus(COOKING).build()
             );
 
         // then
@@ -85,8 +85,8 @@ public class AdminOrdersControllerTest {
     void successOrdersReceiptAccept() throws Exception {
         // given
         Long ordersId = 1L;
-        OrdersReceiptModifyForm form = OrdersReceiptModifyForm.builder()
-            .newReceiptStatus(OrdersReceiptStatus.RECEIVED)
+        OrderReceiptModifyForm form = OrderReceiptModifyForm.builder()
+            .newReceiptStatus(OrderReceiptStatus.RECEIVED)
             .build();
 
         // then
@@ -104,8 +104,8 @@ public class AdminOrdersControllerTest {
     void successOrdersReceiptReject() throws Exception {
         // given
         Long ordersId = 1L;
-        OrdersReceiptModifyForm form = OrdersReceiptModifyForm.builder()
-            .newReceiptStatus(OrdersReceiptStatus.REJECTED)
+        OrderReceiptModifyForm form = OrderReceiptModifyForm.builder()
+            .newReceiptStatus(OrderReceiptStatus.REJECTED)
             .build();
 
         // then

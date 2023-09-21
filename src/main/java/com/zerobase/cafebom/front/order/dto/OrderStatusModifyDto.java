@@ -6,13 +6,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OrdersStatusModifyDto {
+public class OrderStatusModifyDto {
 
     private OrderCookingStatus newStatus;
 
-    public static OrdersStatusModifyDto from(OrdersStatusModifyForm ordersStatusModifyForm) {
-        return OrdersStatusModifyDto.builder()
-            .newStatus(ordersStatusModifyForm.getNewStatus())
+    public static OrderStatusModifyDto from(OrderStatusModifyForm orderStatusModifyForm) {
+        return OrderStatusModifyDto.builder()
+            .newStatus(orderStatusModifyForm.getNewStatus())
             .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.front.order.dto;
 
-import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.common.type.OrderReceiptStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersReceiptModifyForm {
+public class OrderReceiptModifyForm {
 
-    private OrdersReceiptStatus newReceiptStatus;
+    private OrderReceiptStatus newReceiptStatus;
 }

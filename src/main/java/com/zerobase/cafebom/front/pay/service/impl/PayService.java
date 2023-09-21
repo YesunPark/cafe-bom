@@ -2,9 +2,9 @@ package com.zerobase.cafebom.front.pay.service.impl;
 
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
 import com.zerobase.cafebom.front.product.domain.OptionRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProductOptionRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProductOptionRepository;
 import com.zerobase.cafebom.front.product.domain.ProductRepository;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +18,10 @@ import org.springframework.ui.Model;
 public class PayService {
 
     private final MemberRepository memberRepository;
-    private final OrdersRepository ordersRepository;
+    private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final OrdersProductRepository ordersProductRepository;
-    private final OrdersProductOptionRepository ordersProductOptionRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final OrderProductOptionRepository orderProductOptionRepository;
     private final OptionRepository optionRepository;
 
     private final TokenProvider tokenProvider;
