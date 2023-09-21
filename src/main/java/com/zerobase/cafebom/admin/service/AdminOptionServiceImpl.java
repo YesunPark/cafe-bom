@@ -23,7 +23,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
     private final OptionRepository optionRepository;
     private final OptionCategoryRepository optionCategoryRepository;
 
-    // 옵션 등록-jiyeon-23.08.30
+    // 옵션 등록-jiyeon-23.09.13
     @Override
     public void addOption(AdminOptionDto.Request optionAddDto) {
         Integer optionCategoryId = optionAddDto.getOptionCategoryId();
@@ -37,7 +37,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
         optionRepository.save(option);
     }
 
-    // 옵션 수정-jiyeon-23.08.30
+    // 옵션 수정-jiyeon-23.09.13
     @Override
     public void modifyOption(Integer id, AdminOptionDto.Request request) {
         Integer optionCategoryId = request.getOptionCategoryId();
@@ -59,7 +59,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
 
     }
 
-    // 옵션 삭제-jiyeon-23.08.30
+    // 옵션 삭제-jiyeon-23.09.13
     @Override
     public void removeOption(Integer id) {
         Option option = optionRepository.findById(id)
@@ -67,7 +67,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
         optionRepository.deleteById(option.getId());
     }
 
-    // 옵션 전체 조회-jiyeon-23.08.30
+    // 옵션 전체 조회-jiyeon-23.09.13
     @Override
     public List<AdminOptionForm.Response> findAllOption() {
         List<Option> optionList = optionRepository.findAll();
@@ -77,7 +77,7 @@ public class AdminOptionServiceImpl implements AdminOptionService {
         return optionDtoList;
     }
 
-    // 옵션Id별 조회-jiyeon-23.08.30
+    // 옵션Id별 조회-jiyeon-23.09.13
     @Override
     public AdminOptionForm.Response findByIdOption(Integer id) {
         Option option = optionRepository.findById(id)

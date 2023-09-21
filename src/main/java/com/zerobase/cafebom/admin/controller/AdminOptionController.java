@@ -26,7 +26,7 @@ public class AdminOptionController {
 
     private final AdminOptionService adminOptionService;
 
-    // jiyeon-23.09.18
+    // jiyeon-23.09.13
     @ApiOperation(value = "옵션 등록", notes = "관리자가 옵션을 등록합니다.")
     @PostMapping
     public ResponseEntity<Void> optionAdd(

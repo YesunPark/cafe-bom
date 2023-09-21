@@ -47,7 +47,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.18
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 삭제", notes = "관리자가 상품 카테고리를 삭제합니다.")
     @DeleteMapping("/{productCategoryId}")
     public ResponseEntity<Void> productCategoryRemove(@PathVariable Integer productCategoryId) {
@@ -55,7 +55,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.status(NO_CONTENT).build();
     }
 
-    // jiyeon-23.09.18
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리 전체조회", notes = "관리자가 상품 카테고리를 전체조회합니다.")
     @GetMapping
     public ResponseEntity<List<AdminProductCategoryForm.Response>> productCategoryList1() {
@@ -66,7 +66,7 @@ public class AdminProductCategoryController {
         return ResponseEntity.ok().body(productCategoryFormList);
     }
 
-    // jiyeon-23.09.18
+    // jiyeon-23.09.13
     @ApiOperation(value = "상품 카테고리Id별 조회", notes = "관리자가 상품 카테고리Id별 전체조회합니다.")
     @GetMapping("/{productCategoryId}")
     public ResponseEntity<AdminProductCategoryForm.Response> productCategoryById(

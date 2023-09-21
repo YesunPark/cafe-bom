@@ -76,6 +76,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     // 관리자 상품 삭제-jiyeon-23.08.25
     @Override
+    @Transactional
     public void removeProduct(Integer id) throws IOException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_EXISTS));
