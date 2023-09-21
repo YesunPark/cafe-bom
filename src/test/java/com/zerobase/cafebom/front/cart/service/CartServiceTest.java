@@ -1,7 +1,7 @@
 package com.zerobase.cafebom.front.cart.service;
 
-import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;
+import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.common.type.CartOrderStatus.BEFORE_ORDER;
 import static com.zerobase.cafebom.common.type.CartOrderStatus.WAITING_ACCEPTANCE;
 import static com.zerobase.cafebom.common.type.SoldOutStatus.IN_STOCK;
@@ -12,25 +12,25 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.zerobase.cafebom.front.cart.dto.CartAddForm;
-import com.zerobase.cafebom.front.cart.domain.Cart;
-import com.zerobase.cafebom.front.cart.domain.CartRepository;
-import com.zerobase.cafebom.front.cart.dto.CartListDto;
-import com.zerobase.cafebom.front.cart.service.impl.CartService;
-import com.zerobase.cafebom.front.cart.dto.CartProductDto;
-import com.zerobase.cafebom.front.cart.domain.CartOption;
-import com.zerobase.cafebom.front.cart.domain.CartOptionRepository;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.exception.ErrorCode;
+import com.zerobase.cafebom.front.cart.domain.Cart;
+import com.zerobase.cafebom.front.cart.domain.CartOption;
+import com.zerobase.cafebom.front.cart.domain.CartOptionRepository;
+import com.zerobase.cafebom.front.cart.domain.CartRepository;
+import com.zerobase.cafebom.front.cart.dto.CartAddForm;
+import com.zerobase.cafebom.front.cart.dto.CartListDto;
+import com.zerobase.cafebom.front.cart.dto.CartProductDto;
+import com.zerobase.cafebom.front.cart.service.impl.CartService;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
 import com.zerobase.cafebom.front.product.domain.Option;
-import com.zerobase.cafebom.front.product.domain.OptionRepository;
 import com.zerobase.cafebom.front.product.domain.OptionCategory;
+import com.zerobase.cafebom.front.product.domain.OptionRepository;
 import com.zerobase.cafebom.front.product.domain.Product;
-import com.zerobase.cafebom.front.product.domain.ProductRepository;
 import com.zerobase.cafebom.front.product.domain.ProductCategory;
-import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.front.product.domain.ProductRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,9 +54,6 @@ class CartServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
-
-    @Mock
-    private OptionRepository optionRepository;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -118,14 +115,6 @@ class CartServiceTest {
             .member(member)
             .product(espresso)
             .quantity(2)
-            .status(WAITING_ACCEPTANCE)
-            .build();
-
-        Cart cart3 = Cart.builder()
-            .id(3L)
-            .member(member)
-            .product(espresso)
-            .quantity(3)
             .status(BEFORE_ORDER)
             .build();
 
@@ -133,9 +122,8 @@ class CartServiceTest {
 
         cartList.add(cart1);
         cartList.add(cart2);
-        cartList.add(cart3);
 
-        given(cartRepository.findAllByMemberAndStatus(1L, BEFORE_ORDER)).willReturn(cartList);
+        given(cartRepository.findAllByMemberAndStatus(member, BEFORE_ORDER)).willReturn(cartList);
 
         OptionCategory iceAmount = OptionCategory.builder()
             .id(1)
@@ -152,11 +140,6 @@ class CartServiceTest {
             .optionCategory(iceAmount)
             .build();
 
-        Option iceAmountOption3 = Option.builder()
-            .id(3)
-            .optionCategory(iceAmount)
-            .build();
-
         CartOption cartOption1 = CartOption.builder()
             .id(1L)
             .cart(cart1)
@@ -169,29 +152,20 @@ class CartServiceTest {
             .option(iceAmountOption2)
             .build();
 
-        CartOption cartOption3 = CartOption.builder()
-            .id(3L)
-            .cart(cart3)
-            .option(iceAmountOption3)
-            .build();
-
         List<CartOption> cartOptions1 = new ArrayList<>();
         List<CartOption> cartOptions2 = new ArrayList<>();
-        List<CartOption> cartOptions3 = new ArrayList<>();
 
         cartOptions1.add(cartOption1);
         cartOptions2.add(cartOption2);
-        cartOptions3.add(cartOption3);
 
         given(cartOptionRepository.findAllByCart(cart1)).willReturn(cartOptions1);
         given(cartOptionRepository.findAllByCart(cart2)).willReturn(cartOptions2);
-        given(cartOptionRepository.findAllByCart(cart3)).willReturn(cartOptions3);
 
         // when
         List<CartListDto> cartListDtos = cartService.findCartList(TOKEN);
 
         // then
-        assertThat(cartListDtos.size()).isEqualTo(3);
+        assertThat(cartListDtos.size()).isEqualTo(2);
         assertThat(cartListDtos.get(0).getCartId()).isEqualTo(cart1.getId());
         assertThat(cartListDtos.get(0).getProductId()).isEqualTo(espresso.getId());
         assertThat(cartListDtos.get(0).getProductName()).isEqualTo(espresso.getName());
@@ -201,7 +175,7 @@ class CartServiceTest {
         assertThat(cartListDtos.get(0).getQuantity()).isEqualTo(cart1.getQuantity());
     }
 
-    // wooyoung-23.09.14
+    // wooyoung-23.09.18
     @Test
     @DisplayName("장바구니 목록 조회 실패 - 존재하지 않는 사용자")
     void failFindCartListMemberNotExists() {

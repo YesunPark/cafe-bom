@@ -5,22 +5,22 @@ import static com.zerobase.cafebom.common.exception.ErrorCode.OPTION_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.type.CartOrderStatus.BEFORE_ORDER;
 
-import com.zerobase.cafebom.front.cart.dto.CartAddForm;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.cart.domain.Cart;
+import com.zerobase.cafebom.front.cart.domain.CartOption;
+import com.zerobase.cafebom.front.cart.domain.CartOptionRepository;
 import com.zerobase.cafebom.front.cart.domain.CartRepository;
+import com.zerobase.cafebom.front.cart.dto.CartAddForm;
 import com.zerobase.cafebom.front.cart.dto.CartListDto;
 import com.zerobase.cafebom.front.cart.dto.CartListOptionDto;
 import com.zerobase.cafebom.front.cart.dto.CartProductDto;
-import com.zerobase.cafebom.front.cart.domain.CartOption;
-import com.zerobase.cafebom.front.cart.domain.CartOptionRepository;
-import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
 import com.zerobase.cafebom.front.product.domain.Option;
 import com.zerobase.cafebom.front.product.domain.OptionRepository;
 import com.zerobase.cafebom.front.product.domain.Product;
 import com.zerobase.cafebom.front.product.domain.ProductRepository;
-import com.zerobase.cafebom.common.config.security.TokenProvider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,10 +50,10 @@ public class CartService {
     public List<CartListDto> findCartList(String token) {
         Long memberId = tokenProvider.getId(token);
 
-        memberRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        List<Cart> cartList = cartRepository.findAllByMemberAndStatus(memberId, BEFORE_ORDER);
+        List<Cart> cartList = cartRepository.findAllByMemberAndStatus(member, BEFORE_ORDER);
 
         List<CartListDto> cartListDtoList = new ArrayList<>();
 
@@ -217,8 +217,7 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findByMemberAndProduct(member, product);
 
-
-        if (cartList.size() == 0){
+        if (cartList.size() == 0) {
 
             Cart cart = Cart.createCart(member, product, cartAddForm.getQuantity(),
                 cartAddForm.getCartOrderStatus());
@@ -236,7 +235,7 @@ public class CartService {
 
             }
 
-        }else if (cartList.size() > 0) {
+        } else if (cartList.size() > 0) {
 
             Boolean result = false;
 
@@ -299,7 +298,6 @@ public class CartService {
 
             cartProductDtoList.add(cartProductDto);
         }
-
 
         return cartProductDtoList;
     }
