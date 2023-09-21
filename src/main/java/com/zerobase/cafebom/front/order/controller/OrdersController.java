@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "orders-controller", description = "사용자 주문 관련 API")
 @RestController
-@Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth/orders")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class OrdersController {
 
     private final OrdersHistoryService orderService;
@@ -44,22 +44,24 @@ public class OrdersController {
 
     private final TokenProvider tokenProvider;
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @ApiOperation(value = "조리 경과 시간 조회", notes = "사용자가 조리 경과 시간을 조회합니다.")
     @GetMapping("/elapsed-time/{ordersId}")
-    public ResponseEntity<OrdersElapsedFindForm> elapsedTimeGet(@PathVariable Long ordersId) {
-        Long elapsedTimeMinutes = ordersService.findElapsedTime(ordersId);
+    public ResponseEntity<OrdersElapsedFindForm> elapsedTimeGet(
+        @RequestHeader(name = "Authorization") String token, @PathVariable Long ordersId) {
+        Long elapsedTimeMinutes = ordersService.findElapsedTime(token, ordersId);
         OrdersElapsedFindForm response = OrdersElapsedFindForm.builder()
             .elapsedTimeMinutes(elapsedTimeMinutes)
             .build();
         return ResponseEntity.ok(response);
     }
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @ApiOperation(value = "주문 취소", notes = "관리자가 주문을 수락하기 전에 사용자가 주문을 취소합니다.")
     @PatchMapping("/cancel/{ordersId}")
-    public ResponseEntity<Void> ordersCancelModify(@PathVariable Long ordersId) {
-        ordersService.modifyOrdersCancel(ordersId);
+    public ResponseEntity<Void> ordersCancelModify(
+        @RequestHeader(name = "Authorization") String token, @PathVariable Long ordersId) {
+        ordersService.modifyOrdersCancel(token, ordersId);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 

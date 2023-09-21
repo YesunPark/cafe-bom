@@ -9,13 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.admin.order.controller.AdminOrdersController;
+import com.zerobase.cafebom.admin.service.AdminOrdersService;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.exception.ErrorCode;
 import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
 import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyForm;
-import com.zerobase.cafebom.front.order.service.impl.OrdersService;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.common.type.OrderCookingTime;
 import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
@@ -39,7 +39,7 @@ public class AdminOrdersControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private OrdersService ordersService;
+    private AdminOrdersService adminOrdersService;
 
     @MockBean
     private TokenProvider tokenProvider;
@@ -68,7 +68,7 @@ public class AdminOrdersControllerTest {
         // given
         Long ordersId = 1L;
         doThrow(new CustomException(ErrorCode.ORDERS_NOT_EXISTS))
-            .when(ordersService).modifyOrdersStatus(ordersId,
+            .when(adminOrdersService).modifyOrdersStatus(ordersId,
                 OrdersStatusModifyDto.builder().newStatus(COOKING).build()
             );
 

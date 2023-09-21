@@ -1,10 +1,12 @@
 package com.zerobase.cafebom.common.exception;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-
-import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @AllArgsConstructor
@@ -28,6 +30,7 @@ public enum ErrorCode {
     ORDERS_ALREADY_CANCELED("이미 취소된 주문입니다.", BAD_REQUEST),
     ORDERS_NOT_RECEIVED_STATUS("수락되지 않은 주문입니다.", BAD_REQUEST),
     ORDERS_COOKING_TIME_ALREADY_SET("이미 조리 예정 시간이 설정되어 있습니다.", BAD_REQUEST),
+    ORDERS_NOT_ACCESS("해당 주문에 대한 접근 권한이 없습니다.", FORBIDDEN),
     START_DATE_AND_END_DATE_ARE_ESSENTIAL("시작 날짜와 끝 날짜를 입력해야 합니다.", BAD_REQUEST),
 
     // Product

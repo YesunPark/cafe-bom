@@ -45,7 +45,9 @@ public class OrdersStatusControllerTest {
     @MockBean
     private MemberRepository memberRepository;
 
-    // minsu-23.09.12
+    private String token = "Bearer token";
+
+    // minsu-23.09.19
     @Test
     @DisplayName("주문 경과 시간 조회 성공 - 주문에 대한 경과 시간 조회")
     void successGetElapsedTime() throws Exception {
@@ -53,16 +55,17 @@ public class OrdersStatusControllerTest {
         Long ordersId = 1L;
         Long elapsedTimeMinutes = 30L;
 
-        given(ordersService.findElapsedTime(ordersId)).willReturn(elapsedTimeMinutes);
+        given(ordersService.findElapsedTime(token, ordersId)).willReturn(elapsedTimeMinutes);
 
         // then
-        mockMvc.perform(get("/auth/orders/elapsed-time/{ordersId}", ordersId))
+        mockMvc.perform(get("/auth/orders/elapsed-time/{ordersId}", ordersId)
+                .header("Authorization", token))
             .andExpect(status().isOk())
             .andExpect(content().json("{\"elapsedTimeMinutes\": " + elapsedTimeMinutes + "}"))
             .andDo(print());
     }
 
-    // minsu-23.09.12
+    // minsu-23.09.19
     @Test
     @DisplayName("사용자 주문 취소 성공 - 주문을 정상적으로 취소")
     void successUserOrdersCancel() throws Exception {
@@ -71,6 +74,7 @@ public class OrdersStatusControllerTest {
 
         // then
         mockMvc.perform(patch("/auth/orders/cancel/{ordersId}", ordersId)
+                .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()))
             .andExpect(status().isNoContent())
