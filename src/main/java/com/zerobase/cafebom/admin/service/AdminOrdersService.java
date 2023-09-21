@@ -1,20 +1,23 @@
 package com.zerobase.cafebom.admin.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_EXISTS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_NOT_EXISTS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
+import static com.zerobase.cafebom.common.type.OrderCookingStatus.COOKING;
+import static com.zerobase.cafebom.common.type.OrderCookingStatus.FINISHED;
+import static com.zerobase.cafebom.common.type.OrderCookingStatus.PREPARED;
 
-import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.orders.domain.Orders;
-import com.zerobase.cafebom.orders.domain.OrdersRepository;
-import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.type.OrdersCookingStatus;
-import com.zerobase.cafebom.type.OrdersCookingTime;
-import com.zerobase.cafebom.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.common.type.OrderCookingStatus;
+import com.zerobase.cafebom.common.type.OrderCookingTime;
+import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.front.order.domain.Orders;
+import com.zerobase.cafebom.front.order.domain.OrdersRepository;
+import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +28,14 @@ public class AdminOrdersService {
     private final OrdersRepository ordersRepository;
 
     // 다음 상태 이외엔 주문 상태 변경 불가-minsu-23.09.12
-    private OrdersCookingStatus modifyNextCookingStatus(OrdersCookingStatus currentStatus) {
+    private OrderCookingStatus modifyNextCookingStatus(OrderCookingStatus currentStatus) {
         switch (currentStatus) {
             case NONE:
-                return OrdersCookingStatus.COOKING;
+                return COOKING;
             case COOKING:
-                return OrdersCookingStatus.PREPARED;
+                return PREPARED;
             case PREPARED:
-                return OrdersCookingStatus.FINISHED;
+                return FINISHED;
             default:
                 return null;
         }
@@ -43,9 +46,9 @@ public class AdminOrdersService {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
-        OrdersCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
-        OrdersCookingStatus currentStatus = orders.getCookingStatus();
-        OrdersCookingStatus nextStatus = modifyNextCookingStatus(currentStatus);
+        OrderCookingStatus newStatus = ordersStatusModifyDto.getNewStatus();
+        OrderCookingStatus currentStatus = orders.getCookingStatus();
+        OrderCookingStatus nextStatus = modifyNextCookingStatus(currentStatus);
 
         if (newStatus != nextStatus) {
             throw new CustomException(ORDERS_STATUS_ONLY_NEXT);
@@ -65,7 +68,7 @@ public class AdminOrdersService {
         OrdersReceiptStatus newReceiptStatus = ordersReceiptModifyDto.getNewReceiptStatus();
 
         if (newReceiptStatus == OrdersReceiptStatus.RECEIVED) {
-            orders.modifyReceivedTime(OrdersCookingStatus.COOKING);
+            orders.modifyReceivedTime(COOKING);
         }
 
         if (orders.getReceiptStatus() == OrdersReceiptStatus.CANCELED
@@ -84,13 +87,13 @@ public class AdminOrdersService {
         Orders orders = ordersRepository.findById(ordersId)
             .orElseThrow(() -> new CustomException(ORDERS_NOT_EXISTS));
 
-        OrdersCookingTime selectedCookingTime = cookingTimeModifyDto.getSelectedCookingTime();
+        OrderCookingTime selectedCookingTime = cookingTimeModifyDto.getSelectedCookingTime();
 
         if (orders.getReceiptStatus() != OrdersReceiptStatus.RECEIVED) {
             throw new CustomException(ORDERS_NOT_RECEIVED_STATUS);
         }
 
-        if (orders.getCookingTime() != OrdersCookingTime.NONE
+        if (orders.getCookingTime() != OrderCookingTime.NONE
             && selectedCookingTime != orders.getCookingTime()) {
             throw new CustomException(ORDERS_COOKING_TIME_ALREADY_SET);
         }

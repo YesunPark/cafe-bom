@@ -1,22 +1,24 @@
 package com.zerobase.cafebom.admin.service;
 
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
-import static com.zerobase.cafebom.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_ALREADY_CANCELED;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_COOKING_TIME_ALREADY_SET;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_NOT_RECEIVED_STATUS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_STATUS_ONLY_NEXT;
+import static com.zerobase.cafebom.common.type.OrderCookingStatus.COOKING;
+import static com.zerobase.cafebom.common.type.OrderCookingTime.OVER_25_MINUTES;
+import static com.zerobase.cafebom.common.type.OrderCookingTime._5_TO_10_MINUTES;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
-import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.orders.domain.Orders;
-import com.zerobase.cafebom.orders.domain.OrdersRepository;
-import com.zerobase.cafebom.orders.dto.OrdersCookingTimeModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersReceiptModifyDto;
-import com.zerobase.cafebom.orders.dto.OrdersStatusModifyDto;
-import com.zerobase.cafebom.type.OrdersCookingStatus;
-import com.zerobase.cafebom.type.OrdersCookingTime;
-import com.zerobase.cafebom.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.common.type.OrderCookingStatus;
+import com.zerobase.cafebom.common.type.OrdersReceiptStatus;
+import com.zerobase.cafebom.front.order.domain.Orders;
+import com.zerobase.cafebom.front.order.domain.OrdersRepository;
+import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrdersReceiptModifyDto;
+import com.zerobase.cafebom.front.order.dto.OrdersStatusModifyDto;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -48,10 +50,10 @@ class AdminOrdersServiceTest {
         Long ordersId = 1L;
         given(ordersRepository.findById(ordersId))
             .willReturn(
-                Optional.of(Orders.builder().cookingStatus(OrdersCookingStatus.COOKING).build()));
+                Optional.of(Orders.builder().cookingStatus(COOKING).build()));
 
         OrdersStatusModifyDto modifyDto = OrdersStatusModifyDto.builder()
-            .newStatus(OrdersCookingStatus.NONE)
+            .newStatus(OrderCookingStatus.NONE)
             .build();
 
         // then
@@ -94,7 +96,7 @@ class AdminOrdersServiceTest {
                 Optional.of(Orders.builder().receiptStatus(OrdersReceiptStatus.CANCELED).build()));
 
         OrdersCookingTimeModifyDto modifyDto = OrdersCookingTimeModifyDto.builder()
-            .selectedCookingTime(OrdersCookingTime._5_TO_10_MINUTES)
+            .selectedCookingTime(_5_TO_10_MINUTES)
             .build();
 
         // then
@@ -111,16 +113,16 @@ class AdminOrdersServiceTest {
         Long ordersId = 1L;
         Orders orders = Orders.builder()
             .id(ordersId)
-            .cookingStatus(OrdersCookingStatus.COOKING)
+            .cookingStatus(COOKING)
             .receiptStatus(OrdersReceiptStatus.RECEIVED)
-            .cookingTime(OrdersCookingTime._5_TO_10_MINUTES) // Already set
+            .cookingTime(_5_TO_10_MINUTES) // Already set
             .receivedTime(LocalDateTime.now())
             .build();
 
         given(ordersRepository.findById(ordersId)).willReturn(Optional.of(orders));
 
         OrdersCookingTimeModifyDto modifyDto = OrdersCookingTimeModifyDto.builder()
-            .selectedCookingTime(OrdersCookingTime.OVER_25_MINUTES)
+            .selectedCookingTime(OVER_25_MINUTES)
             .build();
 
         // then
