@@ -1,5 +1,5 @@
 package com.zerobase.cafebom.auth.controller;
-import static com.zerobase.cafebom.exception.ErrorCode.ADMIN_CODE_NOT_MATCH;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ADMIN_CODE_NOT_MATCH;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -9,9 +9,9 @@ import com.zerobase.cafebom.auth.dto.SigninForm;
 import com.zerobase.cafebom.auth.dto.SignupAdminForm;
 import com.zerobase.cafebom.auth.dto.SignupDto;
 import com.zerobase.cafebom.auth.dto.SignupMemberForm;
-import com.zerobase.cafebom.auth.service.AuthService;
-import com.zerobase.cafebom.exception.CustomException;
-import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.auth.service.impl.AuthService;
+import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;

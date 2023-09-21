@@ -7,18 +7,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.auth.dto.SignupMemberForm;
-import com.zerobase.cafebom.auth.service.AuthService;
-import com.zerobase.cafebom.security.SecurityConfig;
-import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.auth.service.impl.AuthService;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(AuthController.class)
