@@ -139,7 +139,7 @@
 <img height="100px" src="https://github.com/YesunPark/cafe-bom/assets/108933466/92190376-2d45-48b1-bc7f-4ee9ffaa769c"/>
 
 - **Java 11** 
-- **SpringBoot 3.0**
+- **SpringBoot 2.7.14**
 - **Spring Data JPA**
 - **Spring Security**
 - **JWT(json web tokens)**
