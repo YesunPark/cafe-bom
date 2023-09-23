@@ -9,12 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
 import com.zerobase.cafebom.front.order.domain.Order;
 import com.zerobase.cafebom.front.order.dto.OrderHisDto;
 import com.zerobase.cafebom.front.order.service.impl.OrderHistoryService;
 import com.zerobase.cafebom.front.order.service.impl.OrderService;
-import com.zerobase.cafebom.common.config.security.TokenProvider;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ public class OrderListControllerTest {
     private TokenProvider tokenProvider;
 
     @MockBean
-    private OrderHistoryService orderService;
+    private OrderHistoryService orderHistoryService;
 
     @MockBean
     private MemberRepository memberRepository;
@@ -65,11 +65,11 @@ public class OrderListControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         Order orderSample = Order.builder().build();
         OrderHisDto orderHisDto = new OrderHisDto(orderSample);
-        when(orderService.findAllOrderHistory(1L)).thenReturn(
+        when(orderHistoryService.findAllOrderHistory(1L)).thenReturn(
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/orders/list")
+        mockMvc.perform(get("/auth/order/list")
                 .header("Authorization", token)
                 .param("viewType", "전체")
                 .with(csrf()))
@@ -87,11 +87,11 @@ public class OrderListControllerTest {
         OrderHisDto orderHisDto = new OrderHisDto(orderSample);
         LocalDate startDate = LocalDate.of(2023, 1, 1);
         LocalDate endDate = LocalDate.of(2023, 3, 31);
-        when(orderService.findOrderHistoryByPeriod(1L, startDate, endDate)).thenReturn(
+        when(orderHistoryService.findOrderHistoryByPeriod(1L, startDate, endDate)).thenReturn(
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/orders/list")
+        mockMvc.perform(get("/auth/order/list")
                 .header("Authorization", token)
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01")
@@ -109,11 +109,11 @@ public class OrderListControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
         Order orderSample = Order.builder().build();
         OrderHisDto orderHisDto = new OrderHisDto(orderSample);
-        when(orderService.findOrderHistoryFor3Months(1L)).thenReturn(
+        when(orderHistoryService.findOrderHistoryFor3Months(1L)).thenReturn(
             Collections.singletonList(orderHisDto));
 
         // when, then
-        mockMvc.perform(get("/auth/orders/list")
+        mockMvc.perform(get("/auth/order/list")
                 .header("Authorization", token)
                 .param("viewType", "")
                 .with(csrf()))
@@ -129,7 +129,7 @@ public class OrderListControllerTest {
         given(tokenProvider.getId(token)).willReturn(1L);
 
         // when, then
-        mockMvc.perform(get("/auth/orders/list")
+        mockMvc.perform(get("/auth/order/list")
                 .header("Authorization", token)
                 .param("viewType", "기간")
                 .param("startDate", "2023-01-01")

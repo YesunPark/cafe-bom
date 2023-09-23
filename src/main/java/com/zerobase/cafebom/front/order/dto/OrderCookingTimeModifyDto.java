@@ -10,7 +10,7 @@ public class OrderCookingTimeModifyDto {
 
     private OrderCookingTime selectedCookingTime;
 
-    public static OrderCookingTimeModifyDto from(OrdersCookingTimeModifyForm form) {
+    public static OrderCookingTimeModifyDto from(OrderCookingTimeModifyForm form) {
         return OrderCookingTimeModifyDto.builder()
             .selectedCookingTime(form.getSelectedCookingTime())
             .build();

@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import com.zerobase.cafebom.admin.service.AdminOrderService;
 import io.swagger.annotations.ApiOperation;
 import com.zerobase.cafebom.front.order.dto.OrderCookingTimeModifyDto;
-import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrderCookingTimeModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrderReceiptModifyDto;
 import com.zerobase.cafebom.front.order.dto.OrderReceiptModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrderStatusModifyDto;
@@ -61,7 +61,7 @@ public class AdminOrderController {
     @PatchMapping("/cooking-time/{orderId}")
     public ResponseEntity<Void> orderCookingTimeModify(
         @PathVariable Long orderId,
-        @RequestBody @Valid OrdersCookingTimeModifyForm cookingTimeModifyForm) {
+        @RequestBody @Valid OrderCookingTimeModifyForm cookingTimeModifyForm) {
 
         adminOrderService.modifyOrderCookingTime(orderId,
             OrderCookingTimeModifyDto.from(cookingTimeModifyForm));

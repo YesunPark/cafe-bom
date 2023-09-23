@@ -77,7 +77,7 @@ class OrderAddServiceTest {
         .email("test@naber.com")
         .role(Role.ROLE_USER)
         .build();
-    Order order = Order.fromAddOrdersDto(ordersAddDto, member);
+    Order order = Order.fromAddOrderDto(ordersAddDto, member);
     Cart cart = Cart.builder()
         .id(1L)
         .member(member)
@@ -106,10 +106,10 @@ class OrderAddServiceTest {
                 .build());
 
         // when
-        orderService.addOrders(token, ordersAddDto);
+        orderService.addOrder(token, ordersAddDto);
 
         // then
-        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrder(token, ordersAddDto);
     }
 
     // yesun-23.08.31
@@ -121,10 +121,10 @@ class OrderAddServiceTest {
             .willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> orderService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> orderService.addOrder(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(MEMBER_NOT_EXISTS.getMessage());
-        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrder(token, ordersAddDto);
     }
 
     // yesun-23.08.31
@@ -135,9 +135,9 @@ class OrderAddServiceTest {
         given(cartRepository.findAllByMember(member)).willReturn(List.of());
 
         // when, then
-        assertThatThrownBy(() -> orderService.addOrders(token, ordersAddDto))
+        assertThatThrownBy(() -> orderService.addOrder(token, ordersAddDto))
             .isExactlyInstanceOf(CustomException.class)
             .hasMessage(CART_IS_EMPTY.getMessage());
-        then(orderService).should(times(1)).addOrders(token, ordersAddDto);
+        then(orderService).should(times(1)).addOrder(token, ordersAddDto);
     }
 }

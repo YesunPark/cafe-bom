@@ -53,8 +53,8 @@ public class OrderService {
     private final TokenProvider tokenProvider;
 
     // 주문 수락 시간 저장-minsu-23.09.12
-    public LocalDateTime saveReceivedTime(Long ordersId) {
-        Order order = orderRepository.findById(ordersId)
+    public LocalDateTime saveReceivedTime(Long orderId) {
+        Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new CustomException(ORDER_NOT_EXISTS));
 
         if (order.getCookingStatus() != OrderCookingStatus.COOKING) {
@@ -65,10 +65,10 @@ public class OrderService {
     }
 
     // 주문 경과 시간 계산-minsu-23.09.19
-    public Long findElapsedTime(String token, Long ordersId) {
+    public Long findElapsedTime(String token, Long orderId) {
         Long userId = tokenProvider.getId(token);
 
-        Order order = orderRepository.findById(ordersId)
+        Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new CustomException(ORDER_NOT_EXISTS));
 
         if (!order.getMember().getId().equals(userId)) {
@@ -87,10 +87,10 @@ public class OrderService {
     }
 
     // 주문 취소-minsu-23.09.19
-    public void modifyOrderCancel(String token, Long ordersId) {
+    public void modifyOrderCancel(String token, Long orderId) {
         Long userId = tokenProvider.getId(token);
 
-        Order order = orderRepository.findById(ordersId)
+        Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new CustomException(ORDER_NOT_EXISTS));
 
         if (!order.getMember().getId().equals(userId)) {
@@ -114,14 +114,14 @@ public class OrderService {
 
     // 주문 생성-yesun-23.08.31
     @Transactional
-    public void addOrders(String token, OrderAddDto.Request ordersAddDto) {
+    public void addOrder(String token, OrderAddDto.Request orderAddDto) {
         Long userId = tokenProvider.getId(token);
         Member memberById = memberRepository.findById(userId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
         Order savedOrder = orderRepository.save(Order.builder()
             .member(memberById)
-            .payment(ordersAddDto.getPayment())
+            .payment(orderAddDto.getPayment())
             .cookingStatus(OrderCookingStatus.NONE)
             .receiptStatus(OrderReceiptStatus.WAITING)
             .build());

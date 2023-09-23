@@ -74,7 +74,7 @@ public class Order extends BaseTimeEntity {
         this.cookingTime = selectedCookingTime;
     }
 
-    public static Order fromAddOrdersDto(OrderAddDto.Request dto, Member member) {
+    public static Order fromAddOrderDto(OrderAddDto.Request dto, Member member) {
         return Order.builder()
             .member(member)
             .payment(dto.getPayment())

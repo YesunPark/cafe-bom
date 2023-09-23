@@ -12,7 +12,7 @@ import com.zerobase.cafebom.admin.order.controller.AdminOrderController;
 import com.zerobase.cafebom.admin.service.AdminOrderService;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.exception.ErrorCode;
-import com.zerobase.cafebom.front.order.dto.OrdersCookingTimeModifyForm;
+import com.zerobase.cafebom.front.order.dto.OrderCookingTimeModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrderReceiptModifyForm;
 import com.zerobase.cafebom.front.order.dto.OrderStatusModifyDto;
 import com.zerobase.cafebom.front.order.dto.OrderStatusModifyForm;
@@ -47,13 +47,13 @@ public class AdminOrderControllerTest {
     // minsu-23.09.12
     @Test
     @DisplayName("주문 상태 변경 성공 - 정상적으로 주문 상태 변경")
-    void successOrdersStatus() throws Exception {
+    void successOrderStatus() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         OrderStatusModifyForm form = OrderStatusModifyForm.builder().newStatus(COOKING).build();
 
         // then
-        mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId)
+        mockMvc.perform(patch("/admin/order/status/{orderId}", orderId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
                 .with(csrf()))
@@ -64,16 +64,16 @@ public class AdminOrderControllerTest {
     // minsu-23.09.12
     @Test
     @DisplayName("주문 상태 변경 실패 - 주문이 존재하지 않는 경우")
-    void failUpdateOrdersStatusNotFound() throws Exception {
+    void failUpdateOrderStatusNotFound() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         doThrow(new CustomException(ErrorCode.ORDER_NOT_EXISTS))
-            .when(adminOrderService).modifyOrderStatus(ordersId,
+            .when(adminOrderService).modifyOrderStatus(orderId,
                 OrderStatusModifyDto.builder().newStatus(COOKING).build()
             );
 
         // then
-        mockMvc.perform(patch("/admin/orders/status/{ordersId}", ordersId)
+        mockMvc.perform(patch("/admin/order/status/{orderId}", orderId)
                 .with(csrf()))
             .andExpect(status().isBadRequest())
             .andDo(print());
@@ -82,15 +82,15 @@ public class AdminOrderControllerTest {
     // minsu-23.09.12
     @Test
     @DisplayName("주문 수락 성공 - 주문을 정상적으로 수락")
-    void successOrdersReceiptAccept() throws Exception {
+    void successOrderReceiptAccept() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         OrderReceiptModifyForm form = OrderReceiptModifyForm.builder()
             .newReceiptStatus(OrderReceiptStatus.RECEIVED)
             .build();
 
         // then
-        mockMvc.perform(patch("/admin/orders/receipt-status/{ordersId}", ordersId)
+        mockMvc.perform(patch("/admin/order/receipt-status/{orderId}", orderId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
                 .with(csrf()))
@@ -101,15 +101,15 @@ public class AdminOrderControllerTest {
     // minsu-23.09.12
     @Test
     @DisplayName("주문 거절 성공 - 주문을 정상적으로 거절")
-    void successOrdersReceiptReject() throws Exception {
+    void successOrderReceiptReject() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         OrderReceiptModifyForm form = OrderReceiptModifyForm.builder()
             .newReceiptStatus(OrderReceiptStatus.REJECTED)
             .build();
 
         // then
-        mockMvc.perform(patch("/admin/orders/receipt-status/{ordersId}", ordersId)
+        mockMvc.perform(patch("/admin/order/receipt-status/{orderId}", orderId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
                 .with(csrf()))
@@ -120,15 +120,15 @@ public class AdminOrderControllerTest {
     // minsu-23.09.12
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 성공 - 주문의 조리 예정 시간을 정상적으로 선택")
-    void successAdminOrdersCookingTimeModify() throws Exception {
+    void successAdminOrderCookingTimeModify() throws Exception {
         // given
-        Long ordersId = 1L;
-        OrdersCookingTimeModifyForm form = OrdersCookingTimeModifyForm.builder()
+        Long orderId = 1L;
+        OrderCookingTimeModifyForm form = OrderCookingTimeModifyForm.builder()
             .selectedCookingTime(OrderCookingTime._5_TO_10_MINUTES)
             .build();
 
         // then
-        mockMvc.perform(patch("/admin/orders/cooking-time/{ordersId}", ordersId)
+        mockMvc.perform(patch("/admin/order/cooking-time/{orderId}", orderId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
                 .with(csrf()))

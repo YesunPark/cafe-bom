@@ -107,7 +107,7 @@ class ReviewServiceTest {
     // yesun-23.09.04
     @Test
     @DisplayName("리뷰 생성 실패 - 존재하지 않는 주문_상품 ID 요청")
-    void successAddReviewOrdersProductIdNotExits() throws IOException {
+    void successAddReviewOrderProductIdNotExits() throws IOException {
         // given
         given(orderProductRepository.findById(request.getOrderProductId()))
             .willReturn(Optional.empty());

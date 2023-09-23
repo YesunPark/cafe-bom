@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrdersCookingTimeModifyForm {
+public class OrderCookingTimeModifyForm {
 
     private OrderCookingTime selectedCookingTime;
 }

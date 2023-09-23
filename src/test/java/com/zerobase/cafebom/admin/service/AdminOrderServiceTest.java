@@ -47,8 +47,8 @@ class AdminOrderServiceTest {
     @DisplayName("주문 상태 변경 실패 - 주문 상태는 전으로 돌아갈 수 없음")
     void failUpdateOrdersStatusOnlyNext() {
         // given
-        Long ordersId = 1L;
-        given(orderRepository.findById(ordersId))
+        Long orderId = 1L;
+        given(orderRepository.findById(orderId))
             .willReturn(
                 Optional.of(Order.builder().cookingStatus(COOKING).build()));
 
@@ -58,18 +58,18 @@ class AdminOrderServiceTest {
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrderService.modifyOrderStatus(ordersId, modifyDto));
+            () -> adminOrderService.modifyOrderStatus(orderId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDER_STATUS_ONLY_NEXT);
     }
 
     // minsu-23.09.20
     @Test
     @DisplayName("주문 수락/거절 실패 - 주문이 이미 취소된 경우")
-    void failOrdersReceiptAlreadyCanceled() {
+    void failOrderReceiptAlreadyCanceled() {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
 
-        given(orderRepository.findById(ordersId))
+        given(orderRepository.findById(orderId))
             .willReturn(
                 Optional.of(Order.builder().receiptStatus(OrderReceiptStatus.CANCELED).build()));
 
@@ -79,7 +79,7 @@ class AdminOrderServiceTest {
 
         // when
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrderService.modifyOrderReceiptStatus(ordersId, modifyDto));
+            () -> adminOrderService.modifyOrderReceiptStatus(orderId, modifyDto));
 
         // then
         assertThat(exception.getErrorCode()).isEqualTo(ORDER_ALREADY_CANCELED);
@@ -88,10 +88,10 @@ class AdminOrderServiceTest {
     // minsu-23.09.20
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 실패 - 주문이 수락되지 않은 경우")
-    void failAdminOrdersCookingTimeModifyNotReceived() {
+    void failAdminOrderCookingTimeModifyNotReceived() {
         // given
-        Long ordersId = 1L;
-        given(orderRepository.findById(ordersId))
+        Long orderId = 1L;
+        given(orderRepository.findById(orderId))
             .willReturn(
                 Optional.of(Order.builder().receiptStatus(OrderReceiptStatus.CANCELED).build()));
 
@@ -101,25 +101,25 @@ class AdminOrderServiceTest {
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrderService.modifyOrderCookingTime(ordersId, modifyDto));
+            () -> adminOrderService.modifyOrderCookingTime(orderId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDER_NOT_RECEIVED_STATUS);
     }
 
     // minsu-23.09.20
     @Test
     @DisplayName("관리자 조리 예정 시간 선택 실패 - 이미 조리 예정 시간이 설정되어 있는 경우")
-    void failAdminOrdersCookingTimeModifyAlreadySet() {
+    void failAdminOrderCookingTimeModifyAlreadySet() {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         Order order = Order.builder()
-            .id(ordersId)
+            .id(orderId)
             .cookingStatus(COOKING)
             .receiptStatus(OrderReceiptStatus.RECEIVED)
             .cookingTime(_5_TO_10_MINUTES) // Already set
             .receivedTime(LocalDateTime.now())
             .build();
 
-        given(orderRepository.findById(ordersId)).willReturn(Optional.of(order));
+        given(orderRepository.findById(orderId)).willReturn(Optional.of(order));
 
         OrderCookingTimeModifyDto modifyDto = OrderCookingTimeModifyDto.builder()
             .selectedCookingTime(OVER_25_MINUTES)
@@ -127,7 +127,7 @@ class AdminOrderServiceTest {
 
         // then
         CustomException exception = assertThrows(CustomException.class,
-            () -> adminOrderService.modifyOrderCookingTime(ordersId, modifyDto));
+            () -> adminOrderService.modifyOrderCookingTime(orderId, modifyDto));
         assertThat(exception.getErrorCode()).isEqualTo(ORDER_COOKING_TIME_ALREADY_SET);
     }
 }
