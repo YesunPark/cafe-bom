@@ -59,9 +59,9 @@ class OrderAddControllerTest {
     // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 성공 - 토큰, 결제 수단을 받아 주문 저장")
-    void successOrdersAdd() throws Exception {
+    void successOrderAdd() throws Exception {
         // when
-        mockMvc.perform(post("/auth/orders")
+        mockMvc.perform(post("/auth/order")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
@@ -73,9 +73,9 @@ class OrderAddControllerTest {
     // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 실패 - 헤더에 Authorization 없음")
-    void failOrdersAddAuthorizationNotPresent() throws Exception {
+    void failOrderAddAuthorizationNotPresent() throws Exception {
         // when
-        mockMvc.perform(post("/auth/orders")
+        mockMvc.perform(post("/auth/order")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(form))
                 .with(csrf()))
@@ -86,13 +86,13 @@ class OrderAddControllerTest {
     // yesun-23.09.12
     @Test
     @DisplayName("주문 저장 실패 - 요청 형식 오류(결제 수단 누락)")
-    void failOrdersAddPaymentNotBlank() throws Exception {
+    void failOrderAddPaymentNotBlank() throws Exception {
         // given
         OrderAddForm.Request form = OrderAddForm.Request.builder()
             .build();
 
         // when
-        mockMvc.perform(post("/auth/orders")
+        mockMvc.perform(post("/auth/order")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", token)
                 .content(objectMapper.writeValueAsString(form))

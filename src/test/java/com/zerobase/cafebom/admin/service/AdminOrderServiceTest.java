@@ -45,7 +45,7 @@ class AdminOrderServiceTest {
     // minsu-23.09.20
     @Test
     @DisplayName("주문 상태 변경 실패 - 주문 상태는 전으로 돌아갈 수 없음")
-    void failUpdateOrdersStatusOnlyNext() {
+    void failUpdateOrderStatusOnlyNext() {
         // given
         Long orderId = 1L;
         given(orderRepository.findById(orderId))

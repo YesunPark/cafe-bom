@@ -51,13 +51,13 @@ public class OrderStatusControllerTest {
     @DisplayName("주문 경과 시간 조회 성공 - 주문에 대한 경과 시간 조회")
     void successGetElapsedTime() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         Long elapsedTimeMinutes = 30L;
 
-        given(orderService.findElapsedTime(token, ordersId)).willReturn(elapsedTimeMinutes);
+        given(orderService.findElapsedTime(token, orderId)).willReturn(elapsedTimeMinutes);
 
         // then
-        mockMvc.perform(get("/auth/orders/elapsed-time/{ordersId}", ordersId)
+        mockMvc.perform(get("/auth/order/elapsed-time/{orderId}", orderId)
                 .header("Authorization", token))
             .andExpect(status().isOk())
             .andExpect(content().json("{\"elapsedTimeMinutes\": " + elapsedTimeMinutes + "}"))
@@ -67,12 +67,12 @@ public class OrderStatusControllerTest {
     // minsu-23.09.19
     @Test
     @DisplayName("사용자 주문 취소 성공 - 주문을 정상적으로 취소")
-    void successUserOrdersCancel() throws Exception {
+    void successUserOrderCancel() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
 
         // then
-        mockMvc.perform(patch("/auth/orders/cancel/{ordersId}", ordersId)
+        mockMvc.perform(patch("/auth/order/cancel/{orderId}", orderId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()))
