@@ -122,7 +122,7 @@
 
 [👉 ERD Cloud에서 직접 보기](https://www.erdcloud.com/d/pqop6rtCyk7PzkgLD)
 
-![ERD 0913](https://github.com/YesunPark/cafe-bom/assets/108933466/7a19031e-e20a-40b7-bb50-36f2a59bdcef)
+![ERD 0913](https://github.com/YesunPark/cafe-bom/assets/108933466/71aefe7c-ab4b-44fb-a7e9-9585f9875e15)
 
 
 
