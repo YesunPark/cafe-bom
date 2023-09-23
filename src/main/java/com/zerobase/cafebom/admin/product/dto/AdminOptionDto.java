@@ -1,9 +1,9 @@
-package com.zerobase.cafebom.front.product.dto;
+package com.zerobase.cafebom.admin.product.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
-public class OptionDto {
+public class AdminOptionDto {
 
     @Getter
     @Builder
@@ -15,8 +15,8 @@ public class OptionDto {
 
         private Integer price;
 
-        public static OptionDto.Request from(OptionForm.Request form) {
-            return OptionDto.Request.builder()
+        public static AdminOptionDto.Request from(AdminOptionForm.Request form) {
+            return AdminOptionDto.Request.builder()
                 .optionCategoryId(form.getOptionCategoryId())
                 .name(form.getName())
                 .price(form.getPrice())
