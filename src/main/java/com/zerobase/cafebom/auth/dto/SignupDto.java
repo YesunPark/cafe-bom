@@ -15,7 +15,7 @@ public class SignupDto {
 
     private String email;
 
-    public static SignupDto from(SignupMemberForm signupMemberForm) {
+    public static SignupDto from(SignupMemberForm.Request signupMemberForm) {
         return SignupDto.builder()
             .password(signupMemberForm.getPassword())
             .nickname(signupMemberForm.getNickname())
@@ -24,7 +24,7 @@ public class SignupDto {
             .build();
     }
 
-    public static SignupDto from(SignupAdminForm signupAdminForm) {
+    public static SignupDto from(SignupAdminForm.Request signupAdminForm) {
         return SignupDto.builder()
             .password(signupAdminForm.getPassword())
             .nickname(signupAdminForm.getAdminName())

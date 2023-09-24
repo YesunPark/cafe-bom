@@ -47,7 +47,7 @@ public class AuthService implements UserDetailsService {
     }
 
     // 관리자 회원가입-yesun-23.09.05
-    public void signup(SignupAdminForm signupAdminForm) {
+    public void signup(SignupAdminForm.Request signupAdminForm) {
         SignupDto signupDto = SignupDto.from(signupAdminForm);
 
         memberRepository.findByEmail(signupDto.getEmail()).ifPresent(member -> {

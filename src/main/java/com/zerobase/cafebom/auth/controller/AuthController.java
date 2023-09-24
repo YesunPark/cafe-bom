@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,21 +33,21 @@ public class AuthController {
     @Value("${admin.code}")
     private String ADMIN_CODE;
 
-    // yesun-23.09.05
+    // yesun-23.09.24
     @ApiOperation(value = "사용자 회원가입", notes = "일반 사용자는 이메일, 닉네임, 전화번호, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup")
     public ResponseEntity<Void> memberSignup(
-        @RequestBody @Valid SignupMemberForm signupMemberForm
+        @RequestBody @Valid SignupMemberForm.Request signupMemberForm
     ) {
         authService.signup(SignupDto.from(signupMemberForm));
         return ResponseEntity.status(CREATED).build();
     }
 
-    // yesun-23.09.05
+    // yesun-23.09.24
     @ApiOperation(value = "관리자 회원가입", notes = "관리자는 관리자 인증코드, 이메일, 비밀번호로 회원가입합니다.")
     @PostMapping("/signup/admin")
     public ResponseEntity<Void> adminSignup(
-        @RequestBody @Valid SignupAdminForm signupAdminForm
+        @RequestBody @Valid SignupAdminForm.Request signupAdminForm
     ) {
         if (!ADMIN_CODE.equals(signupAdminForm.getAdminCode())) {
             throw new CustomException(ADMIN_CODE_NOT_MATCH);
