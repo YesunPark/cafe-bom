@@ -38,27 +38,27 @@ public class AuthService implements UserDetailsService {
 
     // 사용자 회원가입-yesun-23.09.24
     public void signup(SignupMemberForm.Request form) {
-        SignupDto request = SignupDto.from(form);
-        if (memberRepository.findByNickname(request.getNickname()).isPresent()) {
+        SignupDto dto = SignupDto.from(form);
+        if (memberRepository.findByNickname(dto.getNickname()).isPresent()) {
             throw new CustomException(NICKNAME_ALREADY_EXISTS);
         }
-        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         }
         memberRepository.save(
-            Member.from(request, passwordEncoder.encode(request.getPassword()), ROLE_USER));
+            Member.from(dto, passwordEncoder.encode(dto.getPassword()), ROLE_USER));
     }
 
     // 관리자 회원가입-yesun-23.09.24
     public void signup(SignupAdminForm.Request form) {
-        SignupDto request = SignupDto.from(form);
+        SignupDto dto = SignupDto.from(form);
 
-        memberRepository.findByEmail(request.getEmail()).ifPresent(member -> {
+        memberRepository.findByEmail(dto.getEmail()).ifPresent(member -> {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         });
 
         memberRepository.save(
-            Member.from(request, passwordEncoder.encode(request.getPassword()), ROLE_ADMIN));
+            Member.from(dto, passwordEncoder.encode(dto.getPassword()), ROLE_ADMIN));
     }
 
     // 공통 로그인-yesun-23.09.24
