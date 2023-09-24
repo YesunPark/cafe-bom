@@ -39,7 +39,7 @@ public class AuthController {
     public ResponseEntity<Void> memberSignup(
         @RequestBody @Valid SignupMemberForm.Request signupMemberForm
     ) {
-        authService.signup(SignupDto.from(signupMemberForm));
+        authService.signup(signupMemberForm);
         return ResponseEntity.status(CREATED).build();
     }
 
@@ -62,7 +62,7 @@ public class AuthController {
     public ResponseEntity<SigninForm.Response> signin(
         @RequestBody @Valid SigninForm.Request signinForm
     ) {
-        Response signinDto = authService.signin(Request.from(signinForm));
+        Response signinDto = authService.signin(signinForm);
         String accessToken = tokenProvider.generateToken(
             signinDto.getMemberId(), signinDto.getEmail(), signinDto.getRole()
         );
