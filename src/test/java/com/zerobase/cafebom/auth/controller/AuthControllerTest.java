@@ -1,22 +1,25 @@
 package com.zerobase.cafebom.auth.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.auth.dto.SignupMemberForm;
-import com.zerobase.cafebom.auth.service.AuthService;
-import com.zerobase.cafebom.security.TokenProvider;
+import com.zerobase.cafebom.auth.service.impl.AuthService;
+import com.zerobase.cafebom.common.config.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(AuthController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
 
     @Autowired
@@ -45,7 +48,8 @@ class AuthControllerTest {
         // when
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isCreated())
             .andDo(print());
     }
@@ -64,7 +68,8 @@ class AuthControllerTest {
         // when
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isBadRequest())
             .andDo(print());
     }
@@ -84,7 +89,8 @@ class AuthControllerTest {
         // when
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isBadRequest())
 //            .andExpect(jsonPath("$.errorM").value(1))
 //            .andExpect(jsonPath("$.accountNumber").value("89300000000")) // exception 머지되면 추가
@@ -106,7 +112,8 @@ class AuthControllerTest {
         // when
         mockMvc.perform(post("/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(form)))
+                .content(objectMapper.writeValueAsString(form))
+                .with(csrf()))
             .andExpect(status().isBadRequest())
 //            .andExpect(jsonPath("$.errorM").value(1))
 //            .andExpect(jsonPath("$.accountNumber").value("89300000000")) // exception 머지되면 추가
