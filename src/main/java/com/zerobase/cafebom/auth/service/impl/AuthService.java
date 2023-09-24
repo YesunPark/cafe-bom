@@ -37,8 +37,8 @@ public class AuthService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     // 사용자 회원가입-yesun-23.09.24
-    public void signup(SignupMemberForm.Request request) {
-        SignupDto signupDto = SignupDto.from(request);
+    public void signup(SignupMemberForm.Request form) {
+        SignupDto request = SignupDto.from(form);
         if (memberRepository.findByNickname(request.getNickname()).isPresent()) {
             throw new CustomException(NICKNAME_ALREADY_EXISTS);
         }
@@ -46,27 +46,27 @@ public class AuthService implements UserDetailsService {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         }
         memberRepository.save(
-            Member.from(signupDto, passwordEncoder.encode(signupDto.getPassword()), ROLE_USER));
+            Member.from(request, passwordEncoder.encode(request.getPassword()), ROLE_USER));
     }
 
-    // 관리자 회원가입-yesun-23.09.05
-    public void signup(SignupAdminForm.Request signupAdminForm) {
-        SignupDto signupDto = SignupDto.from(signupAdminForm);
+    // 관리자 회원가입-yesun-23.09.24
+    public void signup(SignupAdminForm.Request form) {
+        SignupDto request = SignupDto.from(form);
 
-        memberRepository.findByEmail(signupDto.getEmail()).ifPresent(member -> {
+        memberRepository.findByEmail(request.getEmail()).ifPresent(member -> {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         });
 
         memberRepository.save(
-            Member.from(signupDto, passwordEncoder.encode(signupDto.getPassword()), ROLE_ADMIN));
+            Member.from(request, passwordEncoder.encode(request.getPassword()), ROLE_ADMIN));
     }
 
     // 공통 로그인-yesun-23.09.24
-    public SigninDto.Response signin(SigninForm.Request request) {
-        Member member = memberRepository.findByEmail(request.getEmail())
+    public SigninDto.Response signin(SigninForm.Request form) {
+        Member member = memberRepository.findByEmail(form.getEmail())
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(form.getPassword(), member.getPassword())) {
             throw new CustomException(PASSWORD_NOT_MATCH);
         }
 
