@@ -1,6 +1,7 @@
 package com.zerobase.cafebom.auth.dto;
 
 import com.zerobase.cafebom.common.config.security.Role;
+import com.zerobase.cafebom.front.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -31,5 +32,13 @@ public class SigninDto {
         private String email;
 
         private Role role;
+
+        public static Response from(Member member) {
+            return Response.builder()
+                .memberId(member.getId())
+                .email(member.getEmail())
+                .role(member.getRole())
+                .build();
+        }
     }
 }

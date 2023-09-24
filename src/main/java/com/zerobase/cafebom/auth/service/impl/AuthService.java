@@ -69,11 +69,8 @@ public class AuthService implements UserDetailsService {
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new CustomException(PASSWORD_NOT_MATCH);
         }
-        return SigninDto.Response.builder()
-            .memberId(member.getId())
-            .email(member.getEmail())
-            .role(member.getRole())
-            .build();
+
+        return SigninDto.Response.from(member);
     }
 
     @Override

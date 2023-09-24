@@ -1,17 +1,14 @@
 package com.zerobase.cafebom.auth.controller;
 import static com.zerobase.cafebom.common.exception.ErrorCode.ADMIN_CODE_NOT_MATCH;
-
 import static org.springframework.http.HttpStatus.CREATED;
 
-import com.zerobase.cafebom.auth.dto.SigninDto.Request;
 import com.zerobase.cafebom.auth.dto.SigninDto.Response;
 import com.zerobase.cafebom.auth.dto.SigninForm;
 import com.zerobase.cafebom.auth.dto.SignupAdminForm;
-import com.zerobase.cafebom.auth.dto.SignupDto;
 import com.zerobase.cafebom.auth.dto.SignupMemberForm;
 import com.zerobase.cafebom.auth.service.impl.AuthService;
-import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
+import com.zerobase.cafebom.common.exception.CustomException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
@@ -56,16 +53,16 @@ public class AuthController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    // yesun-23.09.06
+    // yesun-23.09.24
     @ApiOperation(value = "사용자, 관리자 공통 로그인", notes = "사용자와 관리자 모두 이메일, 비밀번호로 로그인합니다.")
     @PostMapping("/signin")
     public ResponseEntity<SigninForm.Response> signin(
         @RequestBody @Valid SigninForm.Request signinForm
     ) {
         Response signinDto = authService.signin(signinForm);
-        String accessToken = tokenProvider.generateToken(
+        String token = tokenProvider.generateToken(
             signinDto.getMemberId(), signinDto.getEmail(), signinDto.getRole()
         );
-        return ResponseEntity.ok(SigninForm.Response.builder().token(accessToken).build());
+        return ResponseEntity.ok(SigninForm.Response.from(token));
     }
 }
