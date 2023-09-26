@@ -42,7 +42,7 @@ public class ExceptionHandler {
             );
     }
 
-    // CustiomException 핸들러-yesun-23.08.21
+    // CustomException 핸들러-yesun-23.08.21
     @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionResponse> customRequestException(final CustomException c) {
         log.error("Api Exception => {}, {}", c.getErrorCode(), c.getErrorMessage());

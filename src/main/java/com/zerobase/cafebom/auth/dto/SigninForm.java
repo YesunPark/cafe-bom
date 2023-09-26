@@ -30,5 +30,9 @@ public class SigninForm {
 
         @Schema(description = "토큰", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxFX1VTR0.mhuc2GGHEEJwZi")
         private String token;
+
+        public static Response from(String token) {
+            return Response.builder().token(token).build();
+        }
     }
 }
