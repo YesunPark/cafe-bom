@@ -1,8 +1,9 @@
 package com.zerobase.cafebom.front.order.dto;
 
-import com.zerobase.cafebom.front.order.domain.Order;
 import com.zerobase.cafebom.common.type.OrderReceiptStatus;
+import com.zerobase.cafebom.front.order.domain.Order;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class OrderHisDto {
         this.orderId = order.getId();
         this.orderDate = order.getCreatedDate();
         this.orderReceiptStatus = order.getReceiptStatus();
+        orderedProductsList = new ArrayList<>();
     }
 
     private Long orderId;
