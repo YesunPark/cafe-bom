@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class OrdersAddDto {
+public class OrderAddDto {
 
     @Getter
     @Builder
@@ -16,7 +16,7 @@ public class OrdersAddDto {
 
         private Payment payment;
 
-        public static OrdersAddDto.Request from(OrdersAddForm.Request form) {
+        public static OrderAddDto.Request from(OrderAddForm.Request form) {
             return Request.builder()
                 .payment(form.getPayment())
                 .build();

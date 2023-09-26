@@ -13,7 +13,7 @@ public class ReviewAddDto {
     @Getter
     public static class Request {
 
-        private long ordersProductId;
+        private long orderProductId;
 
         private int rating;
 
@@ -21,7 +21,7 @@ public class ReviewAddDto {
 
         public static ReviewAddDto.Request from(ReviewAddForm.Request request) {
             return Request.builder()
-                .ordersProductId(request.getOrdersProductId())
+                .orderProductId(request.getOrderProductId())
                 .rating(request.getRating())
                 .content(request.getContent())
                 .build();

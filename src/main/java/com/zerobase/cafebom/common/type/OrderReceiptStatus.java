@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.common.type;
 
-public enum OrdersReceiptStatus {
+public enum OrderReceiptStatus {
     CANCELED,
     REJECTED,
     WAITING,

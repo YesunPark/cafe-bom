@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.front.order.dto;
 
-import com.zerobase.cafebom.common.type.OrderCookingTime;
+import com.zerobase.cafebom.common.type.OrderCookingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class OrdersCookingTimeModifyForm {
+@AllArgsConstructor
+public class OrderStatusModifyForm {
 
-    private OrderCookingTime selectedCookingTime;
+    private OrderCookingStatus newStatus;
 }
