@@ -3,15 +3,15 @@ package com.zerobase.cafebom.front.product.service.impl;
 import static com.zerobase.cafebom.common.exception.ErrorCode.BEST_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PRODUCTCATEGORY_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PRODUCT_NOT_EXISTS;
-import static com.zerobase.cafebom.common.type.OrdersReceiptStatus.RECEIVED;
+import static com.zerobase.cafebom.common.type.OrderReceiptStatus.RECEIVED;
 
 import com.zerobase.cafebom.common.exception.CustomException;
+import com.zerobase.cafebom.front.order.domain.Order;
 import com.zerobase.cafebom.front.product.domain.Option;
 import com.zerobase.cafebom.front.product.domain.OptionRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
 import com.zerobase.cafebom.front.product.domain.Product;
 import com.zerobase.cafebom.front.product.domain.ProductRepository;
 import com.zerobase.cafebom.front.product.dto.BestProductDto;
@@ -41,9 +41,9 @@ public class ProductService {
 
     private final ProductCategoryRepository productCategoryRepository;
 
-    private final OrdersProductRepository ordersProductRepository;
+    private final OrderProductRepository orderProductRepository;
 
-    private final OrdersRepository ordersRepository;
+    private final OrderRepository orderRepository;
 
     // 상품 목록 조회-wooyoung-23.08.22
     @Transactional
@@ -89,16 +89,16 @@ public class ProductService {
     @Transactional
     public List<BestProductDto> findBestProductList() {
 
-        List<Orders> receivedOrders = ordersRepository.findByReceiptStatus(RECEIVED);
+        List<Order> receivedOrders = orderRepository.findByReceiptStatus(RECEIVED);
 
         Map<Product, Integer> productQuantityMap = new HashMap<>();
 
-        for (Orders orders : receivedOrders) {
-            List<OrdersProduct> ordersProducts = ordersProductRepository.findByOrdersId(
-                orders.getId());
-            for (OrdersProduct ordersProduct : ordersProducts) {
-                Product product = ordersProduct.getProduct();
-                int quantity = ordersProduct.getQuantity();
+        for (Order order : receivedOrders) {
+            List<OrderProduct> orderProducts = orderProductRepository.findByOrderId(
+                order.getId());
+            for (OrderProduct orderProduct : orderProducts) {
+                Product product = orderProduct.getProduct();
+                int quantity = orderProduct.getQuantity();
 
                 if (productQuantityMap.containsKey(product)) {
                     quantity += productQuantityMap.get(product);

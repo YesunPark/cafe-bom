@@ -10,9 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.controller.OrdersController;
-import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
-import com.zerobase.cafebom.front.order.service.impl.OrdersService;
+import com.zerobase.cafebom.front.order.service.impl.OrderHistoryService;
+import com.zerobase.cafebom.front.order.service.impl.OrderService;
 import com.zerobase.cafebom.common.config.security.TokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,9 +22,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(OrdersController.class)
+@WebMvcTest(OrderController.class)
 @WithMockUser
-public class OrdersStatusControllerTest {
+public class OrderStatusControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,13 +33,13 @@ public class OrdersStatusControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private OrdersService ordersService;
+    private OrderService orderService;
 
     @MockBean
     private TokenProvider tokenProvider;
 
     @MockBean
-    private OrdersHistoryService ordersHistoryService;
+    private OrderHistoryService orderHistoryService;
 
     @MockBean
     private MemberRepository memberRepository;
@@ -52,13 +51,13 @@ public class OrdersStatusControllerTest {
     @DisplayName("주문 경과 시간 조회 성공 - 주문에 대한 경과 시간 조회")
     void successGetElapsedTime() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
         Long elapsedTimeMinutes = 30L;
 
-        given(ordersService.findElapsedTime(token, ordersId)).willReturn(elapsedTimeMinutes);
+        given(orderService.findElapsedTime(token, orderId)).willReturn(elapsedTimeMinutes);
 
         // then
-        mockMvc.perform(get("/auth/orders/elapsed-time/{ordersId}", ordersId)
+        mockMvc.perform(get("/auth/order/elapsed-time/{orderId}", orderId)
                 .header("Authorization", token))
             .andExpect(status().isOk())
             .andExpect(content().json("{\"elapsedTimeMinutes\": " + elapsedTimeMinutes + "}"))
@@ -68,12 +67,12 @@ public class OrdersStatusControllerTest {
     // minsu-23.09.19
     @Test
     @DisplayName("사용자 주문 취소 성공 - 주문을 정상적으로 취소")
-    void successUserOrdersCancel() throws Exception {
+    void successUserOrderCancel() throws Exception {
         // given
-        Long ordersId = 1L;
+        Long orderId = 1L;
 
         // then
-        mockMvc.perform(patch("/auth/orders/cancel/{ordersId}", ordersId)
+        mockMvc.perform(patch("/auth/order/cancel/{orderId}", orderId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()))

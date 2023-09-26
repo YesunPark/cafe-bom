@@ -9,9 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class OrdersAddForm {
+public class OrderAddForm {
 
-    @ApiModel(value = "OrdersAddFormRequest")
+    @ApiModel(value = "OrderAddFormRequest")
     @Getter
     @Builder
     @AllArgsConstructor

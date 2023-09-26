@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OrdersCookingTimeModifyDto {
+public class OrderCookingTimeModifyDto {
 
     private OrderCookingTime selectedCookingTime;
 
-    public static OrdersCookingTimeModifyDto from(OrdersCookingTimeModifyForm form) {
-        return OrdersCookingTimeModifyDto.builder()
+    public static OrderCookingTimeModifyDto from(OrderCookingTimeModifyForm form) {
+        return OrderCookingTimeModifyDto.builder()
             .selectedCookingTime(form.getSelectedCookingTime())
             .build();
     }
