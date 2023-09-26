@@ -1,9 +1,9 @@
 package com.zerobase.cafebom.front.review.service.impl;
 
 import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_NOT_EXISTS;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_PRODUCT_NOT_MATCH_MEMBER;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_NOT_EXISTS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_PRODUCT_NOT_MATCH_MEMBER;
 import static com.zerobase.cafebom.common.exception.ErrorCode.REVIEW_ALREADY_WRITTEN;
 
 import com.zerobase.cafebom.common.S3UploaderService;
@@ -11,10 +11,10 @@ import com.zerobase.cafebom.common.config.security.TokenProvider;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
 import com.zerobase.cafebom.front.review.dto.ReviewAddDto.Request;
 import com.zerobase.cafebom.front.review.domain.Review;
 import com.zerobase.cafebom.front.review.domain.ReviewRepository;
@@ -28,8 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReviewService {
 
     private final MemberRepository memberRepository;
-    private final OrdersProductRepository ordersProductRepository;
-    private final OrdersRepository ordersRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final OrderRepository orderRepository;
     private final ReviewRepository reviewRepository;
 
     private final S3UploaderService s3UploaderService;
@@ -43,22 +43,22 @@ public class ReviewService {
         Member memberByToken = memberRepository.findById(memberIdByToken)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        OrdersProduct ordersProduct = ordersProductRepository.findById(request.getOrdersProductId())
-            .orElseThrow(() -> new CustomException(ORDERS_PRODUCT_NOT_EXISTS));
+        OrderProduct orderProduct = orderProductRepository.findById(request.getOrderProductId())
+            .orElseThrow(() -> new CustomException(ORDER_PRODUCT_NOT_EXISTS));
 
-        Orders orders = ordersRepository.findById(ordersProduct.getOrdersId()).orElseThrow(() ->
-            new CustomException(ORDERS_NOT_EXISTS)
+        Order order = orderRepository.findById(orderProduct.getOrderId()).orElseThrow(() ->
+            new CustomException(ORDER_NOT_EXISTS)
         );
-        if (!memberIdByToken.equals(orders.getMember().getId())) {
-            throw new CustomException(ORDERS_PRODUCT_NOT_MATCH_MEMBER);
+        if (!memberIdByToken.equals(order.getMember().getId())) {
+            throw new CustomException(ORDER_PRODUCT_NOT_MATCH_MEMBER);
         }
 
-        reviewRepository.findByOrdersProduct(ordersProduct)
+        reviewRepository.findByOrderProduct(orderProduct)
             .ifPresent(review -> {
                 throw new CustomException(REVIEW_ALREADY_WRITTEN);
             });
 
         String s3UploadedUrl = s3UploaderService.uploadFileToS3(image, "dirName");
-        reviewRepository.save(Review.from(memberByToken, ordersProduct, request, s3UploadedUrl));
+        reviewRepository.save(Review.from(memberByToken, orderProduct, request, s3UploadedUrl));
     }
 }

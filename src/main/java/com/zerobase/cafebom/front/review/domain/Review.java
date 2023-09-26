@@ -2,7 +2,7 @@ package com.zerobase.cafebom.front.review.domain;
 
 import com.zerobase.cafebom.common.BaseTimeEntity;
 import com.zerobase.cafebom.front.member.domain.Member;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
 import com.zerobase.cafebom.front.review.dto.ReviewAddDto.Request;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,8 +33,8 @@ public class Review extends BaseTimeEntity {
     private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orders_product_id")
-    private OrdersProduct ordersProduct;
+    @JoinColumn(name = "order_product_id")
+    private OrderProduct orderProduct;
 
     @NotNull
     private Integer rating;
@@ -46,11 +46,11 @@ public class Review extends BaseTimeEntity {
 
     private String picture;
 
-    public static Review from(Member memberByToken, OrdersProduct ordersProduct,
+    public static Review from(Member memberByToken, OrderProduct orderProduct,
         Request request, String s3UploadedUrl) {
         return Review.builder()
             .memberId(memberByToken.getId())
-            .ordersProduct(ordersProduct)
+            .orderProduct(orderProduct)
             .rating(request.getRating())
             .content(request.getContent())
             .picture(s3UploadedUrl)

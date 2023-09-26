@@ -3,13 +3,13 @@ package com.zerobase.cafebom.front.order.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.zerobase.cafebom.front.order.service.impl.OrdersHistoryService;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.service.impl.OrderHistoryService;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.dto.OrdersHisDto;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.dto.OrderHisDto;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,16 +26,16 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class OrdersListServiceTest {
+class OrderListServiceTest {
 
     @InjectMocks
-    private OrdersHistoryService ordersHistoryService;
+    private OrderHistoryService orderHistoryService;
 
     @Mock
-    private OrdersRepository ordersRepository;
+    private OrderRepository orderRepository;
 
     @Mock
-    private OrdersProductRepository ordersProductRepository;
+    private OrderProductRepository orderProductRepository;
 
     @Mock
     private MemberRepository memberRepository;
@@ -48,13 +48,13 @@ class OrdersListServiceTest {
         Long memberId = 1L;
         Member testMember = Member.builder().build();
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
-        List<Orders> testOrders = new ArrayList<>();
+        List<Order> testOrders = new ArrayList<>();
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
-        when(ordersRepository.findByMemberAndCreatedDateAfter(testMember,
+        when(orderRepository.findByMemberAndCreatedDateAfter(testMember,
             threeMonthsAgo)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryFor3Months(memberId);
+        List<OrderHisDto> result = orderHistoryService.findOrderHistoryFor3Months(memberId);
 
         // then
         assertThat(result).isEmpty();
@@ -67,12 +67,12 @@ class OrdersListServiceTest {
         // given
         Long memberId = 1L;
         Member testMember = Member.builder().build();
-        List<Orders> testOrders = new ArrayList<>();
+        List<Order> testOrders = new ArrayList<>();
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
-        when(ordersRepository.findByMember(testMember)).thenReturn(testOrders);
+        when(orderRepository.findByMember(testMember)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = ordersHistoryService.findAllOrderHistory(memberId);
+        List<OrderHisDto> result = orderHistoryService.findAllOrderHistory(memberId);
 
         // then
         assertThat(result).isEmpty();
@@ -87,13 +87,13 @@ class OrdersListServiceTest {
         Member testMember = Member.builder().build();
         LocalDateTime startDate = LocalDate.now().minusMonths(2).atStartOfDay();
         LocalDateTime endDate = LocalDate.now().atTime(23, 59, 59);
-        List<Orders> testOrders = new ArrayList<>(); // 테스트용 Orders 리스트 생성
+        List<Order> testOrders = new ArrayList<>(); // 테스트용 Order 리스트 생성
         when(memberRepository.findById(memberId)).thenReturn(Optional.of(testMember));
-        when(ordersRepository.findByMemberAndCreatedDateBetween(testMember, startDate,
+        when(orderRepository.findByMemberAndCreatedDateBetween(testMember, startDate,
             endDate)).thenReturn(testOrders);
 
         // when
-        List<OrdersHisDto> result = ordersHistoryService.findOrderHistoryByPeriod(memberId,
+        List<OrderHisDto> result = orderHistoryService.findOrderHistoryByPeriod(memberId,
             LocalDate.now().minusMonths(2), LocalDate.now());
 
         // then

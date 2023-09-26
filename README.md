@@ -286,12 +286,12 @@
 |              | /admin/option/{optionId}                                                   | `GET` `PUT` `POST` `DELETE` | 상품 옵션 CRUD        | ADMIN |
 |              | /admin/category/{categoryId}                                               | `GET` `PUT` `POST` `DELETE` | 상품 카테고리 CRUD      | ADMIN |
 |              | /admin/option-category                                                     | `GET` `PUT` `POST` `DELETE` | 옵션 카테고리 CRUD      | ADMIN |
-| **Orders**   | /auth/pay/list?viewType={viewType}&startDate={startDate}&endDate={endDate} | `GET`                       | 구매 내역 조회          | USER  |
-|              | /auth/orders/elapsed-time/{ordersId}                                       | `GET`                       | 주문 경과 시간 조회       | USER  |
-|              | /auth/orders/cancel/{ordersId}                                             | `PATCH`                     | 주문 취소             | USER  |
-|              | /admin/orders/status/{ordersId}                                            | `PATCH`                     | 주문 상태 변경          | ADMIN |
-|              | /admin/orders/cooking-time/{ordersId}                                      | `PATCH`                     | 예상 조리 시간 선택       | ADMIN |
-|              | /admin/orders/receipt-status/{ordersId}                                    | `PATCH`                     | 주문 수락 또는 거절       | ADMIN |
+| **Order**    | /auth/pay/list?viewType={viewType}&startDate={startDate}&endDate={endDate} | `GET`                       | 구매 내역 조회          | USER  |
+|              | /auth/order/elapsed-time/{orderId}                                         | `GET`                       | 주문 경과 시간 조회       | USER  |
+|              | /auth/order/cancel/{orderId}                                               | `PATCH`                     | 주문 취소             | USER  |
+|              | /admin/order/status/{orderId}                                              | `PATCH`                     | 주문 상태 변경          | ADMIN |
+|              | /admin/order/cooking-time/{orderId}                                        | `PATCH`                     | 예상 조리 시간 선택       | ADMIN |
+|              | /admin/order/receipt-status/{orderId}                                      | `PATCH`                     | 주문 수락 또는 거절       | ADMIN |
 | **Cart**     | /auth/cart                                                                 | `GET`                       | 장바구니 상품 목록 조회     | USER  |
 |              | /auth/cart                                                                 | `POST` `DELETE`             | 장바구니 상품 수량 변경, 삭제 | USER  |
 |              | /auth/cart/save                                                            | `POST`                      | 장바구니 상품 추가        | USER  |

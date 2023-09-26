@@ -1,6 +1,6 @@
 package com.zerobase.cafebom.front.review.service;
 
-import static com.zerobase.cafebom.common.exception.ErrorCode.ORDERS_PRODUCT_NOT_EXISTS;
+import static com.zerobase.cafebom.common.exception.ErrorCode.ORDER_PRODUCT_NOT_EXISTS;
 import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.common.type.OrderCookingStatus.COOKING;
 import static com.zerobase.cafebom.common.type.Payment.KAKAO_PAY;
@@ -14,10 +14,10 @@ import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.review.service.impl.ReviewService;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
-import com.zerobase.cafebom.front.order.domain.Orders;
-import com.zerobase.cafebom.front.order.domain.OrdersRepository;
-import com.zerobase.cafebom.front.order.domain.OrdersProduct;
-import com.zerobase.cafebom.front.order.domain.OrdersProductRepository;
+import com.zerobase.cafebom.front.order.domain.Order;
+import com.zerobase.cafebom.front.order.domain.OrderRepository;
+import com.zerobase.cafebom.front.order.domain.OrderProduct;
+import com.zerobase.cafebom.front.order.domain.OrderProductRepository;
 import com.zerobase.cafebom.front.review.domain.ReviewRepository;
 import com.zerobase.cafebom.front.review.dto.ReviewAddDto;
 import com.zerobase.cafebom.front.review.dto.ReviewAddDto.Request;
@@ -46,9 +46,9 @@ class ReviewServiceTest {
     @Mock
     private MemberRepository memberRepository;
     @Mock
-    private OrdersProductRepository ordersProductRepository;
+    private OrderProductRepository orderProductRepository;
     @Mock
-    private OrdersRepository ordersRepository;
+    private OrderRepository orderRepository;
     @Mock
     private ReviewRepository reviewRepository;
 
@@ -65,15 +65,15 @@ class ReviewServiceTest {
         .role(ROLE_USER)
         .build();
     ReviewAddDto.Request request = Request.builder()
-        .ordersProductId(1L)
+        .orderProductId(1L)
         .rating(3)
         .content("test content")
         .build();
     MultipartFile multipartFile;
-    OrdersProduct ordersProduct = OrdersProduct.builder()
-        .ordersId(1L)
+    OrderProduct orderProduct = OrderProduct.builder()
+        .orderId(1L)
         .build();
-    Orders orders = Orders.builder()
+    Order order = Order.builder()
         .member(member)
         .payment(KAKAO_PAY)
         .cookingStatus(COOKING)
@@ -92,10 +92,10 @@ class ReviewServiceTest {
     @DisplayName("리뷰 생성 성공")
     void successAddReview() throws IOException {
         // given
-        given(ordersProductRepository.findById(request.getOrdersProductId()))
-            .willReturn(Optional.of(ordersProduct));
-        given(ordersRepository.findById(ordersProduct.getOrdersId()))
-            .willReturn(Optional.of(orders));
+        given(orderProductRepository.findById(request.getOrderProductId()))
+            .willReturn(Optional.of(orderProduct));
+        given(orderRepository.findById(orderProduct.getOrderId()))
+            .willReturn(Optional.of(order));
 
         // when
         reviewService.addReview(token, multipartFile, request);
@@ -107,15 +107,15 @@ class ReviewServiceTest {
     // yesun-23.09.04
     @Test
     @DisplayName("리뷰 생성 실패 - 존재하지 않는 주문_상품 ID 요청")
-    void successAddReviewOrdersProductIdNotExits() throws IOException {
+    void successAddReviewOrderProductIdNotExits() throws IOException {
         // given
-        given(ordersProductRepository.findById(request.getOrdersProductId()))
+        given(orderProductRepository.findById(request.getOrderProductId()))
             .willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> reviewService.addReview(token, multipartFile, request))
             .isExactlyInstanceOf(CustomException.class)
-            .hasMessage(ORDERS_PRODUCT_NOT_EXISTS.getMessage());
+            .hasMessage(ORDER_PRODUCT_NOT_EXISTS.getMessage());
         then(reviewService).should(times(1)).addReview(token, multipartFile, request);
     }
 }
