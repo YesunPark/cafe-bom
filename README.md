@@ -2,20 +2,20 @@
 
 >
 > 1. [ERD](#ERD)
-> 2. [아키텍처](#아키텍처)
+> 2. [시스템 아키텍처](#시스템-아키텍처)
 > 3. [기술 스택](#기술-스택)
 > 4. [주요 기능](#주요-기능)
 >   + 공통 : [회원가입, 로그인](#회원가입-로그인) | [상품 목록 및 상품 상세 조회](#상품-목록-및-상품-상세-조회)
 >   + 사용자 : [장바구니 관리](#장바구니-관리) | [주문 내역 관리](#주문-내역-관리) | [리뷰 관리](#리뷰-관리)
 >   + 관리자 : [상품 및 상품 카테고리 관리](#상품-및-상품-카테고리-관리) | [옵션 카테고리 및 옵션 관리](#옵션-카테고리-및-옵션-관리) | [주문 수락 및 주문 상태 관리](#주문-수락-및-주문-상태-관리)
-> 5. [api 명세](#api-명세)
+> 5. [API 명세](#api-명세)
 > 6. [형상 관리 - Notion, Jira](#형상-관리)
 > 7. [팀 문화](#팀-문화)
 
 # 프로젝트 소개
 
 
-> 하루 한 번 가지는 음료 한잔의 소소한 행복을 더욱 편리하게 해주는 온라인 카페 주문 시스템입니다.\
+> 음료 한잔의 소소한 행복을 더욱 편리하게 해주는 온라인 카페 주문 시스템입니다.\
 > 사용자에게는 간편한 메뉴확인과 빠른 주문이라는 편의성, 포인트 적립이라는 이득을 제공합니다.\
 > 관리자에게는 시스템 사용의 이득을 통한 사용자 모집 효과, 간편한 주문관리를 제공합니다.
 > 
@@ -122,13 +122,13 @@
 
 [👉 ERD Cloud에서 직접 보기](https://www.erdcloud.com/d/pqop6rtCyk7PzkgLD)
 
-![ERD 0913](https://github.com/YesunPark/cafe-bom/assets/108933466/7a19031e-e20a-40b7-bb50-36f2a59bdcef)
+![ERD 0913](https://github.com/YesunPark/cafe-bom/assets/108933466/71aefe7c-ab4b-44fb-a7e9-9585f9875e15)
 
 
 
-# 아키텍처
+# 시스템 아키텍처
 
-![팀플 아키텍처](https://github.com/YesunPark/cafe-bom/assets/108933466/4a25a4e3-8aa9-4d34-b83b-4b20f613b84f)
+![cafe-bom 시스템 아키텍처](https://github.com/YesunPark/cafe-bom/assets/108933466/abc731cd-b95f-459f-af97-7886f3aca88d)
 
 
 
@@ -139,7 +139,7 @@
 <img height="100px" src="https://github.com/YesunPark/cafe-bom/assets/108933466/92190376-2d45-48b1-bc7f-4ee9ffaa769c"/>
 
 - **Java 11** 
-- **SpringBoot 3.0**
+- **SpringBoot 2.7.14**
 - **Spring Data JPA**
 - **Spring Security**
 - **JWT(json web tokens)**
@@ -253,7 +253,7 @@
 - 상품을 등록할 수 있다.(상품 사진은 1장만 등록할 수 있다.)
 - 등록한 상품의 정보를 수정, 삭제할 수 있다.
 - 상품 전체 목록을 조회할 수 있고, 상품 하나의 정보도 조회할 수 있다.
-- 상품의 재고 현황을 변경할 수 있다. => 상품의 품절 여부를 변경할 수 있다. ??
+- 상품의 품절 여부를 변경할 수 있다.
 
 - 상품 카테고리를 등록할 수 있고, 등록한 상품 카테고리를 수정, 삭제할 수 있다.
 - 상품 카테고리 전체 목록을 조회할 수 있고, 상품 카테고리 하나의 정보도 조회할 수 있다.
@@ -270,33 +270,34 @@
 
 
 
-# api 명세
+# [API 명세](https://woozy-tendency-8e6.notion.site/api-e7184d90ae844aab9b6a84038c1e5155?pvs=4) 
+☝️ 위 Notion 링크 클릭해서 자세히보기
 
-| Domain       | URL                                                                        | Http Method                 | description       | 접근 권한 |
-|:-------------|:---------------------------------------------------------------------------|:----------------------------|:------------------|:------|
-| **Auth**     | /signup                                                                    | `POST`                      | 사용자 회원가입          | -     |
-|              | /signup/admin                                                              | `POST`                      | 관리자 회원가입          | -     |
-|              | /signin                                                                    | `POST`                      | 사용자/관리자 로그인       | -     |
-| **Prouduct** | /product/list/{categoryId}                                                 | `GET`                       | 카테고리 별 상품 목록 조회   | -     |
-|              | /product/best-list                                                         | `GET`                       | 베스트 상품 목록 조회      | -     |
-|              | /product/{productId}                                                       | `GET`                       | 상품 상세 조회          | -     |
-|              | /admin/product                                                             | `POST`                      | 상품 등록             | ADMIN |
-|              | /admin/product/{productId}                                                 | `GET` `PUT` `DELETE`        | 상품 조회, 수정, 삭제     | ADMIN |
-|              | /admin/product?productId={productId}&soldout={soldOutStatus}               | `PUT`                       | 상품 품절 여부 수정       | ADMIN |
-|              | /admin/option/{optionId}                                                   | `GET` `PUT` `POST` `DELETE` | 상품 옵션 CRUD        | ADMIN |
-|              | /admin/category/{categoryId}                                               | `GET` `PUT` `POST` `DELETE` | 상품 카테고리 CRUD      | ADMIN |
-|              | /admin/option-category                                                     | `GET` `PUT` `POST` `DELETE` | 옵션 카테고리 CRUD      | ADMIN |
-| **Order**    | /auth/pay/list?viewType={viewType}&startDate={startDate}&endDate={endDate} | `GET`                       | 구매 내역 조회          | USER  |
-|              | /auth/order/elapsed-time/{orderId}                                         | `GET`                       | 주문 경과 시간 조회       | USER  |
-|              | /auth/order/cancel/{orderId}                                               | `PATCH`                     | 주문 취소             | USER  |
-|              | /admin/order/status/{orderId}                                              | `PATCH`                     | 주문 상태 변경          | ADMIN |
-|              | /admin/order/cooking-time/{orderId}                                        | `PATCH`                     | 예상 조리 시간 선택       | ADMIN |
-|              | /admin/order/receipt-status/{orderId}                                      | `PATCH`                     | 주문 수락 또는 거절       | ADMIN |
-| **Cart**     | /auth/cart                                                                 | `GET`                       | 장바구니 상품 목록 조회     | USER  |
-|              | /auth/cart                                                                 | `POST` `DELETE`             | 장바구니 상품 수량 변경, 삭제 | USER  |
-|              | /auth/cart/save                                                            | `POST`                      | 장바구니 상품 추가        | USER  |
-|              | /auth/pay                                                                  | `PUT`                       | 장바구니 전체 결제        | USER  |
-| **Review**   | /auth/review                                                               | `POST`                      | 리뷰 등록             | USER  |
+| Domain      | URL                                                                        | Http Method                 | description       | 접근 권한 |
+|:------------|:---------------------------------------------------------------------------|:----------------------------|:------------------|:------|
+| **Auth**    | /signup                                                                    | `POST`                      | 사용자 회원가입          | -     |
+|             | /signup/admin                                                              | `POST`                      | 관리자 회원가입          | -     |
+|             | /signin                                                                    | `POST`                      | 사용자/관리자 로그인       | -     |
+| **Product** | /product/list/{categoryId}                                                 | `GET`                       | 카테고리 별 상품 목록 조회   | -     |
+|             | /product/best-list                                                         | `GET`                       | 베스트 상품 목록 조회      | -     |
+|             | /product/{productId}                                                       | `GET`                       | 상품 상세 조회          | -     |
+|             | /admin/product                                                             | `POST`                      | 상품 등록             | ADMIN |
+|             | /admin/product/{productId}                                                 | `GET` `PUT` `DELETE`        | 상품 조회, 수정, 삭제     | ADMIN |
+|             | /admin/product?productId={productId}&soldout={soldOutStatus}               | `PUT`                       | 상품 품절 여부 수정       | ADMIN |
+|             | /admin/option/{optionId}                                                   | `GET` `PUT` `POST` `DELETE` | 상품 옵션 CRUD        | ADMIN |
+|             | /admin/category/{categoryId}                                               | `GET` `PUT` `POST` `DELETE` | 상품 카테고리 CRUD      | ADMIN |
+|             | /admin/option-category                                                     | `GET` `PUT` `POST` `DELETE` | 옵션 카테고리 CRUD      | ADMIN |
+| **Order**   | /auth/pay/list?viewType={viewType}&startDate={startDate}&endDate={endDate} | `GET`                       | 구매 내역 조회          | USER  |
+|             | /auth/order/elapsed-time/{orderId}                                         | `GET`                       | 주문 경과 시간 조회       | USER  |
+|             | /auth/order/cancel/{orderId}                                               | `PATCH`                     | 주문 취소             | USER  |
+|             | /admin/order/status/{orderId}                                              | `PATCH`                     | 주문 상태 변경          | ADMIN |
+|             | /admin/order/cooking-time/{orderId}                                        | `PATCH`                     | 예상 조리 시간 선택       | ADMIN |
+|             | /admin/order/receipt-status/{orderId}                                      | `PATCH`                     | 주문 수락 또는 거절       | ADMIN |
+| **Cart**    | /auth/cart                                                                 | `GET`                       | 장바구니 상품 목록 조회     | USER  |
+|             | /auth/cart/save                                                            | `POST`                      | 장바구니 상품 추가        | USER  |
+|             | /auth/cart                                                                 | `POST` `DELETE`             | 장바구니 상품 수량 변경, 삭제 | USER  |
+|             | /auth/pay                                                                  | `PUT`                       | 장바구니 전체 결제        | USER  |
+| **Review**  | /auth/review                                                               | `POST`                      | 리뷰 등록             | USER  |
 
 <br/>
 
