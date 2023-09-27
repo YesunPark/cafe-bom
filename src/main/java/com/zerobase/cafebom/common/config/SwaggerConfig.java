@@ -39,7 +39,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
             .title("Cafe-Bom Api Test")
             .description("Cafe-Bom REST API입니다.<br>"
                 + "<br>"
-                + "권한이 필요한 기능은 회원가입, 로그인 API로 로그인 후 받은 토큰으로 테스트가 가능합니다. <br>"
+                + "권한이 필요한 기능은 로그인 API로 로그인 후 받은 토큰으로 테스트가 가능합니다. <br>"
                 + "토큰 입력 방법 : **Bearer {받은 토큰}**  <br>"
                 + "<br>"
                 + "관리자 기능 : 토큰을 우측 초록색 Authorize 버튼에만 넣으면 됩니다.<br> "
