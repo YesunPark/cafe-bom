@@ -1,15 +1,17 @@
 package com.zerobase.cafebom.auth.service.impl;
 
+import static com.zerobase.cafebom.common.config.security.Role.ROLE_ADMIN;
+import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;
 import static com.zerobase.cafebom.common.exception.ErrorCode.EMAIL_ALREADY_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.MEMBER_NOT_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.NICKNAME_ALREADY_EXISTS;
 import static com.zerobase.cafebom.common.exception.ErrorCode.PASSWORD_NOT_MATCH;
-import static com.zerobase.cafebom.common.config.security.Role.ROLE_ADMIN;
-import static com.zerobase.cafebom.common.config.security.Role.ROLE_USER;
 
 import com.zerobase.cafebom.auth.dto.SigninDto;
+import com.zerobase.cafebom.auth.dto.SigninForm;
 import com.zerobase.cafebom.auth.dto.SignupAdminForm;
 import com.zerobase.cafebom.auth.dto.SignupDto;
+import com.zerobase.cafebom.auth.dto.SignupMemberForm;
 import com.zerobase.cafebom.common.exception.CustomException;
 import com.zerobase.cafebom.front.member.domain.Member;
 import com.zerobase.cafebom.front.member.domain.MemberRepository;
@@ -34,43 +36,41 @@ public class AuthService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
-    // 사용자 회원가입-yesun-23.09.05
-    public void signup(SignupDto signupDto) {
-        if (memberRepository.findByNickname(signupDto.getNickname()).isPresent()) {
+    // 사용자 회원가입-yesun-23.09.24
+    public void signup(SignupMemberForm.Request form) {
+        SignupDto dto = SignupDto.from(form);
+        if (memberRepository.findByNickname(dto.getNickname()).isPresent()) {
             throw new CustomException(NICKNAME_ALREADY_EXISTS);
         }
-        if (memberRepository.findByEmail(signupDto.getEmail()).isPresent()) {
+        if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         }
         memberRepository.save(
-            Member.from(signupDto, passwordEncoder.encode(signupDto.getPassword()), ROLE_USER));
+            Member.from(dto, passwordEncoder.encode(dto.getPassword()), ROLE_USER));
     }
 
-    // 관리자 회원가입-yesun-23.09.05
-    public void signup(SignupAdminForm signupAdminForm) {
-        SignupDto signupDto = SignupDto.from(signupAdminForm);
+    // 관리자 회원가입-yesun-23.09.24
+    public void signup(SignupAdminForm.Request form) {
+        SignupDto dto = SignupDto.from(form);
 
-        memberRepository.findByEmail(signupDto.getEmail()).ifPresent(member -> {
+        memberRepository.findByEmail(dto.getEmail()).ifPresent(member -> {
             throw new CustomException(EMAIL_ALREADY_EXISTS);
         });
 
         memberRepository.save(
-            Member.from(signupDto, passwordEncoder.encode(signupDto.getPassword()), ROLE_ADMIN));
+            Member.from(dto, passwordEncoder.encode(dto.getPassword()), ROLE_ADMIN));
     }
 
-    // 공통 로그인-yesun-23.08.21
-    public SigninDto.Response signin(SigninDto.Request signinDto) {
-        Member member = memberRepository.findByEmail(signinDto.getEmail())
+    // 공통 로그인-yesun-23.09.24
+    public SigninDto.Response signin(SigninForm.Request form) {
+        Member member = memberRepository.findByEmail(form.getEmail())
             .orElseThrow(() -> new CustomException(MEMBER_NOT_EXISTS));
 
-        if (!passwordEncoder.matches(signinDto.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(form.getPassword(), member.getPassword())) {
             throw new CustomException(PASSWORD_NOT_MATCH);
         }
-        return SigninDto.Response.builder()
-            .memberId(member.getId())
-            .email(member.getEmail())
-            .role(member.getRole())
-            .build();
+
+        return SigninDto.Response.from(member);
     }
 
     @Override
