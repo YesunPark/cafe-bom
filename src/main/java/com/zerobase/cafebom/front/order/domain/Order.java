@@ -48,7 +48,6 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderCookingStatus cookingStatus;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private OrderCookingTime cookingTime;
 
